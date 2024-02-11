@@ -1,6 +1,6 @@
-// import { useState } from 'react'
 import { useEffect, useState } from 'react';
-import './App.css'
+import './main-styles/App.css'
+import AppRoutes from './Routes';
 
 function App() {
   const [data, setData] = useState(null);
@@ -15,6 +15,7 @@ function App() {
     <>
       <h1>data:</h1>
       <h1>{data}</h1>
+      <AppRoutes/>
     </>
   )
 }
