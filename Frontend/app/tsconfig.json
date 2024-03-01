@@ -13,13 +13,21 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
+    "rootDir": "./", // Your TypeScript source files location,
+    "outDir": "dist",
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "~/*": ["./*"],
+      "@api-package/*": [
+          "../api-package/*"
+      ],
+    }
   },
-  "include": ["src", "*.ts", "*.tsx", "*.js", "*.jsx"],
+  "include": ["src", "api-package"],
+  "exclude": ["node_modules", "dist", ".vscode"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,0 +1,15 @@
+{
+    "name": "frontend",
+    "packageManager": "yarn@3.2.1",
+    "private": true,
+    "license": "ISC",
+    "workspaces": [
+        "app",
+        "api-package"
+    ],
+    "version": "1.0.0",
+    "author": "Gadzhiev Islam",
+    "dependencies": {
+        "cross-env": "^7.0.3"
+    }
+}
