@@ -14,10 +14,11 @@ export class DBQuery {
     }
     public async call (query: string) {
         try {
+            console.log('Trying to open a DB connection');
             const res = await this.dbConn.query(query).then((res: Object[]) => res[0]);
             return res;
         } catch (error) {
-            console.log(error);
+            console.log('The connection or the SQL query failed', error);
         }
         finally {
             this.dbConn.end();

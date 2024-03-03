@@ -1,18 +1,24 @@
 {
   "compilerOptions": {
-    // "target": "ES2020",
-    "module": "NodeNext",
-
-    /* Bundler mode */
-    "moduleResolution": "NodeNext",
-    // "resolveJsonModule": true,
-    // "isolatedModules": true,
-
-    /* Linting */
-    // "strict": true,
-    // "noUnusedLocals": false,
-    // "noUnusedParameters": false,
-    // "noFallthroughCasesInSwitch": false
+    "target": "ESNext", // Or a later ES version that supports ES Modules
+    "module": "ESNext", // Use "ES6" or "ESNext" for newer syntax if needed
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ESNext"
+    ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "dist", // Output directory for compiled files
+    "rootDir": "./", // Your TypeScript source files location
+    "strict": false, // Enables a wide range of type checking behavior
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
-  "include": ["src", "*.ts", "*.js"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+  },
+  "include": ["src", "*.ts"],
+  "exclude": ["node_modules", "dist", ".vscode"]
 }
