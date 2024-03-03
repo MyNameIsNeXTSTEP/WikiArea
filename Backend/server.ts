@@ -41,9 +41,10 @@ app.post('/api/user/register', async (req, res) => {
         .update(encryptStr)
         .digest('hex');
     const encryptedPswd = createHash('sha256').update(password).digest('hex');
-    new DBQuery(mysql).insert(role, { login, email, password: encryptedPswd, created_at: new Date()});
+    const dateNow = new Date();
+    new DBQuery(mysql).insert(role, { login, email, password: encryptedPswd, created_at: dateNow});
     res.statusCode = 200; // @todo: check data first
-    res.send({ ok: true, body: accessToken });
+    res.send({ ok: true, body: { accessToken, dateNow }});
 });
 
 /**
@@ -53,6 +54,7 @@ app.post('/api/user/register', async (req, res) => {
 * SELECT UNIX_TIMESTAMP(expiration_date) FROM access_tokens;
 */
 
+// @todo: Expiration date both on the frontend and in DB record (created_at) must be synchronized
 app.post('/api/auth', async (req, res) => {
     const XAuthToken = req.headers['x-auth-token'];
     // const encryptStr = `${login};${password};${"register_secret"}`;
@@ -60,9 +62,14 @@ app.post('/api/auth', async (req, res) => {
     //     .update(encryptStr)
     //     .digest('hex');
     // const encryptedPswd = createHash('sha256').update(String(password));
-    // new DBQuery(mysql).insert<IRegistration>('users', { login, password: encryptedPswd });
-    res.statusCode = 200; // @todo: check data first
-    // res.send({ ok: true, body: token });
+    const existsCheckResp = await new DBQuery(mysql).exists('access_token', 'access_tokens', `access_token='${XAuthToken}'`);
+    if (Object.values(existsCheckResp[0])[0] === 1) {
+       res.statusCode = 200; // @todo: check data first
+       res.send({ ok: true, body: true });
+    } else {
+       res.statusCode = 500; // @todo: check data first
+       res.send({ ok: false, body: 'An error occured while trying to find the access_token in database' });
+    }
 });
 
 app.post('/api/test', (req, res) => {
