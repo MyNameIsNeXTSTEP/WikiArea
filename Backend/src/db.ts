@@ -3,6 +3,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+interface IExistsSingleQuery {
+    clmn: string,
+    table: string,
+    condition?: string
+};
+
 export class DBQuery {
     constructor(private dbConn: any) {
         this.dbConn = mysql.createPool({
@@ -25,14 +31,22 @@ export class DBQuery {
             console.log('DB connection is close');
         }
     }
-    public async exists(clmn: string, table: string, condition?: string) {
+    // @todo: Refactor
+    public async singleExists ({ clmn, table, condition }: IExistsSingleQuery) {
         if (!clmn || !table) throw new Error('No column or the table name was provided, check the query instance');
         const query = `SELECT EXISTS(SELECT ${clmn} FROM ${table}
             ${condition
                 ? 'WHERE ' + condition + ')'
-                : ')'}
+                : ')'
+            }
         `;
         return await this.call(query);
+    }
+    // @todo: Refactor
+    public async multiExists(queryConfig: IExistsSingleQuery[]) {
+        return queryConfig.forEach( async query => {
+            await this.singleExists(query)
+        })
     }
     public insert<T>(table: string, insertObj: T) {
         const query = `INSERT INTO ${table} SET ` + this.dbConn.escape(insertObj);

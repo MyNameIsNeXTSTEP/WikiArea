@@ -25,11 +25,14 @@ app.use(
 
 /** NEED TO IMPLEMENT
  * Registration (path: /register-user) DONE
- * Authorization (path: /auth) + auth middleware (req.header: X-Auth-Token)
- * Profile CRUD managing (path: /profile/{operation})
+ * Authorization (path: /auth) + auth middleware (req.header: X-Auth-Token) DONE
+ * Profile CRUD managing (path: /profile/{operation}) [teachers, students, admins]
  * Projetcs studying (path: /projects/?{operation})
  * Getting analytics (path: /analytics)
  */
+app.post('/api/user/register', async (req, res) => {
+
+})
 
 /**
  * Signs up a user using email, login, password, role
@@ -48,31 +51,39 @@ app.post('/api/user/register', async (req, res) => {
 });
 
 /**
+* @todo: Expiration date both on the frontend and in DB record (created_at) must be synchronized
 * insert into access_tokens (expiration_date)
 * VALUES (DATE_ADD(NOW(), INTERVAL 2 HOUR));
 * 
 * SELECT UNIX_TIMESTAMP(expiration_date) FROM access_tokens;
 */
-
-// @todo: Expiration date both on the frontend and in DB record (created_at) must be synchronized
 app.post('/api/auth', async (req, res) => {
     const XAuthToken = req.headers['x-auth-token'];
-    // const encryptStr = `${login};${password};${"register_secret"}`;
-    // const token = createHash('sha256')
-    //     .update(encryptStr)
-    //     .digest('hex');
-    // const encryptedPswd = createHash('sha256').update(String(password));
-    const existsCheckResp = await new DBQuery(mysql).exists('access_token', 'access_tokens', `access_token='${XAuthToken}'`);
-    if (Object.values(existsCheckResp[0])[0] === 1) {
+    // Authorizing by login & password
+    if (!XAuthToken) {
+        const { login, password } = req.body;
+        const encryptedPswd = createHash('sha256').update(password).digest('hex');
+        const userExists = await new DBQuery(mysql).multiExists([{
+            clmn: 'password',
+            table: 'users',
+            condition: `password='${XAuthToken}'`
+        }]);
+    }
+    const tokenExists = await new DBQuery(mysql).singleExists({
+        clmn: 'access_token',
+        table: 'access_tokens',
+        condition: `access_token='${XAuthToken}'`
+    });
+    if (Object.values(tokenExists[0])[0] === 1) {
        res.statusCode = 200; // @todo: check data first
        res.send({ ok: true, body: true });
     } else {
        res.statusCode = 500; // @todo: check data first
-       res.send({ ok: false, body: 'An error occured while trying to find the access_token in database' });
+       res.send({ ok: false, body: 'No access token found in the database' });
     }
 });
 
-app.post('/api/test', (req, res) => {
+app.post('/api/test', async (req, res) => {
     // const base64Data = body.image.imgBuffToSave.replace(/^data:image\/jpeg;base64,/, "");
     // const imgBuffer = Buffer.from(base64Data, 'base64');
     // fs.writeFile(
@@ -85,13 +96,6 @@ app.post('/api/test', (req, res) => {
     // new DBQuery(mysql).insert<ITask>('tasks', { ...body, image: body.image.imgName });
     res.statusCode = 200; // @todo: check data first
     res.send({ ok: true });
-});
-
-app.get('/api/get-all-tasks', async (req, res) => {
-    res.send({
-        ok: true,
-        message: 'ok',
-    });
 });
 
 app.get('/api', (req, res) => {
