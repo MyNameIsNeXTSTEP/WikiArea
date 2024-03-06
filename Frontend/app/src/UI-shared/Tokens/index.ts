@@ -1,0 +1,1 @@
+export const purpleMainColor = 'rgb(193,158,224)';

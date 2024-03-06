@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainPage from "./Pages/MainPage";
+import MainPage from "./Pages/main/MainPage";
 
 const AppRoutes = () => {
     return (

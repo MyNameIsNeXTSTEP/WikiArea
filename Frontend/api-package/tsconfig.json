@@ -29,5 +29,5 @@
   },
   "include": ["*.ts", "api-package"],
   "exclude": ["node_modules", "dist", ".vscode"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  // "references": [{ "path": "./tsconfig.node.json" }]
 }
