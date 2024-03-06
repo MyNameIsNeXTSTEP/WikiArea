@@ -22,30 +22,33 @@ export class DBQuery {
         try {
             console.log('Trying to open a DB connection');
             const res = await this.dbConn.query(query).then((res: Object[]) => res[0]);
+            res && console.log('DB transaction is complete successefully');
+            console.log(res, '__RES__')
             return res;
         } catch (error) {
             console.log('The connection or the SQL query failed', error);
         }
         finally {
             this.dbConn.end();
-            console.log('DB connection is close');
+            console.log('DB connection is closed');
         }
     }
     // @todo: Refactor
     public async singleExists ({ clmn, table, condition }: IExistsSingleQuery) {
-        if (!clmn || !table) throw new Error('No column or the table name was provided, check the query instance');
+        if (!clmn || !table) console.log(new Error('No column or the table name was provided, check the query instance')); // need throw ?
         const query = `SELECT EXISTS(SELECT ${clmn} FROM ${table}
             ${condition
                 ? 'WHERE ' + condition + ')'
                 : ')'
             }
         `;
+        console.log(query, '__QUERY__');
         return await this.call(query);
     }
     // @todo: Refactor
     public async multiExists(queryConfig: IExistsSingleQuery[]) {
-        return queryConfig.forEach( async query => {
-            await this.singleExists(query)
+        return queryConfig.forEach(async query => {
+            return await this.singleExists(query)
         })
     }
     public insert<T>(table: string, insertObj: T) {
