@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "rootDir": "../", // Your TypeScript source files location,
+    "rootDir": "./", // Your TypeScript source files location,
     "outDir": "dist",
     /* Linting */
     "strict": true,
@@ -27,7 +27,7 @@
       ],
     }
   },
-  "include": ["src", "api-package"],
+  "include": ["*.ts", "api-package"],
   "exclude": ["node_modules", "dist", ".vscode"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  // "references": [{ "path": "./tsconfig.node.json" }]
 }

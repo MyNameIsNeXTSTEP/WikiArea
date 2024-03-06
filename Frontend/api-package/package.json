@@ -1,6 +1,7 @@
 {
     "name": "api-package",
     "version": "1.0.0",
+    "type": "module",
     "dependencies": {
         "cross-env": "^7.0.3"
     }

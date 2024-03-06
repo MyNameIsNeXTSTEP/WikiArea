@@ -17,7 +17,7 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      { find: '~', replacement: fileURLToPath(new URL('../', import.meta.url)) },
+      { find: '~', replacement: fileURLToPath(new URL('./', import.meta.url)) },
       { find: '@api-package', replacement: fileURLToPath(new URL('../api-package', import.meta.url)) },
     ],
   }

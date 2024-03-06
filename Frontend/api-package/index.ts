@@ -15,8 +15,10 @@ class APIRequest {
                 requestConfig,
             );
             const payload = await response.json();
+            const statusCode = response.status;
             return {
                 isSuccess: true,
+                statusCode,
                 payload,
             };
         } catch (e) {
