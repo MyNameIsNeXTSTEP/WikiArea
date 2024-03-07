@@ -22,6 +22,11 @@ const Container = styled.div`
     z-index: 1000;
     margin-top: 20px;
     margin-right: 10px;
+    #post-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 const DefaultPopup = ({ children }: IProps): JSX.Element => {

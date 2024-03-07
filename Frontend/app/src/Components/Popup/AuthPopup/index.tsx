@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import * as ST from './styled';
+import * as ST from '../styled';
 import APIRequest from '@api-package/index';
 
 import { TRequestMethod } from '@api-package/types';
@@ -17,7 +17,6 @@ const AuthPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
     const email = useRef<HTMLInputElement>(null);
     const password = useRef<HTMLInputElement>(null);
     const accessToken = getCookie('access_token') || '';
-    console.log(accessToken);
     const request = {
         uri: '/api/auth',
         method: TRequestMethod.POST,
