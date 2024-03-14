@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react';
-import * as ST from '../styled';
+import * as ST from '../../Popup/styled';
 import APIRequest from '@api-package/index';
 
 import { TRequestMethod } from '@api-package/types';
 import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
-import DefaultPopup from "../DefaultPopup";
-import { getCookie } from '~/src/helpers';
+import DefaultPopup from "../../Popup/DefaultPopup";
 import { Button, ButtonRow } from '../../BreakLine/styled';
 
 interface IProps {

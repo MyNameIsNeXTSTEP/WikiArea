@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { purpleMainColor } from '~/src/UI-shared/Tokens';
+export { Left, Right, ButtonRow } from '~/src/UI-shared/Atoms/Containers';
 
 export const Button = styled.button<{$purple?: boolean}>`
     display: flex;
@@ -12,25 +13,4 @@ export const Button = styled.button<{$purple?: boolean}>`
     border: 2px solid ${purpleMainColor};
     cursor: pointer;
     ${p => `background-color: ${p.$purple ? purpleMainColor : 'white' }`};
-`;
-
-export const Left = styled.span`
-    position: relative;
-    float: left;
-    margin-left: auto;
-    width: fit-content;
-    margin-left: 20px;
-`;
-
-export const Right = styled.span`
-    position: relative;
-    float: right;
-    width: fit-content;
-    margin-right: 20px;
-`;
-
-export const ButtonRow = styled.span`
-    display: flex;
-    width: fit-content;
-    flex-direction: row;
 `;

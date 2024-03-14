@@ -1,10 +1,10 @@
 import { useRef } from 'react';
-import * as ST from '../styled';
+import * as ST from '../../Popup/styled';
 import APIRequest from '@api-package/index';
 
 import { TRequestMethod } from '@api-package/types';
 import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
-import DefaultPopup from "../DefaultPopup";
+import DefaultPopup from "../../Popup/DefaultPopup";
 import Captcha from "~/src/UI-shared/Organisms/Captha";
 import { getCookie } from '~/src/helpers';
 
