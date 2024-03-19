@@ -7,19 +7,22 @@ import styled from "styled-components";
  *      justify-content: space-between;
  *  }
  */
-export const Left = styled.span`
+export const Left = styled.span<{ width?: string }>`
     position: relative;
     float: left;
     margin-left: auto;
-    width: fit-content;
+    width: ${p => p.width ?? 'fit-content'};
     margin-left: 20px;
 `;
 
-export const Right = styled.span`
+export const Right = styled.span<{ width?: string }>`
     position: relative;
     float: right;
-    width: fit-content;
+    width: ${p => p.width ?? 'fit-content'};
     margin-right: 20px;
+    @media (max-width: 450px) {
+        float: none;
+    }
 `;
 
 export const ButtonRow = styled.span`

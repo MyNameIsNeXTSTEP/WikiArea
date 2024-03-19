@@ -8,7 +8,7 @@ import Menu from '~/src/UI-shared/Organisms/Menu/index.js';
 function App() {
     return <Provider store={store}>
         <Menu/>
-        <AppRoutes/>;
+        <AppRoutes/>
     </Provider> 
 }
 
