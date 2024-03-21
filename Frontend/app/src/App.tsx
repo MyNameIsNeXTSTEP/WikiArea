@@ -7,7 +7,7 @@ import Menu from '~/src/UI-shared/Organisms/Menu/index.js';
 
 function App() {
     return <Provider store={store}>
-        <Menu/>
+        {window.location.pathname !== '/' && <Menu/>}
         <AppRoutes/>
     </Provider> 
 }

@@ -8,10 +8,13 @@ import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import WidgetsBlock from "./WidgetsBlock";
 import AdditionalDataControl from "./AdditionalDataControl";
 import { Title } from "~/src/UI-shared/Tokens";
+import { useState } from "react";
+import StandartPopupWithContent from "../Popup/StandartPopupWithContent";
 
 const Profile = (): JSX.Element => {
   // const login = useSelector(state => state.profile.login);
   const login = "login";
+  const [isProifleDeletionPopupOpen, updateOpenStatus] = useState(false);
   return (
     <>
       <Title style={{ textAlign: 'start', marginLeft: '150px' }}>Личные данные</Title>
@@ -23,12 +26,26 @@ const Profile = (): JSX.Element => {
           </ProfileBlock>
         </Left>
         <Right className="right">
-          <StandartButton $white className="delete-button">Удалить</StandartButton>
+          <StandartButton
+            $white
+            className="delete-button"
+            onClick={() => updateOpenStatus(!isProifleDeletionPopupOpen)}
+          >
+            Удалить
+          </StandartButton>
         </Right>
       </WidgetWith2Items>
       <WidgetsBlock/>
       {/* @todo: Condition: if teacher or student */}
       <AdditionalDataControl/>
+      {isProifleDeletionPopupOpen &&
+        <StandartPopupWithContent
+          isOpen={isProifleDeletionPopupOpen}
+          updateIsOpen={updateOpenStatus}
+          text='Вы действительно хотите удалить свой профиль'
+          firstBtn='Удалить'
+        />
+      }
     </>
   );
 };

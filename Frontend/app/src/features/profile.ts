@@ -23,5 +23,4 @@ const profileSlice = createSlice({
 });
 
 export const { getProfileData, deleteProfile } = profileSlice.actions;
-
 export default profileSlice.reducer;

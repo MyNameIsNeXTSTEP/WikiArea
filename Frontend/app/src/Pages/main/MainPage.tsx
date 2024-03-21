@@ -11,19 +11,19 @@ import { getCookie } from '~/src/helpers';
 const MainPage = (): JSX.Element => {
     const [isAuthPopupOpen, updateIsAuthPopupOpen] = useState(false);
     const [isRegisterPopupOpen, updateIsRegisterPopupOpen] = useState(false);
-    const [lkStatus, updateLkStatus] = useState('');
-    const accessToken = getCookie('access_token');
-    useEffect(() => {
-        if (accessToken && accessToken?.length > 0) {
-            updateLkStatus('Вы в авторизованной зоне');
-            return;
-        } else {
-            updateLkStatus('Вы в неавторизованной зоне');
-        }
-    }, []);
+    // const [lkStatus, updateLkStatus] = useState('');
+    // const accessToken = getCookie('access_token');
+    // useEffect(() => {
+    //     if (accessToken && accessToken?.length > 0) {
+    //         updateLkStatus('Вы в авторизованной зоне');
+    //         return;
+    //     } else {
+    //         updateLkStatus('Вы в неавторизованной зоне');
+    //     }
+    // }, []);
     return (
         <ST.PageContainer className='page_container'>
-            {lkStatus}
+            {/* {lkStatus} */}
             <AuthPopup isOpen={isAuthPopupOpen} close={() => updateIsAuthPopupOpen(false)}/>
             <RegisterPopup isOpen={isRegisterPopupOpen} close={() => updateIsRegisterPopupOpen(false)}/>
             <h1>Main page</h1> 

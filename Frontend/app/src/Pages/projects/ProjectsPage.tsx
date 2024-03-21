@@ -8,9 +8,19 @@ import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { Title } from "~/src/UI-shared/Tokens";
+import { debounce } from '~/src/a-lib';
+import { useSelector } from 'react-redux';
+import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 
 const ProjectsPage = (): JSX.Element => {
-    // test data
+    // const projectsData = useSelector(state => state.projects.all);
+    const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
+    const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
+    const [isOpenProjectDetails, openProjectDetails] = useState(false);
+    const searchRef = useRef<HTMLInputElement>(null);
+    const filterRef = useRef<HTMLInputElement>(null);
+    // const subscribedProjects = useSelector(state => state.projects.subscribed);
+    // @todo: Change to selectors data from store
     const projectData = new Array(10).fill({
         author: 'Автор',
         title: 'Название',
@@ -19,21 +29,28 @@ const ProjectsPage = (): JSX.Element => {
         lifetime: 'Срок проекта',
         description: 'Описание проекта'
     });
-    const [data, updateData] = useState(projectData);
-    const searchRef = useRef<HTMLInputElement>(null);
-    const filterRef = useRef<HTMLInputElement>(null);
-    const debounce = (fn: Function, delay: number) => {
-        let timeout: NodeJS.Timeout;
-        return function () {
-            const fnCall = () => fn.apply(this, arguments);
-            clearTimeout(timeout);
-            timeout = setTimeout(fnCall, delay)
-        }
-    };
-    console.log(data)
+    projectData.push({
+        author: 'abc',
+        title: 'Название',
+        topic: 'Тема',
+        complexity: 'Сложность',
+        lifetime: 'Срок проекта',
+        description: 'Описание проекта'
+    });
+    const [projectsToShow, updateProjectsToShow] = useState(projectData)
+    // const [data, updateData] = useState(projectsToShow);
+    const subscribedProjects = [{
+        author: 'abc',
+        title: 'Название',
+        topic: 'Тема',
+        complexity: 'Сложность',
+        lifetime: 'Срок проекта',
+        description: 'Описание проекта'
+    }]
+    //
     const doSearch = (e) => {
         const value = e.target?.value;
-        const searchedData = projectData.filter((el: Record<string, string>) => {
+        const searchedData = projectsToShow.filter((el: Record<string, string>) => {
             const keys = Object.keys(el);
             for (const key of keys) {
                 if (el[key].toLowerCase().match(value.toLowerCase())) {
@@ -43,37 +60,110 @@ const ProjectsPage = (): JSX.Element => {
             };
             return false;
         });
-        updateData(searchedData)
+        updateProjectsToShow(searchedData)
     };
 
-    return <>
-        <WidgetWith2Items $transparent>
+    const openSubscribedProjects = () => {
+        showSubscribedProjects(true)
+        updateProjectsToShow(subscribedProjects);
+    };
+
+    // @todo: [BUG] when do searching the inout field rerenders and projects filtering went wrong (?)
+    const ProjectsControls = (): JSX.Element => {
+        if (isShowSubscribedProjects && subscribedProjects && subscribedProjects.length > 0) {
+            return <WidgetWith2Items $transparent>
+                <Left width='auto'>
+                    <StandartInput onChange={debounce(doSearch, 300)} ref={searchRef} $bordered placeholder='Поиск'/>
+                </Left>
+            </WidgetWith2Items> 
+        };
+        return <WidgetWith2Items $transparent>
             <Left width='auto'>
                 <Title>Проекты</Title>
                 <StandartInput onChange={debounce(doSearch, 300)} ref={searchRef} $bordered placeholder='Поиск'/>
-                <StandartInput ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
+                <StandartInput onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
             </Left>
             <Right>
-                <StandartButton $width='180px'>Мои проекты</StandartButton>
+                <StandartButton $width='180px' onClick={openSubscribedProjects}>Мои проекты</StandartButton>
             </Right>
         </WidgetWith2Items>
-        {data.length
-            ? data.map(el => <WidgetWith2Items $rounded height='100px'>
+    };
+
+    const SubscribedProjects = (project?: Record<string, string>): JSX.Element | null => {
+        if (!project) {
+            return null;
+        }
+        return <WidgetWith2Items $rounded height='100px'>
+                <Left style={{ flexDirection: 'column', display: 'flex' }}className="left">
+                    <ST.ImageBlock style={{ marginTop: '10px' }}className="profile-block">
+                        <ProjectImage src={ProjectLogo} />
+                    </ST.ImageBlock>
+                    <ST.ProjectsData>
+                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                    </ST.ProjectsData>
+                    <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
+                </Left>
+                <Right className="right" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion">Просмотр</StandartButton>
+                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion" onClick={openUnsubscribePopup}>Отписаться</StandartButton>
+                </Right>
+            </WidgetWith2Items>
+    };
+
+    const AllProjects = (project?: Record<string, string>): JSX.Element | null => {
+        if (!project) {
+            return null;
+        }
+        return <WidgetWith2Items $rounded height='100px'>
                 <Left className="left">
                     <ST.ImageBlock className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
-                        {Object.values(el).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
                     </ST.ProjectsData>
                 </Left>
                 <Right className="right">
                     <StandartButton $whiteBordered $width={'180px'} className="subscribtion">Подписаться</StandartButton>
-                    <StandartLabel style={{ marginLeft: 20 }}$white>Подписано:</StandartLabel>
+                    <StandartLabel style={{ marginLeft: 20 }} $white>Подписано:</StandartLabel>
                 </Right>
             </WidgetWith2Items>
+    };
+
+    const ProjectDetails = (project: Record<string, string>): JSX.Element | null => {
+        if (!project) {
+            return null;
+        }
+        return <WidgetWith2Items $rounded height='100px'>
+                <Left className="left">
+                    <ST.ImageBlock className="profile-block">
+                        <ProjectImage src={ProjectLogo} />
+                    </ST.ImageBlock>
+                    <ST.ProjectsData>
+                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                    </ST.ProjectsData>
+                </Left>
+            </WidgetWith2Items>
+    };
+    };
+
+    return <>
+        <ProjectsControls/>
+        {projectsToShow.length
+            ? projectsToShow.map(el => 
+                isShowSubscribedProjects
+                    ? <SubscribedProjects project={el}/>
+                    : <AllProjects project={el}/>
             )
             : "Совпадений не найдено"
+        }
+        {isOpenUnsubsribePopup &&
+            <StandartPopupWithContent
+                isOpen={isOpenUnsubsribePopup}
+                updateIsOpen={openUnsubscribePopup}
+                text='Вы действительно хотите отписатья от проекта ?'
+                firstBtn='Отписаться'
+            />
         }
     </>
 };
