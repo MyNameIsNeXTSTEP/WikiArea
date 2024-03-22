@@ -1,16 +1,24 @@
 import { useRef, useState } from 'react';
 import * as ST from './styled';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
+import Arrow from '~/src/assets/svg/Arrow.svg';
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { ProjectImage } from '~/src/UI-shared/Atoms/icons';
+import { DropdownArrow, ProjectImage } from '~/src/UI-shared/Atoms/icons';
 import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import { Title } from "~/src/UI-shared/Tokens";
+import { H1, Title } from "~/src/UI-shared/Tokens";
 import { debounce } from '~/src/a-lib';
 import { useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
+import { Banner } from '~/src/UI-shared/Atoms/Banners';
+
+interface IModule {
+    projectModule: {
+        name: string
+    }
+}
 
 interface IProject {
     id: number,
@@ -24,7 +32,7 @@ interface IProject {
 
 interface IProjectDetails {
     isOpen: boolean,
-    project: IProject,
+    project?: IProject,
 }
 
 const ProjectsPage = (): JSX.Element => {
@@ -64,6 +72,11 @@ const ProjectsPage = (): JSX.Element => {
         lifetime: 'Срок проекта',
         description: 'Описание проекта'
     }]
+    const projectModules = [
+        { name: 'Первый модуль' },
+        { name: 'Второй модуль' },
+        { name: 'Третий модуль' },
+    ];
     //
     const doSearch = (e) => {
         const value = e.target?.value;
@@ -112,7 +125,7 @@ const ProjectsPage = (): JSX.Element => {
         }
         return <WidgetWith2Items $rounded height='100px'>
                 <Left style={{ flexDirection: 'column', display: 'flex' }}className="left">
-                    <ST.ImageBlock style={{ marginTop: '10px' }}className="profile-block">
+                    <ST.ImageBlock $abs style={{ marginTop: '10px' }}className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
@@ -140,7 +153,7 @@ const ProjectsPage = (): JSX.Element => {
         }
         return <WidgetWith2Items $rounded height='100px'>
                 <Left className="left">
-                    <ST.ImageBlock className="profile-block">
+                    <ST.ImageBlock $abs className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
@@ -155,14 +168,12 @@ const ProjectsPage = (): JSX.Element => {
     };
 
     const ProjectDetails = (project: IProject): JSX.Element | null => {
-        console.log(project, 'detail');
-        
         if (!project) {
             return null;
         }
         return <WidgetWith2Items $rounded height='100px'>
                 <Left className="left">
-                    <ST.ImageBlock className="profile-block">
+                    <ST.ImageBlock $abs className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
@@ -191,12 +202,24 @@ const ProjectsPage = (): JSX.Element => {
                 />
             }
         </> || null;
+    };
+
+    const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
+        return <WidgetWith2Items $rounded height='80px'>
+            <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
+            <Right>
+                <ST.ImageBlock style={{ marginTop: '10px' }}className="profile-block">
+                    <DropdownArrow src={Arrow} />
+                </ST.ImageBlock>
+            </Right>
+        </WidgetWith2Items>
     }
 
     return <>
         <ProjectsControls/>
         <GeneralProjectsList/>
         { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }
+        { projectDetails.isOpen && projectModules.map(el => <ProjectModule projectModule={el}/>) }
     </>
 };
 

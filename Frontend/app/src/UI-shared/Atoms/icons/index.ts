@@ -24,3 +24,8 @@ export const ProjectImage = styled.img`
   align-self: center;
   width: 100%;
 `;
+
+export const DropdownArrow = styled.img`
+  align-self: center;
+  width: 40px;
+`

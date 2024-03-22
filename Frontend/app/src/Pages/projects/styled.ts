@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const ImageBlock = styled.div`
+export const ImageBlock = styled.div<{ $abs?: boolean }>`
     display: flex;
-    position: absolute;
+    ${p => p.$abs && css`position: absolute`};
     width: 60px;
     margin-right: 20px;
     align-self: flex-start;
