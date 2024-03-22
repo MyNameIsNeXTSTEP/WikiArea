@@ -12,16 +12,32 @@ import { debounce } from '~/src/a-lib';
 import { useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 
+interface IProject {
+    id: number,
+    author: string,
+    title: string,
+    topic: string,
+    complexity: string,
+    lifetime: string,
+    description: string,
+}
+
+interface IProjectDetails {
+    isOpen: boolean,
+    project: IProject,
+}
+
 const ProjectsPage = (): JSX.Element => {
     // const projectsData = useSelector(state => state.projects.all);
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
-    const [isOpenProjectDetails, openProjectDetails] = useState(false);
+    const [projectDetails, openProjectDetails] = useState({} as IProjectDetails);
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
     // const subscribedProjects = useSelector(state => state.projects.subscribed);
     // @todo: Change to selectors data from store
     const projectData = new Array(10).fill({
+        id: 1,
         author: 'Автор',
         title: 'Название',
         topic: 'Тема',
@@ -30,7 +46,8 @@ const ProjectsPage = (): JSX.Element => {
         description: 'Описание проекта'
     });
     projectData.push({
-        author: 'abc',
+        id: 2,
+        author: 'abc',        
         title: 'Название',
         topic: 'Тема',
         complexity: 'Сложность',
@@ -89,7 +106,7 @@ const ProjectsPage = (): JSX.Element => {
         </WidgetWith2Items>
     };
 
-    const SubscribedProjects = (project?: Record<string, string>): JSX.Element | null => {
+    const SubscribedProjects = (project?: IProject): JSX.Element | null => {
         if (!project) {
             return null;
         }
@@ -104,13 +121,20 @@ const ProjectsPage = (): JSX.Element => {
                     <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
                 </Left>
                 <Right className="right" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion">Просмотр</StandartButton>
+                    <StandartButton
+                        $whiteBordered
+                        $width={'180px'}
+                        className="subscribtion"
+                        onClick={() => openProjectDetails({ isOpen: true, project: project })}
+                    >
+                        Просмотр
+                    </StandartButton>
                     <StandartButton $whiteBordered $width={'180px'} className="subscribtion" onClick={openUnsubscribePopup}>Отписаться</StandartButton>
                 </Right>
             </WidgetWith2Items>
     };
 
-    const AllProjects = (project?: Record<string, string>): JSX.Element | null => {
+    const AllProjects = (project?: IProject): JSX.Element | null => {
         if (!project) {
             return null;
         }
@@ -130,7 +154,9 @@ const ProjectsPage = (): JSX.Element => {
             </WidgetWith2Items>
     };
 
-    const ProjectDetails = (project: Record<string, string>): JSX.Element | null => {
+    const ProjectDetails = (project: IProject): JSX.Element | null => {
+        console.log(project, 'detail');
+        
         if (!project) {
             return null;
         }
@@ -140,31 +166,37 @@ const ProjectsPage = (): JSX.Element => {
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
-                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                        {Object.values(project.project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
                     </ST.ProjectsData>
                 </Left>
             </WidgetWith2Items>
     };
-    };
+
+    const GeneralProjectsList = (): JSX.Element | null => {
+        return !projectDetails.isOpen && <>
+            {projectsToShow.length
+                ? projectsToShow.map((el: IProject) => 
+                    isShowSubscribedProjects
+                        ? <SubscribedProjects project={el}/>
+                        : <AllProjects project={el}/>
+                )
+                : "Совпадений не найдено"
+            }
+            {isOpenUnsubsribePopup &&
+                <StandartPopupWithContent
+                    isOpen={isOpenUnsubsribePopup}
+                    updateIsOpen={openUnsubscribePopup}
+                    text='Вы действительно хотите отписатья от проекта ?'
+                    firstBtn='Отписаться'
+                />
+            }
+        </> || null;
+    }
 
     return <>
         <ProjectsControls/>
-        {projectsToShow.length
-            ? projectsToShow.map(el => 
-                isShowSubscribedProjects
-                    ? <SubscribedProjects project={el}/>
-                    : <AllProjects project={el}/>
-            )
-            : "Совпадений не найдено"
-        }
-        {isOpenUnsubsribePopup &&
-            <StandartPopupWithContent
-                isOpen={isOpenUnsubsribePopup}
-                updateIsOpen={openUnsubscribePopup}
-                text='Вы действительно хотите отписатья от проекта ?'
-                firstBtn='Отписаться'
-            />
-        }
+        <GeneralProjectsList/>
+        { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }
     </>
 };
 
