@@ -3,7 +3,7 @@ import * as ST from './styled';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
 import Arrow from '~/src/assets/svg/Arrow.svg';
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
+import { BoundedContainer, Left, Right } from "~/src/UI-shared/Atoms/Containers";
 import { DropdownArrow, ProjectImage } from '~/src/UI-shared/Atoms/icons';
 import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
@@ -13,6 +13,7 @@ import { debounce } from '~/src/a-lib';
 import { useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 import { Banner } from '~/src/UI-shared/Atoms/Banners';
+import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
 
 interface IModule {
     projectModule: {
@@ -205,14 +206,42 @@ const ProjectsPage = (): JSX.Element => {
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
-        return <WidgetWith2Items $rounded height='80px'>
-            <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
-            <Right>
-                <ST.ImageBlock style={{ marginTop: '10px' }}className="profile-block">
-                    <DropdownArrow src={Arrow} />
-                </ST.ImageBlock>
-            </Right>
-        </WidgetWith2Items>
+        const [isDropDownOpen, openDropDown] = useState(false);
+        return <>
+            <WidgetWith2Items $rounded height='80px'>
+                <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
+                <Right>
+                    <ST.ImageBlock style={{ marginTop: '10px' }}className="profile-block">
+                        <DropdownArrow src={Arrow} flip={isDropDownOpen} onClick={() => openDropDown(!isDropDownOpen)}/>
+                    </ST.ImageBlock>
+                </Right>
+            </WidgetWith2Items>
+            { isDropDownOpen && <BoundedContainer>
+                <SimpleWidget width='100%' height='auto' $bordered className='module-test'>
+                    <WidgetWith2Items $fullWidth $smallMargins $transparent>
+                        <Left><Title>Материал</Title></Left>
+                        <StandartButton $width='200px' className="take-test-button">Пройти тест</StandartButton>
+                        <Right>
+                            <StandartButton className="download-button">Скачать</StandartButton>
+                        </Right>
+                    </WidgetWith2Items>
+                </SimpleWidget>
+            </BoundedContainer> }
+            { isDropDownOpen && <BoundedContainer>
+                <SimpleWidget width='100%' height='auto' $bordered>
+                    <WidgetWith2Items $fullWidth $smallMargins $transparent height='auto'>
+                        <SimpleWidget width='auto' height='auto'>
+                            <Left><Title>Текст задания</Title></Left>
+                            <Left><Title>Материал</Title></Left>
+                        </SimpleWidget>
+                        <Right>
+                            <StandartButton className="download-button">Загрузить</StandartButton>
+                            <StandartButton className="download-button">Удалить</StandartButton>
+                        </Right>
+                    </WidgetWith2Items>
+                </SimpleWidget>
+            </BoundedContainer> }
+        </>
     }
 
     return <>

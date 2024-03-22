@@ -30,3 +30,13 @@ export const ButtonRow = styled.span`
     width: fit-content;
     flex-direction: row;
 `;
+
+export const BoundedContainer = styled.div`
+  position: relative;
+  display: flex;
+  height: auto;
+  width: 80%;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+`;

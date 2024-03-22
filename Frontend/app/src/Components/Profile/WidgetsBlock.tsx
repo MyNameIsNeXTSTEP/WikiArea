@@ -8,14 +8,14 @@ import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 const WidgetsBlock = (): JSX.Element => {
     return <>
         <ST.ProfilControlWidgets $transparent>
-        <SimpleWidget width={"40vw"} height={"30vh"}>
+        <SimpleWidget width={"40vw"} height={"30vh"} $bordered>
             <Title>Учётные данные</Title>
             <ST.Input $bordered placeholder="Имя…"/>
             <ST.Input $bordered placeholder="Фамилия…"/>
             <ST.Input $bordered placeholder="Дата рождения…"/>
-            <StandartButton className="delete-button">Сохранить</StandartButton>
+            <StandartButton className="save-button">Сохранить</StandartButton>
         </SimpleWidget>
-        <SimpleWidget width={"40vw"} height={"30vh"}>
+        <SimpleWidget width={"40vw"} height={"30vh"} $bordered>
             <Title>Пароль</Title>
             <ST.InputWithIcon >
                 <RawInput placeholder="Текущий пароль"/>
@@ -29,7 +29,7 @@ const WidgetsBlock = (): JSX.Element => {
                 <RawInput placeholder="Повторите пароль"/>
                 <ST.EyeIcon src={Eye}/>
             </ST.InputWithIcon>
-            <StandartButton className="delete-button">Сохранить</StandartButton>
+            <StandartButton className="save-button">Сохранить</StandartButton>
         </SimpleWidget>
         </ST.ProfilControlWidgets>
     </>

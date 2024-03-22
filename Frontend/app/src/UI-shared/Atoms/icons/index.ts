@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const ProfileImage = styled.img`
   width: 60px;
@@ -23,9 +23,12 @@ export const EyeIcon = styled.img`
 export const ProjectImage = styled.img`
   align-self: center;
   width: 100%;
+  cursor: pointer;
 `;
 
-export const DropdownArrow = styled.img`
+export const DropdownArrow = styled.img<{ flip?: boolean}>`
   align-self: center;
   width: 40px;
-`
+  cursor: pointer;
+  ${p => p.flip && css`transform: rotate(180deg)`};
+`;

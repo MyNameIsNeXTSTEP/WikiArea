@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { purpleMainColor } from "../../Tokens";
 
-export const SimpleWidget = styled.div<{ width: string; height: string }>`
+export const SimpleWidget = styled.div<{ width: string; height: string, $bordered?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,6 +10,6 @@ export const SimpleWidget = styled.div<{ width: string; height: string }>`
   height: ${(p) => p.height};
   margin: 10px;
   border-radius: 30px;
-  border: 3px solid ${purpleMainColor};
+  border: ${p => p.$bordered ? css`3px solid ${purpleMainColor}` : 'none'};
   background-color: white;
 `;

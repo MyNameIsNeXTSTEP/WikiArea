@@ -6,6 +6,8 @@ interface IProps {
   rest?: any;
   height?: string,
   $rounded?: boolean,
+  $smallMargins?: boolean,
+  $fullWidth: boolean,
 }
 
 const WidgetWith2Items = ({ children, ...rest }: IProps): JSX.Element => {
