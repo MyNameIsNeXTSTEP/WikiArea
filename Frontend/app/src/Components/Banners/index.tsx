@@ -1,10 +1,10 @@
-import * as ST from './styled';
+import { Banner } from '~/src/UI-shared/Atoms/Banners';
 
 const WikiBanner = (): JSX.Element => {
-    return <ST.Banner>
+    return <Banner>
         <strong>Wikiarea</strong>
         <p>Доступное образование будущего</p>
-    </ST.Banner>
+    </Banner>
 };
 
 export default WikiBanner;

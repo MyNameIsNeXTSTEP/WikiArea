@@ -1,10 +1,10 @@
 import { useRef } from 'react';
-import * as ST from './styled';
+import * as ST from '../../Popup/styled';
 import APIRequest from '@api-package/index';
 
 import { TRequestMethod } from '@api-package/types';
 import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
-import DefaultPopup from "../DefaultPopup";
+import DefaultPopup from "../../Popup/DefaultPopup";
 import Captcha from "~/src/UI-shared/Organisms/Captha";
 import { getCookie } from '~/src/helpers';
 
@@ -17,7 +17,6 @@ const AuthPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
     const email = useRef<HTMLInputElement>(null);
     const password = useRef<HTMLInputElement>(null);
     const accessToken = getCookie('access_token') || '';
-    console.log(accessToken);
     const request = {
         uri: '/api/auth',
         method: TRequestMethod.POST,

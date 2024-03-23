@@ -1,4 +1,3 @@
-import fs from 'fs';
 import mysql from 'mysql2';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -39,6 +38,7 @@ app.use(
  */
 app.post('/api/user/register', async (req, res) => {
     const { login, password, role, email } = req.body;
+    console.log(login, password, role, email);
     const encryptStr = `${email};${password};${"register_secret"}`;
     const accessToken = createHash('sha256')
         .update(encryptStr)
@@ -61,7 +61,10 @@ app.post('/api/user/register', async (req, res) => {
     new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, created_at: dateNow});
     new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, login, email, expiration_date: expirationDate });
     res.statusCode = 200; // @todo: check data first
-    res.send({ ok: true, body: { accessToken, dateNow }});
+    res.send({
+        ok: true,
+        body: { accessToken, dateNow }
+    });
     return;
 });
 
@@ -100,9 +103,7 @@ app.post('/api/auth', async (req, res) => {
             res.statusCode = 200; // @todo: check data first
             res.send({
                 ok: true,
-                body: {
-                    accessToken,
-                }
+                body: { accessToken }
             });
         } else {
            res.statusCode = 500; // @todo: check data first
