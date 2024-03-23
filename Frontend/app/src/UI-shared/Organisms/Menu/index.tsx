@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Left, Right } from "../../Atoms/Containers";
 import * as ST from "./styled";
 import ProfileLogo from "~/src/assets/svg/Profile.svg";
-import { ProfileImage } from "../../Atoms/icons";
+import Back from "~/src/assets/svg/Back.svg";
+import { BackMenuBtn, ProfileImage } from "../../Atoms/icons";
+import { useSelector } from "react-redux";
 
 interface IMenuItem {
   title: string;
@@ -19,6 +21,9 @@ interface IMenuItem {
 
 const Menu = (): JSX.Element => {
   const [isOpen, openMenu] = useState(false);
+  // const isMainMenu = useSelector(state => state.menu.isMainMenu);
+  const isMainMenu = false;
+  const back = () => alert('back clicked');
   const menuItems: IMenuItem[] = [
     { title: "Профиль", route: "/user" },
     { title: "Проекты", route: "/projects" },
@@ -30,7 +35,10 @@ const Menu = (): JSX.Element => {
     <ST.Nav>
       <Left>Wikiarea</Left>
       <Right>
-        <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
+        { isMainMenu
+          ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
+          : <BackMenuBtn src={Back} onClick={back} />
+        }
       </Right>
       {isOpen && (
         <ST.ProfileMenu>

@@ -7,7 +7,7 @@ export const Wrapper = styled.div<{
   $rounded?: boolean,
   height?: string,
   $smallMargins?: boolean,
-  $fullWidth: boolean,
+  $fullWidth?: boolean,
 }>`
   display: flex;
   justify-content: space-between;

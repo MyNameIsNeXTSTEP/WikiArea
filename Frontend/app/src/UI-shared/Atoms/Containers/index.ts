@@ -29,6 +29,8 @@ export const ButtonRow = styled.span`
     display: flex;
     width: fit-content;
     flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
 `;
 
 export const BoundedContainer = styled.div`

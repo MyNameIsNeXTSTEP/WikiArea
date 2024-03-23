@@ -9,7 +9,6 @@ export const StandartButton = styled.button<{ $white?: boolean, $whiteBordered?:
   border-radius: 15px;
   text-decoration: none;
   border: ${p => p.$whiteBordered ? '2px solid white' : 'none'};
-  font-style: italic;
   font-size: larger;
   color: ${p => p.$white ? purpleMainColor : 'white'};
   cursor: pointer;

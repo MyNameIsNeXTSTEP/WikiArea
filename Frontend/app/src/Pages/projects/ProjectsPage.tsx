@@ -2,9 +2,10 @@ import { useRef, useState } from 'react';
 import * as ST from './styled';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
 import Arrow from '~/src/assets/svg/Arrow.svg';
+import File from '~/src/assets/svg/File.svg';
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import { BoundedContainer, Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { DropdownArrow, ProjectImage } from '~/src/UI-shared/Atoms/icons';
+import { BoundedContainer, ButtonRow, Left, Right } from "~/src/UI-shared/Atoms/Containers";
+import { DropdownArrow, FileIcon, ProjectImage } from '~/src/UI-shared/Atoms/icons';
 import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
@@ -12,8 +13,8 @@ import { H1, Title } from "~/src/UI-shared/Tokens";
 import { debounce } from '~/src/a-lib';
 import { useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
-import { Banner } from '~/src/UI-shared/Atoms/Banners';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
+import ModuleTests from './ModuleTests';
 
 interface IModule {
     projectModule: {
@@ -41,6 +42,7 @@ const ProjectsPage = (): JSX.Element => {
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     const [projectDetails, openProjectDetails] = useState({} as IProjectDetails);
+    const [isModuleTestsOpen, openModuleTests] = useState(false);
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
     // const subscribedProjects = useSelector(state => state.projects.subscribed);
@@ -207,6 +209,12 @@ const ProjectsPage = (): JSX.Element => {
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
         const [isDropDownOpen, openDropDown] = useState(false);
+        const [isOpenFileUploadPopup, openFileUploadPopup] = useState(false);
+        const [testIsPassed, setTestIsPassed] = useState(false);
+        const openTests = () => {
+            openModuleTests(true);
+            openProjectDetails({ isOpen: false});
+        }
         return <>
             <WidgetWith2Items $rounded height='80px'>
                 <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
@@ -220,7 +228,10 @@ const ProjectsPage = (): JSX.Element => {
                 <SimpleWidget width='100%' height='auto' $bordered className='module-test'>
                     <WidgetWith2Items $fullWidth $smallMargins $transparent>
                         <Left><Title>Материал</Title></Left>
-                        <StandartButton $width='200px' className="take-test-button">Пройти тест</StandartButton>
+                        { testIsPassed
+                            ? <StandartButton $width='200px' className="take-test-button">Посмотреть итоги теста</StandartButton>
+                            : <StandartButton $width='200px' className="take-test-button" onClick={openTests}>Пройти тест</StandartButton>
+                        }
                         <Right>
                             <StandartButton className="download-button">Скачать</StandartButton>
                         </Right>
@@ -235,20 +246,32 @@ const ProjectsPage = (): JSX.Element => {
                             <Left><Title>Материал</Title></Left>
                         </SimpleWidget>
                         <Right>
-                            <StandartButton className="download-button">Загрузить</StandartButton>
-                            <StandartButton className="download-button">Удалить</StandartButton>
+                            <ButtonRow>
+                                <StandartButton className="download-button" onClick={() => openFileUploadPopup(true)}>Загрузить</StandartButton>
+                                <StandartButton className="download-button">Удалить</StandartButton>
+                            </ButtonRow>
                         </Right>
                     </WidgetWith2Items>
                 </SimpleWidget>
             </BoundedContainer> }
-        </>
-    }
 
+            { isOpenFileUploadPopup && <StandartPopupWithContent
+                isOpen={isOpenFileUploadPopup}
+                updateIsOpen={openFileUploadPopup}
+                text='Загрузить файл с заданием'
+                firstBtn='Сохранить'
+                image={<FileIcon src={File}/>}
+            /> }
+
+        </>
+    };
+    
     return <>
         <ProjectsControls/>
-        <GeneralProjectsList/>
+        { !isModuleTestsOpen && <GeneralProjectsList/> }
         { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }
         { projectDetails.isOpen && projectModules.map(el => <ProjectModule projectModule={el}/>) }
+        { isModuleTestsOpen && <ModuleTests/> }
     </>
 };
 

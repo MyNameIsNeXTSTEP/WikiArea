@@ -30,5 +30,17 @@ export const DropdownArrow = styled.img<{ flip?: boolean}>`
   align-self: center;
   width: 40px;
   cursor: pointer;
-  ${p => p.flip && css`transform: rotate(180deg)`};
+  transform: ${p => p.flip && css`rotate(180deg)`};
+`;
+
+export const FileIcon = styled.img`
+  align-self: center;
+  width: 40px;
+`;
+
+export const BackMenuBtn = styled.img`
+  align-self: center;
+  width: 60px;
+  cursor: pointer;
+  margin: 5px;
 `;

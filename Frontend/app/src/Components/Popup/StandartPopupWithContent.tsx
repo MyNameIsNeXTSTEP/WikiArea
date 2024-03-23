@@ -2,7 +2,7 @@ import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import { ButtonRow } from "../BreakLine/styled";
 import DefaultPopup from "./DefaultPopup";
 import { H1 } from "~/src/UI-shared/Tokens";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 interface IProps {
     isOpen?: boolean,
@@ -12,13 +12,16 @@ interface IProps {
     firstBtnOnClick?: () => void,
     secondBtnOnClick?: () => void,
     updateIsOpen?: Dispatch<SetStateAction<boolean>>,
+    image?: ReactNode | null | undefined,
 }
 
-const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick }: IProps): JSX.Element => {
+const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image }: IProps): JSX.Element => {
     return <DefaultPopup width="450px" height="200px">
         <H1 $white>{text}</H1>
+        {image}
         <ButtonRow style={{
             paddingBottom: 10,
+            paddingTop: 20,
             paddingRight: 20,
             paddingLeft: 20,
             gap: 20

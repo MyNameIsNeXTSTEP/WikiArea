@@ -31,7 +31,6 @@ export const InputWithIcon = styled.div`
   background-color: white;
   text-decoration: none;
   border: 2px solid ${purpleMainColor};
-  font-style: italic;
   padding-left: 5px;
   margin-bottom: 14px;
 `;

@@ -7,7 +7,6 @@ export const Title = styled.h2<{ $white?: boolean }>`
     margin-bottom: 20px;
     margin-left: 0;
     color: ${p => p.$white ? 'white' : purpleMainColor};
-    font-style: italic;
     font-size: 60;
     font-weight: 500;
 `;
@@ -16,7 +15,6 @@ export const H1 = styled.h1<{ $white?: boolean}>`
     top: 0;
     margin-bottom: 20px;
     color: ${p => p.$white ? 'white' : purpleMainColor};
-    font-style: italic;
     font-size: xx-large;
     font-weight: 500;
 `;

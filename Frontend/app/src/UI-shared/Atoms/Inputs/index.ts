@@ -8,7 +8,6 @@ export const StandartInput = styled.input<{marginDensitive?: boolean, $bordered?
     background-color: white;
     text-decoration: none;
     border: ${p => p.$bordered ? `2px solid ${purpleMainColor}` : 'none'};
-    font-style: italic;
     padding-left: 5px;
     margin-bottom: ${p => p.marginDensitive ? '7' : '14'}px;
     &:focus {
@@ -23,7 +22,6 @@ export const RawInput = styled.input`
     background-color: transparent;
     border: none;
     text-decoration: none;
-    font-style: italic;
     padding-left: 5px;
     &:focus {
         outline: none;    

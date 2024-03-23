@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import profileReducer from "./features/profile";
-import projectsReducer from "./features/projects";
+import profileReducer from "./features/store/profile";
+import projectsReducer from "./features/store/projects";
 
 const store = configureStore({
     reducer: {

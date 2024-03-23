@@ -5,7 +5,6 @@ export const Title = styled.h2`
     margin-bottom: 20px;
     color: white;
     text-decoration: underline;
-    font-style: italic;
 `;
 
 export const Cancel = styled(CancelIcon)`
