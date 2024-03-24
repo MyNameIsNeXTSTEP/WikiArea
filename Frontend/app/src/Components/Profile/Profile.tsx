@@ -38,14 +38,12 @@ const Profile = (): JSX.Element => {
       <WidgetsBlock/>
       {/* @todo: Condition: if teacher or student */}
       <AdditionalDataControl/>
-      {isProifleDeletionPopupOpen &&
         <StandartPopupWithContent
           isOpen={isProifleDeletionPopupOpen}
           updateIsOpen={updateOpenStatus}
           text='Вы действительно хотите удалить свой профиль'
           firstBtn='Удалить'
         />
-      }
     </>
   );
 };

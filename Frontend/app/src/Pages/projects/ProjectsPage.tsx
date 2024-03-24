@@ -15,6 +15,8 @@ import { useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
 import ModuleTests from './ModuleTests';
+import { TRequestMethod } from '@api-package/types';
+import APIRequest from '@api-package/index';
 
 interface IModule {
     projectModule: {
@@ -208,12 +210,46 @@ const ProjectsPage = (): JSX.Element => {
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
+        // const accessToken = useSelector(state => state.auth.accessToken);
+        type TFileForReq = {
+            buffToSave: string | ArrayBuffer | null,
+            name: string,
+            type: string,
+        };
+        // const { testIsPassed } = useSelector(state => state.project.module.test);
         const [isDropDownOpen, openDropDown] = useState(false);
         const [isOpenFileUploadPopup, openFileUploadPopup] = useState(false);
-        const [testIsPassed, setTestIsPassed] = useState(false);
+        const [uploadedFile, setUploadedFile] = useState({} as TFileForReq);
         const openTests = () => {
             openModuleTests(true);
             openProjectDetails({ isOpen: false});
+        };
+        const processUploadedImage = (files: FileList | null) => { // @todo: fix the bug when form isn't submotable on the first click (async usaState issue)
+            if (!files) throw new Error('No image was found in the request form');
+            let reader = new FileReader();
+            reader.readAsDataURL(files[0])
+            reader.onload = () => setUploadedFile({
+                buffToSave: reader.result,
+                name: files[0].name,
+                type: files[0].type.replace('text/', '')
+            });
+        };
+        const request = {
+            uri: '/api/upload-test-file',
+            method: TRequestMethod.POST,
+            headers: {
+                'X-Auth-Token': ''
+            },
+            body: JSON.stringify({
+                file: uploadedFile
+            })
+        };
+        const uploadTestFile = async () => {
+            await new APIRequest(request).doRequest();
+        };
+        const handleUploadBtn = () => {
+            openFileUploadPopup(true);
+            document.getElementById('upload-file')?.click();
         }
         return <>
             <WidgetWith2Items $rounded height='80px'>
@@ -228,7 +264,7 @@ const ProjectsPage = (): JSX.Element => {
                 <SimpleWidget width='100%' height='auto' $bordered className='module-test'>
                     <WidgetWith2Items $fullWidth $smallMargins $transparent>
                         <Left><Title>Материал</Title></Left>
-                        { testIsPassed
+                        { false
                             ? <StandartButton $width='200px' className="take-test-button">Посмотреть итоги теста</StandartButton>
                             : <StandartButton $width='200px' className="take-test-button" onClick={openTests}>Пройти тест</StandartButton>
                         }
@@ -247,26 +283,34 @@ const ProjectsPage = (): JSX.Element => {
                         </SimpleWidget>
                         <Right>
                             <ButtonRow>
-                                <StandartButton className="download-button" onClick={() => openFileUploadPopup(true)}>Загрузить</StandartButton>
+                                <StandartButton id="upload-button" onClick={handleUploadBtn}>
+                                    Загрузить
+                                    <input
+                                        type='file'
+                                        id='upload-file'
+                                        style={{ display: 'none' }}
+                                        onChange={event => processUploadedImage(event.target.files)}
+                                    />
+                                </StandartButton>
                                 <StandartButton className="download-button">Удалить</StandartButton>
                             </ButtonRow>
                         </Right>
                     </WidgetWith2Items>
                 </SimpleWidget>
             </BoundedContainer> }
-
-            { isOpenFileUploadPopup && <StandartPopupWithContent
+            <StandartPopupWithContent
                 isOpen={isOpenFileUploadPopup}
                 updateIsOpen={openFileUploadPopup}
                 text='Загрузить файл с заданием'
                 firstBtn='Сохранить'
                 image={<FileIcon src={File}/>}
-            /> }
-
+                firstBtnOnClick={uploadTestFile}
+            />
         </>
     };
     
     return <>
+        {/* @todo: Use with steps from redux store to keep state of the components and page progress consistent */}
         <ProjectsControls/>
         { !isModuleTestsOpen && <GeneralProjectsList/> }
         { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }

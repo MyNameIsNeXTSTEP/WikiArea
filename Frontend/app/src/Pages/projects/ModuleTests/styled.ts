@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { SimpleWidget } from "~/src/UI-shared/Organisms/Widgets/SimpleWidget";
 import { Wrapper } from "~/src/UI-shared/Organisms/Widgets/styled";
+import { purpleMainColor } from "~/src/UI-shared/Tokens";
 
 export const Container = styled.div`
     display: flex;
@@ -29,5 +30,18 @@ export const TestText = styled.p`
 `;
 
 export const RadioSelector = styled.input`
-    width: 15px;
+    align-self: center;
+    appearance: none;
+    accent-color: ${purpleMainColor};
+    outline-color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-clip: content-box;
+    border: 2px solid white;
+    background-color: white;
+    &:checked {
+        background-color: ${purpleMainColor};
+        padding: 4px;
+    }
 `;

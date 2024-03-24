@@ -13,10 +13,12 @@ interface IProps {
     secondBtnOnClick?: () => void,
     updateIsOpen?: Dispatch<SetStateAction<boolean>>,
     image?: ReactNode | null | undefined,
+    width?: string,
+    height?: string,
 }
 
-const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image }: IProps): JSX.Element => {
-    return <DefaultPopup width="450px" height="200px">
+const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image, width, height }: IProps): JSX.Element | null => {
+    return isOpen ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
         <H1 $white>{text}</H1>
         {image}
         <ButtonRow style={{
@@ -26,11 +28,11 @@ const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, second
             paddingLeft: 20,
             gap: 20
         }}>
-            <StandartButton $white onClick={firstBtnOnClick}>{firstBtn}</StandartButton>
-            {secondBtn && <StandartButton $white onClick={secondBtnOnClick}>{secondBtn}</StandartButton>}
+            { firstBtn && <StandartButton $white onClick={firstBtnOnClick}>{firstBtn}</StandartButton> }
+            { secondBtn && <StandartButton $white onClick={secondBtnOnClick}>{secondBtn}</StandartButton> }
             <StandartButton $white onClick={() => updateIsOpen(!isOpen)}>Отмена</StandartButton>
         </ButtonRow>
-    </DefaultPopup>
+    </DefaultPopup> : null
 };
 
 export default StandartPopupWithContent;
