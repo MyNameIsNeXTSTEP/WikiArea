@@ -2,6 +2,12 @@
   font-style: italic;
 }
 
+p {
+  color: white;
+  font-weight: 500;
+  font-size: large;
+}
+
 #root {
   margin: 0 auto;
   text-align: center;

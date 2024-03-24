@@ -22,6 +22,7 @@ interface IMenuItem {
 const Menu = (): JSX.Element => {
   const [isOpen, openMenu] = useState(false);
   // const isMainMenu = useSelector(state => state.menu.isMainMenu);
+  // const customMenuBtns = useSelector(state => state.menu.customMenuBtns);
   const isMainMenu = false;
   const back = () => alert('back clicked');
   const menuItems: IMenuItem[] = [

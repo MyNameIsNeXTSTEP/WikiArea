@@ -267,6 +267,7 @@ const ProjectsPage = (): JSX.Element => {
     };
     
     return <>
+        {/* @todo: Use with steps from redux store to keep state of the components and page progress consistent */}
         <ProjectsControls/>
         { !isModuleTestsOpen && <GeneralProjectsList/> }
         { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }
