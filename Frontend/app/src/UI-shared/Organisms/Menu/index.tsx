@@ -5,6 +5,7 @@ import ProfileLogo from "~/src/assets/svg/Profile.svg";
 import Back from "~/src/assets/svg/Back.svg";
 import { BackMenuBtn, ProfileImage } from "../../Atoms/icons";
 import { useSelector } from "react-redux";
+import { StandartButton } from "../../Atoms/Buttons";
 
 interface IMenuItem {
   title: string;
@@ -20,10 +21,8 @@ interface IMenuItem {
 // };
 
 const Menu = (): JSX.Element => {
+  const { buttons, isBackBtnDisabled, isMainMenu } = useSelector(state => state.menu);
   const [isOpen, openMenu] = useState(false);
-  // const isMainMenu = useSelector(state => state.menu.isMainMenu);
-  // const customMenuBtns = useSelector(state => state.menu.customMenuBtns);
-  const isMainMenu = false;
   const back = () => alert('back clicked');
   const menuItems: IMenuItem[] = [
     { title: "Профиль", route: "/user" },
@@ -36,10 +35,15 @@ const Menu = (): JSX.Element => {
     <ST.Nav>
       <Left>Wikiarea</Left>
       <Right>
-        { isMainMenu
-          ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
-          : <BackMenuBtn src={Back} onClick={back} />
+        {isMainMenu
+            ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
+            : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={back} />
         }
+        {buttons.map((button) => (
+          <StandartButton id="extra-menu-buttons" {...button.props} key={button.id} onClick={button.onClick}>
+            {button.label}
+          </StandartButton>
+        ))}  
       </Right>
       {isOpen && (
         <ST.ProfileMenu>

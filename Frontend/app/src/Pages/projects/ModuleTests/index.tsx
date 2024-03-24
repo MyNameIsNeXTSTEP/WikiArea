@@ -1,13 +1,18 @@
 import { useEffect, useCallback, useState } from 'react';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
+import { useDispatch } from 'react-redux';
+import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 import * as ST from './styled';
 import { ButtonRow } from '~/src/UI-shared/Atoms/Containers';
 import { H1 } from '~/src/UI-shared/Tokens';
 import ProgressBar from '~/src/UI-shared/Atoms/ProgressBar';
+import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 
 export const ModuleTests = (): JSX.Element => {
+    const dispatch = useDispatch();
     const [testsRes, setTestsRes] = useState({} as Record<number, number>);
     const [isTestFinished, setIsTestFinished] = useState(false);
+    const [isOpenFinishPopup, openFinishPopup] = useState(false);
     const [progress, updateProgress] = useState(0);
     const tests = [
         { id: 1, text: 'text 1', answers: [1, 2, 3, 4] },
@@ -18,22 +23,38 @@ export const ModuleTests = (): JSX.Element => {
     ];
     const calcProgressBar = useCallback(() => {
         const progressFullWidth = document.getElementById('progress-bar-wrapper')?.offsetWidth;
-        console.log(progressFullWidth, 'width');
         const answered = Object.keys(testsRes).length;
         if (progressFullWidth) {
             const portion = progressFullWidth / tests.length;
             updateProgress(answered * portion);
         };
-        console.log(progress, 'progress');
     }, [testsRes]);
 
      useEffect(() => {
         calcProgressBar();
      }, [testsRes])
 
-     /**
-      * On testsRes len === tests len && finish btn clicked => test sum of points
-     */
+     const handleFinish = () => {
+         if (Object.keys(testsRes).length === tests.length) {
+            setIsTestFinished(true);
+        };
+     };
+     
+     useEffect(() => {
+        dispatch(updateButtons(
+            [{
+                onClick: () => openFinishPopup(true),
+                label: 'Закончить',
+                props: {
+                    $whiteBordered: true,
+                    width: '150px',
+                    style: { marginTop: '15px', marginBottom: '15px'}
+                }
+            }]
+        ));
+        dispatch(changeBackBtnVisability(true));
+        dispatch(updateMainMenuFlag(false));
+    }, []);
     
     const selectAnswer = useCallback((id: number, value: number) => {
         setTestsRes({ ...testsRes, [id]: value });
@@ -49,7 +70,7 @@ export const ModuleTests = (): JSX.Element => {
     };
 
     return <>
-        <ProgressBar width={progress}/>
+        { !isTestFinished && <ProgressBar width={progress}/> }
         <TestFinishResult/>
         <ST.Container className='tests-container'>
             {tests.map(test => <ST.TestsWidgets $transparent className='tests-row'>
@@ -62,6 +83,14 @@ export const ModuleTests = (): JSX.Element => {
                 </ST.TestSimpleWidget>
             </ST.TestsWidgets>)}
         </ST.Container>
+        <StandartPopupWithContent
+            isOpen={isOpenFinishPopup}
+            updateIsOpen={openFinishPopup}
+            text='Вы действительно хотите закончить выполлнение теста ?'
+            firstBtn='Закончить'
+            firstBtnOnClick={handleFinish}
+            height='260px'
+        />
     </>
 
 };

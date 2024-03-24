@@ -1,3 +1,4 @@
+import fs from 'fs';
 import mysql from 'mysql2';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -129,16 +130,28 @@ app.post('/api/auth', async (req, res) => {
     return
 });
 
-app.post('/api/test', async (req, res) => {
-    // const base64Data = body.image.imgBuffToSave.replace(/^data:image\/jpeg;base64,/, "");
-    // const imgBuffer = Buffer.from(base64Data, 'base64');
-    // fs.writeFile(
-    //     `./media/${body.image.imgName}.${body.image.type}`,
-    //     imgBuffer,
-    //     err => {
-    //         err && console.log(err, '__IMAGE_SAVING_ERROR__');
-    //     }
-    // );
+app.post('/api/upload-test-file', async (req, res) => {
+    console.log(req.body.file);
+    const body = req.body;
+    let base64Data = body.file.buffToSave.replace(/^data:text\/plain;base64,/, "");
+    base64Data = body.file.buffToSave.replace(/^data:application\/pdf;base64,/, "");
+    base64Data = body.file.buffToSave.replace(/^data:application\/vnd.openxmlformats-officedocument.wordprocessingml\/document;base64,/, "");
+    const fileBuffer = Buffer.from(base64Data, 'base64');
+    const fileType = (function () {
+        const type = body.file.type;
+        if (type === 'plain') return 'text';
+        if (type.includes('pdf')) return 'pdf';
+        if (type.includes('document')) return 'doc';
+    })();
+    const name = body.file.name.split('.')[0];
+    fs.writeFile(
+        `./uploaded-files/${name}_${body.file.user || 'no-user'}_${new Date()}.${fileType}`,
+        fileBuffer,
+        'utf-8',
+        err => {
+            err && console.log(err, '__File_SAVING_ERROR__');
+        }
+    );
     // new DBQuery(mysql).insert<ITask>('tasks', { ...body, image: body.image.imgName });
     res.statusCode = 200; // @todo: check data first
     res.send({ ok: true });

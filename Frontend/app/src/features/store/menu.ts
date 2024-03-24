@@ -1,26 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-interface IMenu {
-    id: number
+interface IMenuConfing {
+  buttons: Array<{
+    props?: Record<string, string | number | boolean>,
+    label?: string,
+    id?: number,
+    onClick?: () => void,
+  }>,
+  isBackBtnDisabled: boolean,
+  isMainMenu: boolean,
+}
+
+const initialState: IMenuConfing = {
+  buttons: [
+    // { id: 1, label: 'Profile', onClick: () => {} },
+  ],
+  isBackBtnDisabled: true,
+  isMainMenu: true,
 };
 
-const initialState = {
-    menuConfig: [],
-};
-
-const MenuSlice = createSlice({
-    name: 'menu',
-    initialState,
-    reducers: {
-        getProfileData: (state, action) => {
-            // @ts-ignore
-            state.menu.push({ id: Date.now(), text: action.payload });
-        },
-        deleteProfile: (state, action) => {
-            state.menu = state.menu.filter((menu: IMenu) => menu.id !== action.payload);
-        },
+export const menuSlice = createSlice({
+  name: 'menu',
+  initialState,
+  reducers: {
+    changeBackBtnVisability: (state, action) => {
+      state.isBackBtnDisabled = action.payload;
     },
+    updateButtons: (state, action) => {
+      state.buttons = action.payload;
+    },
+    updateMainMenuFlag: (state, action) => {
+      state.isMainMenu = action.payload;
+    },
+  }
 });
 
-export const { getProfileData, deleteProfile } = MenuSlice.actions;
-export default MenuSlice.reducer;
+export const { updateButtons, changeBackBtnVisability, updateMainMenuFlag } = menuSlice.actions;
+export default menuSlice.reducer;
