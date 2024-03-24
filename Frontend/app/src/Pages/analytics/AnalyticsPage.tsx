@@ -7,15 +7,20 @@ import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items
 import { H1, purpleMainColor } from "~/src/UI-shared/Tokens";
 
 export const AnalyticsPage = (): JSX.Element => {
-    const dataPoints = [{ x: 1, y: 20 }, { x: 2, y: 40 }, { x: 3, y: 15 }, { x: 4, y: 60 }];
+    const dataPoints = [{ x: 'Модуль 1', y: 20 }, { x: 'Модуль 2', y: 40 }, { x: ' Модуль 3', y: 15 }, { x: 'Модуль 4', y: 60 }];
+    const xNames = dataPoints.map(point => point.x);
+    const yValues = dataPoints.map(point => point.y);
+    console.log(xNames, yValues);
+    
     useEffect(() => {
         const ctx = document.getElementById('analytics-chart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
+                labels: xNames,
                 datasets: [{
                     label: 'Процент успеха прохождения',
-                    data: dataPoints,
+                    data: yValues,
                     borderColor: purpleMainColor,
                     borderWidth: 2,
                     fill: false, // Specify if the area under the line should be filled
@@ -25,8 +30,11 @@ export const AnalyticsPage = (): JSX.Element => {
             options: {
                 scales: {
                     x: {
-                        type: 'linear',
+                        type: 'category',
                         position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
@@ -41,13 +49,9 @@ export const AnalyticsPage = (): JSX.Element => {
             </Left>
             <Right>
                 <ButtonRow>
-                    <StandartButton
-                        $bordered
-                        $white
-                        $width={'200px'}
-                    >
-                        Название проекта
-                    </StandartButton>
+                    <StandartLabel $bordered>
+                        "Название проекта" + "автор"
+                    </StandartLabel>
                     <StandartButton>Скачать</StandartButton>
                 </ButtonRow>
             </Right>
@@ -60,6 +64,7 @@ export const AnalyticsPage = (): JSX.Element => {
                         <canvas id="analytics-chart" style={{ border: 'none' }}></canvas>
                     </SimpleWidget>
                 <StandartLabel>Информация о проекте:</StandartLabel>
+                {/* @todo: redux select info */}
             </SimpleWidget>
         </BoundedContainer>
     </>;

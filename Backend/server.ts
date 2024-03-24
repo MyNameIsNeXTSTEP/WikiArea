@@ -1,4 +1,5 @@
 import fs from 'fs';
+import crypto from 'crypto';
 import mysql from 'mysql2';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -155,6 +156,29 @@ app.post('/api/upload-test-file', async (req, res) => {
     // new DBQuery(mysql).insert<ITask>('tasks', { ...body, image: body.image.imgName });
     res.statusCode = 200; // @todo: check data first
     res.send({ ok: true });
+});
+
+// POST messages
+app.post('/api/messages', (req, res) => {
+    const { role, text, user_login } = req.body;
+    // const date = new Date().toISOString();
+    const message_id = crypto.randomBytes(6).toString('hex');
+    try {
+        new DBQuery(mysql).insert('messages', { user_login, text, role, message_id });  
+    } catch (error) {
+        res.status(500).send({ message: 'Error saving the message', error });
+    };
+    res.status(200).send({ id: message_id});
+});
+
+// GET messages
+app.get('/api/messages', async (req, res) => {
+    try {
+        const messages = await new DBQuery(mysql).call('SELECT * FROM messages')
+        res.status(200).send(JSON.stringify(messages));
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading messages', error });
+    }
 });
 
 app.get('/api', (req, res) => {
