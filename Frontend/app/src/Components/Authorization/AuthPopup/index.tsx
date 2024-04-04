@@ -7,6 +7,8 @@ import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
 import DefaultPopup from "../../Popup/DefaultPopup";
 import Captcha from "~/src/UI-shared/Organisms/Captha";
 import { getCookie } from '~/src/helpers';
+import { useDispatch } from 'react-redux';
+import { setProfileData } from '~/src/features/store/profile';
 
 interface IProps {
     isOpen: boolean,
@@ -14,25 +16,41 @@ interface IProps {
 };
 
 const AuthPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
-    const email = useRef<HTMLInputElement>(null);
-    const password = useRef<HTMLInputElement>(null);
-    const accessToken = getCookie('access_token') || '';
+    const dispatch = useDispatch();
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const accessToken = getCookie('access_token');
     const request = {
         uri: '/api/auth',
         method: TRequestMethod.POST,
-        headers: {
-            'X-Auth-Token': accessToken
-        },
         body: JSON.stringify({
-            email: email.current?.value,
-            password: password.current?.value
-        })
+            email: emailRef.current?.value,
+            password: passwordRef.current?.value
+        }),
+        headers: {
+            'X-Auth-Token': 'empty',
+        }
     };
+    
+    if (accessToken && accessToken !== String(undefined) && accessToken?.length > 0) {
+        // @ts-ignore
+        request.headers = {
+            'X-Auth-Token': accessToken
+        };
+    };
+    
     const submitAuth = async () => {
+        console.log(emailRef.current?.value);
         const res = await new APIRequest(request).doRequest();
         if (res.isSuccess && res.statusCode === 200) {
-            const { accessToken } = res.payload.body;
+            const { accessToken, email, login, role } = res.payload.body;
             document.cookie = `access_token=${accessToken}; path=/; max-age=${60 * 60 * 5}` // for 2 hours
+            dispatch(setProfileData({
+                accessToken,
+                email,
+                login,
+                role,
+            }))
             return;
         }
         alert('Auth error');
@@ -42,8 +60,8 @@ const AuthPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
         ? <DefaultPopup>
             <ST.Cancel size={20} color={'white'} onClick={close}/>
             <ST.Title>Вход</ST.Title>
-            <StandartInput ref={email} placeholder="Введите email..." />
-            <StandartInput ref={password} placeholder="Введите пароль..."/>
+            <StandartInput ref={emailRef} placeholder="Введите email..." />
+            <StandartInput ref={passwordRef} placeholder="Введите пароль..."/>
             <Captcha onSuccess={submitAuth}/>
         </DefaultPopup>
         : null;

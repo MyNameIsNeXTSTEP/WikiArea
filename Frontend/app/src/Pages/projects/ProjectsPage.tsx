@@ -210,7 +210,7 @@ const ProjectsPage = (): JSX.Element => {
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
-        // const accessToken = useSelector(state => state.auth.accessToken);
+        const accessToken = useSelector(state => state.profile.accessToken);
         type TFileForReq = {
             buffToSave: string | ArrayBuffer | null,
             name: string,

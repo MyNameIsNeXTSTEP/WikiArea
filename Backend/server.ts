@@ -60,7 +60,7 @@ app.post('/api/user/register', async (req, res) => {
         return;
     }
     new DBQuery(mysql).insert(role, { login, email, password: encryptedPswd, created_at: dateNow});
-    new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, created_at: dateNow});
+    new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, created_at: dateNow, role });
     new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, login, email, expiration_date: expirationDate });
     res.statusCode = 200; // @todo: check data first
     res.send({
@@ -81,7 +81,7 @@ app.post('/api/auth', async (req, res) => {
     const XAuthToken = req.headers['x-auth-token'];
     const { email, password } = req.body;
     // Authorizing by login & password
-    if (!XAuthToken || !(XAuthToken.length > 0)) {
+    if (!XAuthToken || XAuthToken === 'empty') {
         const encryptStr = `${email};${password};${"register_secret"}`;
         const accessToken = createHash('sha256')
             .update(encryptStr)
@@ -91,7 +91,7 @@ app.post('/api/auth', async (req, res) => {
         const encryptedPswd = createHash('sha256').update(password).digest('hex');
         const userExists = await new DBQuery(mysql).singleExists({
             clmn: 'password',
-            table: 'students',
+            table: 'users',
             condition: `password='${encryptedPswd}' and email='${email}'`
         });
         const tokenExists = await new DBQuery(mysql).singleExists({
@@ -100,12 +100,12 @@ app.post('/api/auth', async (req, res) => {
             condition: `email='${email}'`
         });
         if (Object.values(userExists[0])[0] === 1) {
-            // write a token if no is present yet
             Object.values(tokenExists[0])[0] === 0 && new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, email, expiration_date: expirationDate });
+            const { role, login } = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email=${email} AND password=${encryptedPswd}`);
             res.statusCode = 200; // @todo: check data first
             res.send({
                 ok: true,
-                body: { accessToken }
+                body: { accessToken, role, login, email }
             });
         } else {
            res.statusCode = 500; // @todo: check data first
@@ -113,13 +113,14 @@ app.post('/api/auth', async (req, res) => {
         }
         return
     };
-    if (XAuthToken) {
+    if (XAuthToken.length > 0 && XAuthToken !== 'empty') {
         const tokenExists = await new DBQuery(mysql).singleExists({
             clmn: 'access_token',
             table: 'access_tokens',
             condition: `access_token='${XAuthToken}'`
         });
         if (Object.values(tokenExists[0])[0] === 1) {
+            // const { role, login } = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email=${email} AND password=${encryptedPswd}`);
             res.statusCode = 200; // @todo: check data first
             res.send({ ok: true, body: true });
         } else {
