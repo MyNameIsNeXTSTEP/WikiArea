@@ -4,7 +4,7 @@ import DefaultPopup from "./DefaultPopup";
 import { H1 } from "~/src/UI-shared/Tokens";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
-interface IProps {
+export interface IPopupProps {
     isOpen?: boolean,
     text: string,
     firstBtn: string,
@@ -15,9 +15,10 @@ interface IProps {
     image?: ReactNode | null | undefined,
     width?: string,
     height?: string,
+    children?: ReactNode | ReactNode[] | JSX.Element | JSX.Element[],
 }
 
-const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image, width, height }: IProps): JSX.Element | null => {
+const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image, width, height, ...rest }: IPopupProps): JSX.Element | null => {
     return isOpen ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
         <H1 $white>{text}</H1>
         {image}
@@ -30,6 +31,7 @@ const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, second
         }}>
             { firstBtn && <StandartButton $white onClick={firstBtnOnClick}>{firstBtn}</StandartButton> }
             { secondBtn && <StandartButton $white onClick={secondBtnOnClick}>{secondBtn}</StandartButton> }
+            {rest.children}
             <StandartButton $white onClick={() => updateIsOpen(!isOpen)}>Отмена</StandartButton>
         </ButtonRow>
     </DefaultPopup> : null

@@ -17,6 +17,7 @@ import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
 import ModuleTests from './ModuleTests';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
+import ProjectControls from './ProjectControls';
 
 interface IModule {
     projectModule: {
@@ -41,10 +42,19 @@ interface IProjectDetails {
 
 const ProjectsPage = (): JSX.Element => {
     // const projectsData = useSelector(state => state.projects.all);
+    const role = useSelector(state => state.profile.auth.role);
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     const [projectDetails, openProjectDetails] = useState({} as IProjectDetails);
     const [isModuleTestsOpen, openModuleTests] = useState(false);
+    const [isOpenPopupFromControls, openPopupFromControls] = useState(false);
+    const [popupFormControlConfig, updatePopupFormControlConfig] = useState({
+        isOpen: isOpenPopupFromControls,
+        text: '',
+        firstBtn: ''
+    });
+    console.log(popupFormControlConfig);
+    
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
     // const subscribedProjects = useSelector(state => state.projects.subscribed);
@@ -105,6 +115,10 @@ const ProjectsPage = (): JSX.Element => {
 
     // @todo: [BUG] when do searching the inout field rerenders and projects filtering went wrong (?)
     const ProjectsControls = (): JSX.Element => {
+        const controlRoleActions = {
+            student: openSubscribedProjects,
+        };
+
         if (isShowSubscribedProjects && subscribedProjects && subscribedProjects.length > 0) {
             return <WidgetWith2Items $transparent>
                 <Left width='auto'>
@@ -119,7 +133,13 @@ const ProjectsPage = (): JSX.Element => {
                 <StandartInput onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
             </Left>
             <Right>
-                <StandartButton $width='180px' onClick={openSubscribedProjects}>Мои проекты</StandartButton>
+                <ProjectControls
+                    role={role}
+                    controlRoleActions={controlRoleActions}
+                    updatePopupConfig={updatePopupFormControlConfig}
+                    popupConfig={popupFormControlConfig}
+                    openPopup={openPopupFromControls}
+                />
             </Right>
         </WidgetWith2Items>
     };
@@ -316,6 +336,15 @@ const ProjectsPage = (): JSX.Element => {
         { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }
         { projectDetails.isOpen && projectModules.map(el => <ProjectModule projectModule={el}/>) }
         { isModuleTestsOpen && <ModuleTests/> }
+         {/* <StandartPopupWithContent
+            // @ts-ignore
+            isOpen={isOpenPopupFromControls}
+            updateIsOpen={openPopupFromControls}
+            text={popupFormControlConfig.text}
+            firstBtn={popupFormControlConfig.firstBtn}
+            firstBtnOnClick={popupFormControlConfig.firstBtnOnClick}   
+            children={popupFormControlConfig.children}
+        /> */}
     </>
 };
 

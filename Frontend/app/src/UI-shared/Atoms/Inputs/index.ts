@@ -42,11 +42,12 @@ export const StandartDropdown = styled.div`
     padding-left: 5px;
 `;
 
-export const StandartDropdownOption = styled.div`
+export const StandartDropdownOption = styled.div<{ height?: string, width?: string }>`
     display: block;
+    padding: 5px;
     margin-bottom: 5px;
-    width: 150px;
-    height: 25px;
+    width: ${p => p.width ?? '150px'};
+    height: ${p => p.height ?? '25px'};
     border-radius: 12.5px;
     text-decoration: none;
     background: white;

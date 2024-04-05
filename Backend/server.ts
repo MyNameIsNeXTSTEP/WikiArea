@@ -188,6 +188,33 @@ app.get('/api/messages', async (req, res) => {
     }
 });
 
+app.post('/api/projects/add-new-project', async (req, res) => {
+    const {
+        projectTitle,
+        projectTopic,
+        projectDeadlines,
+        projectComplexity,
+        projectDescription,
+        author,
+    } = req.body;
+
+    try {
+        const dateNow = new Date();
+        new DBQuery(mysql).insert('projects', {
+            author,
+            name: projectTitle,
+            description: projectDescription,
+            topic: projectTopic,
+            deadline: projectDeadlines,
+            complexity: projectComplexity,
+            created_at: dateNow,
+        });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error writing new projects to the DB', error });
+    }
+});
+
 app.get('/api', (req, res) => {
     res.json({ message: 'Backend API is up and accessable' });
 });

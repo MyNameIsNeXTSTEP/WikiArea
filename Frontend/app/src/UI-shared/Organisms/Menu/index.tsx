@@ -21,19 +21,25 @@ interface IProps {
 const Menu = ({ ...props }: IProps): JSX.Element => {
   const {
     menu: { buttons, isBackBtnDisabled, isMainMenu },
-    auth: { role },
+    role,
   } = useSelector(state => ({
     menu: state.menu,
-    auth: state.profile.auth,
+    role: state.profile.auth.role,
   }));
   const [isOpen, openMenu] = useState(false);
+
   const back = () => alert('back clicked');
+  const exit = () => {
+    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.clear();
+  };
+
   const menuItems: IMenuItem[] = [
     { title: "Профиль", route: `/user/${role}` },
     { title: "Проекты", route: "/projects" },
     { title: "Аналитика", route: "/analytics" },
     { title: "Чат", route: "/chat" },
-    { title: "Выход", route: "/" },
+    { title: "Выход", route: "/", action: exit },
   ];
   return (
     <ST.Nav {...props}>

@@ -9,7 +9,6 @@ function App() {
     return <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
             {/* @todo: double menu bug */}
-            {window.location.pathname !== '/' && <Menu className='main-menu'/>}
             <AppRoutes/>
         </PersistGate>
     </Provider> 

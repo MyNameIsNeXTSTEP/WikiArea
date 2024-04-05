@@ -34,7 +34,7 @@ const Profile = (): JSX.Element => {
    * because of the react-router-dom redirect (it's not updating the whole <App/>, but the main <Menu/> is there)
    */
   const MenuAfterRedirect = (): JSX.Element | null => {
-    if (!document.getElementsByClassName('main-menu')) {
+    if (document.getElementsByClassName('main-menu').length === 0) {
       return <Menu className="main-menu"/>
     }
     return null;
