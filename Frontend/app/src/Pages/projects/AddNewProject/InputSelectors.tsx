@@ -41,6 +41,6 @@ export const ComplexitySelector = ({ updateComplexity, isOpen }: IPropsComplexit
         updateComplexity(theme);
     };
     return <StandartDropdown id="new-project-complexity-selector">
-        { projectThemes.map(el => <StandartDropdownOption height={'auto'} width={'100%'} onClick={() => selectComplexity(el)}>{el}</StandartDropdownOption>) }
+        { Object.values(projectComplexities).map(el => <StandartDropdownOption height={'auto'} width={'100%'} onClick={() => selectComplexity(el)}>{el}</StandartDropdownOption>) }
     </StandartDropdown>
 };

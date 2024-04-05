@@ -15,7 +15,9 @@ interface IProps {
 
 const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
     const [isShowThemesSelector, showThemeSelector] = useState(false);
+    const [isShowComplexitySelector, setIsShowComplexitySelector] = useState(false);
     const [selectedTheme, setSelectedTheme] = useState('');
+    const [selectedComplexity, setSelectedComplexity] = useState('');
     const login = useSelector(state => state.profile.auth.login) // teacher
     const projectTitle = useRef<HTMLInputElement>(null);
     const projectTopic = useRef<HTMLInputElement>(null);
@@ -59,6 +61,10 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
         setSelectedTheme(selectedTheme);
     };
 
+    const selectComplexity = (selectedTheme: string) => {
+        setSelectedComplexity(selectedTheme);
+    };
+
     return <>
         <DefaultPopup width={'450px'} height={'auto'}>
             <form id='post-form' onSubmit={formSumbit}>
@@ -75,7 +81,8 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
                         marginTop: isShowThemesSelector ? '100px' : ''
                     }}
                 />
-                <StandartInput name={'projectComplexity'} ref={projectComplexity} placeholder="Уровень сложности проекта" />
+                <StandartInput name={'projectComplexity'} ref={projectComplexity} value={selectedComplexity} placeholder="Уровень сложности проекта" onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}/>
+                <ComplexitySelector updateComplexity={selectComplexity} isOpen={isShowComplexitySelector}/>
                 <StandartInput name={'projectDescription'} ref={projectDescription} placeholder="Описани проекта" />
                 <ButtonRow>
                     <StandartButton
