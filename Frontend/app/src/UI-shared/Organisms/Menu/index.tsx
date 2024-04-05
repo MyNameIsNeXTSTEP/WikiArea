@@ -6,30 +6,30 @@ import Back from "~/src/assets/svg/Back.svg";
 import { BackMenuBtn, ProfileImage } from "../../Atoms/icons";
 import { useSelector } from "react-redux";
 import { StandartButton } from "../../Atoms/Buttons";
+import { Link } from "react-router-dom";
 
 interface IMenuItem {
   title: string;
-  route?: string;
+  route: string;
   action?: () => void;
 }
 
-// const useRouter = (props: any) => {
-//     if (useLocation().pathname === props.to.toString()) {
-//         return <Link {...props} to="/refresh" />
-//     }
-//     return <Link {...props} />;
-// };
-
 const Menu = (): JSX.Element => {
-  const { buttons, isBackBtnDisabled, isMainMenu } = useSelector(state => state.menu);
+  const {
+    menu: { buttons, isBackBtnDisabled, isMainMenu },
+    auth: { role },
+  } = useSelector(state => ({
+    menu: state.menu,
+    auth: state.profile.auth,
+  }));
   const [isOpen, openMenu] = useState(false);
   const back = () => alert('back clicked');
   const menuItems: IMenuItem[] = [
-    { title: "Профиль", route: "/user" },
+    { title: "Профиль", route: `/user/${role}` },
     { title: "Проекты", route: "/projects" },
     { title: "Аналитика", route: "/analytics" },
     { title: "Чат", route: "/chat" },
-    { title: "Выход", action: () => alert("exit") },
+    { title: "Выход", route: "/" },
   ];
   return (
     <ST.Nav>
@@ -51,11 +51,11 @@ const Menu = (): JSX.Element => {
             <ST.IconBlock>
               <ST.Cancel size={40} color={"white"} onClick={close} />
             </ST.IconBlock>
-            {menuItems.map((item) => (
+            {menuItems.map((item: IMenuItem) => (
               <ST.MenuItem>
-                <a href={item.route} onClick={item.action ?? undefined}>
+                <Link to={item.route} onClick={item.action ?? undefined}>
                   {item.title}
-                </a>
+                </Link>
               </ST.MenuItem>
             ))}
           </ST.MenuItemsList>

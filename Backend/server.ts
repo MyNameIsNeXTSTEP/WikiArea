@@ -60,7 +60,7 @@ app.post('/api/user/register', async (req, res) => {
         return;
     }
     new DBQuery(mysql).insert(role, { login, email, password: encryptedPswd, created_at: dateNow});
-    new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, created_at: dateNow, role });
+    new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, role });
     new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, login, email, expiration_date: expirationDate });
     res.statusCode = 200; // @todo: check data first
     res.send({
@@ -79,6 +79,7 @@ app.post('/api/user/register', async (req, res) => {
 */
 app.post('/api/auth', async (req, res) => {
     const XAuthToken = req.headers['x-auth-token'];
+    console.log('\n', XAuthToken, 'TOKEN', '\n');
     const { email, password } = req.body;
     // Authorizing by login & password
     if (!XAuthToken || XAuthToken === 'empty') {
@@ -100,8 +101,11 @@ app.post('/api/auth', async (req, res) => {
             condition: `email='${email}'`
         });
         if (Object.values(userExists[0])[0] === 1) {
-            Object.values(tokenExists[0])[0] === 0 && new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, email, expiration_date: expirationDate });
-            const { role, login } = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email=${email} AND password=${encryptedPswd}`);
+            Object.values(tokenExists[0])[0] === 0 &&
+                new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, email, expiration_date: expirationDate });
+            const dbUser = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email='${email}' AND password='${encryptedPswd}'`);
+            const { role, login } = dbUser[0];
+            
             res.statusCode = 200; // @todo: check data first
             res.send({
                 ok: true,
@@ -122,7 +126,9 @@ app.post('/api/auth', async (req, res) => {
         if (Object.values(tokenExists[0])[0] === 1) {
             // const { role, login } = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email=${email} AND password=${encryptedPswd}`);
             res.statusCode = 200; // @todo: check data first
-            res.send({ ok: true, body: true });
+            res.send({
+                ok: true,
+                body: true });
         } else {
             res.statusCode = 500; // @todo: check data first
             res.send({ ok: false, body: 'No access token was found in the database' });

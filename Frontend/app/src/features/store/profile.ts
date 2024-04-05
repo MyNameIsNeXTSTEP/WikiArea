@@ -1,12 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface IProfile {
-    auth: {
-        accessToken: string,
-        role: string,
-        email: string,
-        login: string,
-    }
+export interface IProfileAuthData {
+    accessToken: string,
+    role: string,
+    email: string,
+    login: string,
 };
 
 const initialState = {
@@ -19,7 +17,7 @@ const profileSlice = createSlice({
     reducers: {
         setProfileData: (state, action) => {
             // @ts-ignore
-            state.profile.auth = action.payload;
+            state.auth = action.payload as IProfileAuthData;
         },
     },
 });
