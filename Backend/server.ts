@@ -216,6 +216,15 @@ app.post('/api/projects/add-new-project', async (req, res) => {
     }
 });
 
+app.get('/api/projects/get-all', async (req, res) => {
+    try {
+        const projects = await new DBQuery(mysql).call('SELECT * FROM projects');
+        res.status(200).send(projects);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
 app.get('/api', (req, res) => {
     res.json({ message: 'Backend API is up and accessable' });
 });
