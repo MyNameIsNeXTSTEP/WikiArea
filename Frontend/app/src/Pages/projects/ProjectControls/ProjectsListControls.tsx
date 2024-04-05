@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import AddNewProjectPopup from "./AddNewProject/AddNewProjectPopup";
+import AddNewProjectPopup from "../AddNewProject/AddNewProjectPopup";
+import { useDispatch } from "react-redux";
+import { setShowModerated } from "~/src/features/store/projects";
 
 interface IProps {
     role: string,
@@ -12,7 +14,8 @@ interface IProps {
     popupConfig: any
 }
 
-const ProjectControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
+const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
+    const dispatch = useDispatch();
     const addProject = () => {
         // openPopup(true);
         updatePopupConfig({
@@ -25,7 +28,7 @@ const ProjectControls = ({ role, controlRoleActions, updatePopupConfig, popupCon
     };
 
     const openProjectOnModeration = () => {
-
+        dispatch(setShowModerated(true))
     };
 
     const moderateProjectByAdmin = () => {
@@ -48,4 +51,4 @@ const ProjectControls = ({ role, controlRoleActions, updatePopupConfig, popupCon
     }
 };
 
-export default ProjectControls;
+export default ProjectsListControls;

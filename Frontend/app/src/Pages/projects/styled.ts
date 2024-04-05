@@ -9,6 +9,7 @@ export const ImageBlock = styled.div<{ $abs?: boolean }>`
 `;
 
 export const ProjectsData = styled.div`
+    height: 100%;
     display: flex;
     flex-direction: row;
     width: 80%;

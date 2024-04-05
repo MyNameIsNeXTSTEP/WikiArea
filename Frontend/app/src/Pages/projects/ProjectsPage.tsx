@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as ST from './styled';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
 import Arrow from '~/src/assets/svg/Arrow.svg';
@@ -10,16 +10,17 @@ import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { H1, Title } from "~/src/UI-shared/Tokens";
-import { debounce } from '~/src/a-lib';
-import { useSelector } from 'react-redux';
+import { debounce, EUserRoles } from '~/src/a-lib';
+import { useDispatch, useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
 import ModuleTests from './ModuleTests';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
-import ProjectControls from './ProjectControls';
+import ProjectsListControls from './ProjectControls/ProjectsListControls';
 import { IProject } from './types';
 import StandardProject from './StandardProject';
+import { setProjectsAll, setShowModerated } from '~/src/features/store/projects';
 
 interface IModule {
     projectModule: {
@@ -34,6 +35,7 @@ interface IProjectDetails {
 
 const ProjectsPage = (): JSX.Element => {
     // const projectsData = useSelector(state => state.projects.all);
+    const dispatch = useDispatch();
     const role = useSelector(state => state.profile.auth.role);
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
@@ -45,7 +47,6 @@ const ProjectsPage = (): JSX.Element => {
         text: '',
         firstBtn: ''
     });
-    console.log(popupFormControlConfig);
     
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
@@ -84,7 +85,19 @@ const ProjectsPage = (): JSX.Element => {
         { name: 'Второй модуль' },
         { name: 'Третий модуль' },
     ];
-    //
+    
+    useEffect(() => {
+        const request = {
+            uri: '/api/projects/get-all',
+            method: TRequestMethod.GET,
+        };
+        (async () => {
+            await new APIRequest(request)
+                .doRequest()
+                .then(res => dispatch(setProjectsAll(res.payload)));
+        })();
+    }, [])
+
     const doSearch = (e) => {
         const value = e.target?.value;
         const searchedData = projectsToShow.filter((el: Record<string, string>) => {
@@ -125,7 +138,7 @@ const ProjectsPage = (): JSX.Element => {
                 <StandartInput onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
             </Left>
             <Right>
-                <ProjectControls
+                <ProjectsListControls
                     role={role}
                     controlRoleActions={controlRoleActions}
                     updatePopupConfig={updatePopupFormControlConfig}
@@ -179,12 +192,45 @@ const ProjectsPage = (): JSX.Element => {
                 </Left>
             </WidgetWith2Items>
     };
+     
+    const ProjectOnModeration = (project?: IProject): JSX.Element | null => {
+        if (!project) {
+            return null;
+        }
+        return <WidgetWith2Items $rounded height='100px'>
+                <Left style={{ flexDirection: 'column', display: 'flex' }}className="left">
+                    <ST.ImageBlock $abs style={{ marginTop: '10px' }}className="profile-block">
+                        <ProjectImage src={ProjectLogo} />
+                    </ST.ImageBlock>
+                    <ST.ProjectsData>
+                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                    </ST.ProjectsData>
+                    <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
+                </Left>
+                <Right className="right" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <StandartButton
+                        $whiteBordered
+                        $width={'180px'}
+                        className="subscribtion"
+                        onClick={() => dispatch(setShowModerated(true))}
+                    >
+                        Просмотр
+                    </StandartButton>
+                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion" onClick={openUnsubscribePopup}>Отписаться</StandartButton>
+                </Right>
+            </WidgetWith2Items>
+    };
 
     const GeneralProjectsList = (): JSX.Element | null => {
+        let projects = useSelector(state => state.projects.all);
+        const showModerated = useSelector(state => state.projects.showModerated);
+        if (role === EUserRoles.teacher && showModerated) {
+            projects = projects.filter(el => el.is_moderated === 1);
+        };
         return !projectDetails.isOpen &&
             <>
-                {projectsToShow.length
-                    ? projectsToShow.map((el: IProject) => 
+                {projects.length
+                    ? projects.map((el: IProject) => 
                         isShowSubscribedProjects
                             ? <SubscribedProjects project={el}/>
                             : <StandardProject project={el}/>
@@ -309,15 +355,6 @@ const ProjectsPage = (): JSX.Element => {
         { projectDetails.isOpen && <ProjectDetails project={projectDetails.project}/> }
         { projectDetails.isOpen && projectModules.map(el => <ProjectModule projectModule={el}/>) }
         { isModuleTestsOpen && <ModuleTests/> }
-         {/* <StandartPopupWithContent
-            // @ts-ignore
-            isOpen={isOpenPopupFromControls}
-            updateIsOpen={openPopupFromControls}
-            text={popupFormControlConfig.text}
-            firstBtn={popupFormControlConfig.firstBtn}
-            firstBtnOnClick={popupFormControlConfig.firstBtnOnClick}   
-            children={popupFormControlConfig.children}
-        /> */}
     </>
 };
 

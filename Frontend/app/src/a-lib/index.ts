@@ -24,4 +24,10 @@ export default function useGlobalDOMEvents(props: Props) {
       }
     };
   }, []);
-}
+};
+
+export enum EUserRoles {
+  teacher = 'teachers',
+  student = 'students',
+  admin = 'admins'
+};
