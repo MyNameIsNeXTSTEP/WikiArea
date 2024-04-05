@@ -1,4 +1,3 @@
-// import { useEffect } from 'react';
 import './styles/App.css'
 import AppRoutes from './Routes';
 import { Provider } from "react-redux";
@@ -9,7 +8,8 @@ import Menu from '~/src/UI-shared/Organisms/Menu/index.js';
 function App() {
     return <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            {window.location.pathname !== '/' && <Menu/>}
+            {/* @todo: double menu bug */}
+            {window.location.pathname !== '/' && <Menu className='main-menu'/>}
             <AppRoutes/>
         </PersistGate>
     </Provider> 

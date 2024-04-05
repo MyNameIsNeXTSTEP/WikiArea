@@ -14,7 +14,11 @@ interface IMenuItem {
   action?: () => void;
 }
 
-const Menu = (): JSX.Element => {
+interface IProps {
+  className?: string,
+}
+
+const Menu = ({ ...props }: IProps): JSX.Element => {
   const {
     menu: { buttons, isBackBtnDisabled, isMainMenu },
     auth: { role },
@@ -32,7 +36,7 @@ const Menu = (): JSX.Element => {
     { title: "Выход", route: "/" },
   ];
   return (
-    <ST.Nav>
+    <ST.Nav {...props}>
       <Left>Wikiarea</Left>
       <Right>
         {isMainMenu

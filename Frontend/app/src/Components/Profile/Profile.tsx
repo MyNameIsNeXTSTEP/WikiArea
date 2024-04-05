@@ -20,6 +20,7 @@ const Profile = (): JSX.Element => {
   const { login, role } = useSelector(state => state.profile.auth);
   console.log(login, role);
   const [isProifleDeletionPopupOpen, updateOpenStatus] = useState(false);
+  
   if (!accessToken || accessToken.length < 0 || !role) {
     return <>
       <h1>Ошибка</h1>
@@ -27,9 +28,21 @@ const Profile = (): JSX.Element => {
       <h2>Пожалуйста зарегистрируйтесь и войдите в личный кабинет</h2>
     </>
   };
+
+  /**
+   * Need for mounting the <Menu/> once, otherwise get double component mounted,
+   * because of the react-router-dom redirect (it's not updating the whole <App/>, but the main <Menu/> is there)
+   */
+  const MenuAfterRedirect = (): JSX.Element | null => {
+    if (!document.getElementsByClassName('main-menu')) {
+      return <Menu className="main-menu"/>
+    }
+    return null;
+  }
+
   return (
     <>
-      <Menu/>
+      <MenuAfterRedirect/>
       <Title style={{ textAlign: 'start', marginLeft: '150px' }}>Личные данные</Title>
       <WidgetWith2Items $rounded>
         <Left className="left">
