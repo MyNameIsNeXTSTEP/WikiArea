@@ -7,16 +7,16 @@ import { Cancel, Title } from "~/src/Components/Popup/styled";
 import { useRef, useState } from "react";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import { useSelector } from "react-redux";
-import { ThemeSelector, ComplexitySelector } from "./InputSelectors";
+import { TopicSelector, ComplexitySelector } from "./InputSelectors";
 
 interface IProps {
     onClose: () => void,
 }
 
 const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
-    const [isShowThemesSelector, showThemeSelector] = useState(false);
+    const [isShowTopicSelector, showTopicSelector] = useState(false);
     const [isShowComplexitySelector, setIsShowComplexitySelector] = useState(false);
-    const [selectedTheme, setSelectedTheme] = useState('');
+    const [selectedTopic, setSelectedTopic] = useState('');
     const [selectedComplexity, setSelectedComplexity] = useState('');
     const login = useSelector(state => state.profile.auth.login) // teacher
     const projectTitle = useRef<HTMLInputElement>(null);
@@ -34,7 +34,6 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
             //@ts-ignore
             collectedFormFields[property] = value;
         });
-        //@ts-ignore
         collectedFormFields['author'] = login,
         submitForm(collectedFormFields);
     };
@@ -58,11 +57,11 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
     };
 
     const selectTheme = (selectedTheme: string) => {
-        setSelectedTheme(selectedTheme);
+        setSelectedTopic(selectedTheme);
     };
 
-    const selectComplexity = (selectedTheme: string) => {
-        setSelectedComplexity(selectedTheme);
+    const selectComplexity = (selectedTopic: string) => {
+        setSelectedComplexity(selectedTopic);
     };
 
     return <>
@@ -71,14 +70,14 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
                 <Cancel size={20} color={'white'} onClick={onClose}/>
                 <Title>Добавление проекта</Title>
                 <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Название проекта" />
-                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTheme} placeholder="Тема проекта" onClick={() => showThemeSelector(!isShowThemesSelector)}
+                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Тема проекта" onClick={() => showTopicSelector(!isShowTopicSelector)}
                     style={{
-                        marginBottom: isShowThemesSelector ? '100px' : ''
+                        marginBottom: isShowTopicSelector ? '100px' : ''
                     }}/>
-                <ThemeSelector updateTheme={selectTheme} isOpen={isShowThemesSelector}/>
+                <TopicSelector updateTopic={selectTheme} isOpen={isShowTopicSelector}/>
                 <StandartInput name={'projectDeadlines'} ref={projectDeadlines} placeholder="Сроки проекта"
                     style={{
-                        marginTop: isShowThemesSelector ? '100px' : ''
+                        marginTop: isShowTopicSelector ? '100px' : ''
                     }}
                 />
                 <StandartInput name={'projectComplexity'} ref={projectComplexity} value={selectedComplexity} placeholder="Уровень сложности проекта" onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}/>
@@ -92,7 +91,7 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
                     >
                         Добавить
                     </StandartButton>
-                    <StandartButton $whiteBordered>Отмена</StandartButton>
+                    <StandartButton $whiteBordered onClick={onClose}>Отмена</StandartButton>
                 </ButtonRow>
             </form>
         </DefaultPopup>

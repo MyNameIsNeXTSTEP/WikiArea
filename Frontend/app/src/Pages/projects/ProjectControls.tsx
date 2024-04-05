@@ -13,12 +13,8 @@ interface IProps {
 }
 
 const ProjectControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
-    const clickHandler = (role: string) => controlRoleActions[role];
-    const [isOpenAddProjectPopup, openAddProjectPopup] = useState(false);
-
-
     const addProject = () => {
-        openPopup(true);
+        // openPopup(true);
         updatePopupConfig({
             ...popupConfig,
             isOpen: true,
@@ -35,18 +31,15 @@ const ProjectControls = ({ role, controlRoleActions, updatePopupConfig, popupCon
     const moderateProjectByAdmin = () => {
 
     };
-    const controls = () => {
-
-    };
 
     switch (role) {
         case 'students':
-            return <StandartButton $width='180px' onClick={() => clickHandler}>Мои проекты</StandartButton>
+            return <StandartButton $width='180px' onClick={controlRoleActions[role]}>Мои проекты</StandartButton>
         case 'teachers':
             return <>
                 <StandartButton $width='180px' onClick={addProject}>Добавить проект</StandartButton>
                 <StandartButton $width='260px' style={{ marginLeft: '20px'}} onClick={openProjectOnModeration}>Проекты на модерации</StandartButton>
-                {popupConfig.isOpen && <AddNewProjectPopup onClose={() => openPopup(false)}/>}
+                {popupConfig.isOpen && <AddNewProjectPopup onClose={() => updatePopupConfig({ isOpen: false })}/>}
             </>
         case 'admins':
             return <StandartButton $width='180px' onClick={moderateProjectByAdmin}>Модерация проектов</StandartButton>

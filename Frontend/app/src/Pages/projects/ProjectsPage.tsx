@@ -18,21 +18,13 @@ import ModuleTests from './ModuleTests';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
 import ProjectControls from './ProjectControls';
+import { IProject } from './types';
+import StandardProject from './StandardProject';
 
 interface IModule {
     projectModule: {
         name: string
     }
-}
-
-interface IProject {
-    id: number,
-    author: string,
-    title: string,
-    topic: string,
-    complexity: string,
-    lifetime: string,
-    description: string,
 }
 
 interface IProjectDetails {
@@ -116,7 +108,7 @@ const ProjectsPage = (): JSX.Element => {
     // @todo: [BUG] when do searching the inout field rerenders and projects filtering went wrong (?)
     const ProjectsControls = (): JSX.Element => {
         const controlRoleActions = {
-            student: openSubscribedProjects,
+            students: openSubscribedProjects,
         };
 
         if (isShowSubscribedProjects && subscribedProjects && subscribedProjects.length > 0) {
@@ -172,26 +164,6 @@ const ProjectsPage = (): JSX.Element => {
             </WidgetWith2Items>
     };
 
-    const AllProjects = (project?: IProject): JSX.Element | null => {
-        if (!project) {
-            return null;
-        }
-        return <WidgetWith2Items $rounded height='100px'>
-                <Left className="left">
-                    <ST.ImageBlock $abs className="profile-block">
-                        <ProjectImage src={ProjectLogo} />
-                    </ST.ImageBlock>
-                    <ST.ProjectsData>
-                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
-                    </ST.ProjectsData>
-                </Left>
-                <Right className="right">
-                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion">Подписаться</StandartButton>
-                    <StandartLabel style={{ marginLeft: 20 }} $white>Подписано:</StandartLabel>
-                </Right>
-            </WidgetWith2Items>
-    };
-
     const ProjectDetails = (project: IProject): JSX.Element | null => {
         if (!project) {
             return null;
@@ -209,24 +181,25 @@ const ProjectsPage = (): JSX.Element => {
     };
 
     const GeneralProjectsList = (): JSX.Element | null => {
-        return !projectDetails.isOpen && <>
-            {projectsToShow.length
-                ? projectsToShow.map((el: IProject) => 
-                    isShowSubscribedProjects
-                        ? <SubscribedProjects project={el}/>
-                        : <AllProjects project={el}/>
-                )
-                : "Совпадений не найдено"
-            }
-            {isOpenUnsubsribePopup &&
-                <StandartPopupWithContent
-                    isOpen={isOpenUnsubsribePopup}
-                    updateIsOpen={openUnsubscribePopup}
-                    text='Вы действительно хотите отписатья от проекта ?'
-                    firstBtn='Отписаться'
-                />
-            }
-        </> || null;
+        return !projectDetails.isOpen &&
+            <>
+                {projectsToShow.length
+                    ? projectsToShow.map((el: IProject) => 
+                        isShowSubscribedProjects
+                            ? <SubscribedProjects project={el}/>
+                            : <StandardProject project={el}/>
+                    )
+                    : "Совпадений не найдено"
+                }
+                {isOpenUnsubsribePopup &&
+                    <StandartPopupWithContent
+                        isOpen={isOpenUnsubsribePopup}
+                        updateIsOpen={openUnsubscribePopup}
+                        text='Вы действительно хотите отписатья от проекта ?'
+                        firstBtn='Отписаться'
+                    />
+                }
+            </> || null;
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {

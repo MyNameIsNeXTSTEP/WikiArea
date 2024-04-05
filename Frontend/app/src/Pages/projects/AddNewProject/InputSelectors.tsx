@@ -1,7 +1,7 @@
 import { StandartDropdown, StandartDropdownOption } from "~/src/UI-shared/Atoms/Inputs"
 
 export interface IPropsTheme {
-    updateTheme: (Theme: string) => void,
+    updateTopic: (Theme: string) => void,
     isOpen: boolean
 };
 
@@ -10,7 +10,7 @@ export interface IPropsComplexity {
     isOpen: boolean
 };
 
-export const projectThemes = [
+export const projectTopics = [
     'Web-разработка',
     'Мобильная разработка',
     'Игровая разработка',
@@ -25,13 +25,13 @@ export const projectComplexities = {
     hard: 'сложный'
 };
 
-export const ThemeSelector = ({ updateTheme, isOpen }: IPropsTheme): JSX.Element | null => {
+export const TopicSelector = ({ updateTopic, isOpen }: IPropsTheme): JSX.Element | null => {
     if (!isOpen) return null;
     const selectTheme = (theme: string) => {
-        updateTheme(theme);
+        updateTopic(theme);
     };
     return <StandartDropdown id="new-project-theme-selector">
-        { projectThemes.map(el => <StandartDropdownOption height={'auto'} width={'100%'} onClick={() => selectTheme(el)}>{el}</StandartDropdownOption>) }
+        { projectTopics.map(el => <StandartDropdownOption height={'auto'} width={'100%'} onClick={() => selectTheme(el)}>{el}</StandartDropdownOption>) }
     </StandartDropdown>
 };
 

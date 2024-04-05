@@ -208,6 +208,7 @@ app.post('/api/projects/add-new-project', async (req, res) => {
             deadline: projectDeadlines,
             complexity: projectComplexity,
             created_at: dateNow,
+            is_moderated: 0,
         });
         res.status(200).send({ ok: true });
     } catch (error) {
