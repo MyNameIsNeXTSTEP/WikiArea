@@ -225,6 +225,25 @@ app.get('/api/projects/get-all', async (req, res) => {
     }
 });
 
+app.post('/api/projects/delete', async (req, res) => {
+    try {
+        const projectId = req.body.id;
+        await new DBQuery(mysql).call(`DELETE FROM projects WHERE id=${projectId}`);
+
+        const deletedProjectExists = await new DBQuery(mysql).singleExists({
+            clmn: 'name',
+            table: 'projects',
+            condition: `id=${projectId}`
+        });
+        if (Object.values(deletedProjectExists[0])[0] === 1) {
+            res.status(500).send({ ok: false, message: 'Project is not deleted from DB' });
+        }
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
 app.get('/api', (req, res) => {
     res.json({ message: 'Backend API is up and accessable' });
 });
