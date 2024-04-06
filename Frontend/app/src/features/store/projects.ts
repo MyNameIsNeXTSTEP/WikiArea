@@ -1,26 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IProject {
-    id: number
+    id: number,
+    name: string,
+    description: string,
+    createdAt: string,
+    author: string,
+    topic: string,
+    deadline: string,
+    complexity: number,
+    isModerated: number,
 };
 
 const initialState = {
-    projectsData: [],
+    all: [] as IProject[],
+    showModerated: false,
+    deleted: [] as IProject[],
 };
 
 const projectsSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
-        setProjectsData: (state, action) => {
-            // @ts-ignore
-            state.projectsData.push(action.payload as IProject);
+        setProjectsAll: (state, action) => {
+            state.all = action.payload;
         },
-        getProjectsData: (state, action) => {
-            state.projectsData;
+        setShowModerated: (state, action) => {
+            state.showModerated = action.payload;
+        },
+        setDeletedProjects: (state, action) => {
+            state.deleted = action.payload;
         },
     },
 });
 
-export const { setProjectsData, getProjectsData } = projectsSlice.actions;
+export const { setProjectsAll, setShowModerated, setDeletedProjects } = projectsSlice.actions;
 export default projectsSlice.reducer;

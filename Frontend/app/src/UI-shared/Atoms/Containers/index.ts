@@ -7,11 +7,12 @@ import styled from "styled-components";
  *      justify-content: space-between;
  *  }
  */
-export const Left = styled.span<{ width?: string }>`
+export const Left = styled.span<{ width?: string, height?: string }>`
     position: relative;
     float: left;
     margin-left: auto;
     width: ${p => p.width ?? 'fit-content'};
+    height: ${p => p.height ?? 'auto'};
     margin-left: 20px;
 `;
 

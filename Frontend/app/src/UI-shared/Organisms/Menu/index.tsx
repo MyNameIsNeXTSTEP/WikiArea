@@ -6,44 +6,54 @@ import Back from "~/src/assets/svg/Back.svg";
 import { BackMenuBtn, ProfileImage } from "../../Atoms/icons";
 import { useSelector } from "react-redux";
 import { StandartButton } from "../../Atoms/Buttons";
+import { Link } from "react-router-dom";
 
 interface IMenuItem {
   title: string;
-  route?: string;
+  route: string;
   action?: () => void;
 }
 
-// const useRouter = (props: any) => {
-//     if (useLocation().pathname === props.to.toString()) {
-//         return <Link {...props} to="/refresh" />
-//     }
-//     return <Link {...props} />;
-// };
+interface IProps {
+  className?: string,
+}
 
-const Menu = (): JSX.Element => {
-  const { buttons, isBackBtnDisabled, isMainMenu } = useSelector(state => state.menu);
+const Menu = ({ ...props }: IProps): JSX.Element => {
+  const {
+    menu: { buttons, isBackBtnDisabled, isMainMenu },
+    role,
+  } = useSelector(state => ({
+    menu: state.menu,
+    role: state.profile.auth.role,
+  }));
   const [isOpen, openMenu] = useState(false);
+
   const back = () => alert('back clicked');
+  const exit = () => {
+    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.clear();
+  };
+
   const menuItems: IMenuItem[] = [
-    { title: "Профиль", route: "/user" },
+    { title: "Профиль", route: `/user/${role}` },
     { title: "Проекты", route: "/projects" },
     { title: "Аналитика", route: "/analytics" },
     { title: "Чат", route: "/chat" },
-    { title: "Выход", action: () => alert("exit") },
+    { title: "Выход", route: "/", action: exit },
   ];
   return (
-    <ST.Nav>
+    <ST.Nav {...props}>
       <Left>Wikiarea</Left>
       <Right>
         {isMainMenu
             ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
-            : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={back} />
+            : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={buttons[0].onClick} />
         }
-        {buttons.map((button) => (
+        {/* {buttons.map((button) => {
           <StandartButton id="extra-menu-buttons" {...button.props} key={button.id} onClick={button.onClick}>
             {button.label}
           </StandartButton>
-        ))}  
+        ))}   */}
       </Right>
       {isOpen && (
         <ST.ProfileMenu>
@@ -51,11 +61,11 @@ const Menu = (): JSX.Element => {
             <ST.IconBlock>
               <ST.Cancel size={40} color={"white"} onClick={close} />
             </ST.IconBlock>
-            {menuItems.map((item) => (
+            {menuItems.map((item: IMenuItem) => (
               <ST.MenuItem>
-                <a href={item.route} onClick={item.action ?? undefined}>
+                <Link to={item.route} onClick={item.action ?? undefined}>
                   {item.title}
-                </a>
+                </Link>
               </ST.MenuItem>
             ))}
           </ST.MenuItemsList>

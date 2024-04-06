@@ -1,0 +1,1 @@
+// Here must be all the frontend logic from ProjectsPage, at least, for the teacher

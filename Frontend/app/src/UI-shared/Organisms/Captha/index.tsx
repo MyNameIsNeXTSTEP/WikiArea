@@ -72,7 +72,8 @@ const Captcha = ({ onSuccess }: IProps): JSX.Element => {
         setUserInput(''); 
         const newCaptcha = generateCaptchaText(); 
         setCaptchaText(newCaptcha); 
-        drawCaptchaOnCanvas(ctx, newCaptcha); 
+        drawCaptchaOnCanvas(ctx, newCaptcha);
+        console.log(newCaptcha);
     }; 
   
     const handleUserInputChange = (e) => { 

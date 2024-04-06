@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useImperativeHandle, useRef, useState } from 'react';
 import * as ST from '../../Popup/styled';
 import APIRequest from '@api-package/index';
 
@@ -6,6 +6,7 @@ import { TRequestMethod } from '@api-package/types';
 import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
 import DefaultPopup from "../../Popup/DefaultPopup";
 import { Button, ButtonRow } from '../../BreakLine/styled';
+import RolesSelector from './RolesSelector';
 
 interface IProps {
     isOpen: boolean,
@@ -16,6 +17,9 @@ type TFormRequest = Record<string, any>
 
 const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
     const [isDoublePassValid, updateIsDoublePassValid] = useState(false);
+    const [isPasswordOk, updateIsPasswordOk] = useState(true);
+    const [isShowRoleSelector, showRoleSelector] = useState(false);
+    const [selectedRole, updateSelectedRole] = useState('');
     const email = useRef<HTMLInputElement>(null); // @todo: validate
     const login = useRef<HTMLInputElement>(null); // @todo: validate
     const password = useRef<HTMLInputElement>(null);
@@ -37,6 +41,17 @@ const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
         }
         alert('Auth error');
     };
+    const validatePassword = () => {
+        const pswdCheck = password.current?.value;
+        const ok = pswdCheck && pswdCheck?.length > 0 &&
+            pswdCheck
+            ?.match(/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=[^0-9]*[0-9])(?=[^!~<>,;:_=?*+#."&§%°()|\[\]$^@\/-]*[!~<>,;:_=?*+#."&§%°()|\[\]$^@\/-])(?![a-zA-Z0-9!~<>,;:_=?*+#."&§%°()|\[\]$^@\/-]*([a-zA-Z0-9!~<>,;:_=?*+#."&§%°()|\[\]$^@\/-])\1\1)[a-zA-Z0-9!~<>,;:_=?*+#."&§%°()|\[\]$^@\/-]{8,}$/);
+        if (ok && ok.length > 0) {
+            updateIsPasswordOk(true);
+        } else {
+            updateIsPasswordOk(false);
+        };
+    };
     const doubleCheckPassword = () => {
         const passCheck = passwordDoubleCheck.current?.value
         const currentPassword = password.current?.value
@@ -57,6 +72,12 @@ const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
         });
         submitRegistration(collectedFormFields);
     };
+    const openRoleSelector = () => {
+        showRoleSelector(!isShowRoleSelector);
+    };
+    const selectRole = (selectedRole: string) => {
+        updateSelectedRole(selectedRole + 's');
+    };
     return isOpen
         ? <DefaultPopup>
             <form id='post-form' onSubmit={formSumbit}>
@@ -64,10 +85,12 @@ const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
                 <ST.Title>Регистрация</ST.Title>
                 <StandartInput name={'email'} ref={email} placeholder="Введите email..." />
                 <StandartInput name={'login'} ref={login} placeholder="Придумайте логин..."/>
-                <StandartInput name={'password'} ref={password} placeholder="Придумайте пароль..."/>
+                <StandartInput name={'password'} ref={password} placeholder="Придумайте пароль..." onChange={validatePassword}/>
+                {!isPasswordOk && <strong style={{ color: 'red' }}>Пароль должен содержать символы 0-9, A-z, a-z, спец. символы</strong>}
                 <StandartInput ref={passwordDoubleCheck} placeholder="Повторите пароль..." onChange={doubleCheckPassword}/>
                 {isDoublePassValid && <strong style={{ color: 'red' }}>Пароли не совпадают</strong>}
-                <StandartInput name={'role'} ref={role} placeholder="Выберите вашу роль..."/>
+                <StandartInput name={'role'} ref={role} value={selectedRole} placeholder="Выберите вашу роль..." onClick={openRoleSelector}/>
+                <RolesSelector updateRole={selectRole} isOpen={isShowRoleSelector}/>
                 <ButtonRow>
                     <Button
                         onClick={() => {}}

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { purpleMainColor } from "~/src/UI-shared/Tokens";
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
+import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
 
 export const Container = styled.div`
     display: flex;
@@ -9,8 +10,9 @@ export const Container = styled.div`
 `;
 
 export const Input = styled.input`
-    height: 30px;
+    height: 60px;
     width: 100%;
+    padding: 10px;
     border: 4px solid ${purpleMainColor};
     outline: none;
 `;
@@ -19,16 +21,26 @@ export const ChatMessagesArea = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: auto;
     border: 4px solid ${purpleMainColor};
     flex-grow: 1;
     flex: 3;
     height: 100%;
 `;
 
-export const Message = styled(WidgetWith2Items)<{ $my?: boolean }>`
-    right: ${p => p.$my ? 0 : 'auto'};
-    margin-left: ${p => p.$my ? 'auto' : '0'};
-    margin-right: ${p => p.$my ? '0' : 'auto'};
+export const Message = styled.div<{ $my?: boolean, $rounded?: boolean }>`
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow-wrap: break-word;
+    background-color: ${purpleMainColor};
+    border-radius: ${(p) => p.$rounded && "20px"};
+    width: 80%;
+    min-height: 100px;
+    height: auto;
+    margin-left: ${p => p.$my ? 'auto' : '10px'} !important;
+    margin-right: ${p => p.$my ? '10px' : 'auto'} !important;
     margin-bottom: 20px;
     margin-top: 20px;
 `;
@@ -52,4 +64,22 @@ export const User = styled.div<{ $isActive?: boolean }>`
     padding: 5px;
     border: 4px solid ${purpleMainColor};
     background-color: ${p => p.$isActive ? purpleMainColor : 'white'};
+`;
+
+export const Datetime = styled.p`
+    font-size: small;
+    font-weight: 300;
+`;
+
+export const RightBottom = styled(Right)`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+`;
+
+export const LeftTop = styled(Left)`
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: start;
 `;

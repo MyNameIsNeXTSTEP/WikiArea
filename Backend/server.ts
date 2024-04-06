@@ -60,7 +60,7 @@ app.post('/api/user/register', async (req, res) => {
         return;
     }
     new DBQuery(mysql).insert(role, { login, email, password: encryptedPswd, created_at: dateNow});
-    new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, created_at: dateNow});
+    new DBQuery(mysql).insert('users', { login, email, password: encryptedPswd, role });
     new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, login, email, expiration_date: expirationDate });
     res.statusCode = 200; // @todo: check data first
     res.send({
@@ -79,9 +79,10 @@ app.post('/api/user/register', async (req, res) => {
 */
 app.post('/api/auth', async (req, res) => {
     const XAuthToken = req.headers['x-auth-token'];
+    console.log('\n', XAuthToken, 'TOKEN', '\n');
     const { email, password } = req.body;
     // Authorizing by login & password
-    if (!XAuthToken || !(XAuthToken.length > 0)) {
+    if (!XAuthToken || XAuthToken === 'empty') {
         const encryptStr = `${email};${password};${"register_secret"}`;
         const accessToken = createHash('sha256')
             .update(encryptStr)
@@ -91,7 +92,7 @@ app.post('/api/auth', async (req, res) => {
         const encryptedPswd = createHash('sha256').update(password).digest('hex');
         const userExists = await new DBQuery(mysql).singleExists({
             clmn: 'password',
-            table: 'students',
+            table: 'users',
             condition: `password='${encryptedPswd}' and email='${email}'`
         });
         const tokenExists = await new DBQuery(mysql).singleExists({
@@ -100,12 +101,15 @@ app.post('/api/auth', async (req, res) => {
             condition: `email='${email}'`
         });
         if (Object.values(userExists[0])[0] === 1) {
-            // write a token if no is present yet
-            Object.values(tokenExists[0])[0] === 0 && new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, email, expiration_date: expirationDate });
+            Object.values(tokenExists[0])[0] === 0 &&
+                new DBQuery(mysql).insert('access_tokens', { access_token: accessToken, email, expiration_date: expirationDate });
+            const dbUser = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email='${email}' AND password='${encryptedPswd}'`);
+            const { role, login } = dbUser[0];
+            
             res.statusCode = 200; // @todo: check data first
             res.send({
                 ok: true,
-                body: { accessToken }
+                body: { accessToken, role, login, email }
             });
         } else {
            res.statusCode = 500; // @todo: check data first
@@ -113,15 +117,18 @@ app.post('/api/auth', async (req, res) => {
         }
         return
     };
-    if (XAuthToken) {
+    if (XAuthToken.length > 0 && XAuthToken !== 'empty') {
         const tokenExists = await new DBQuery(mysql).singleExists({
             clmn: 'access_token',
             table: 'access_tokens',
             condition: `access_token='${XAuthToken}'`
         });
         if (Object.values(tokenExists[0])[0] === 1) {
+            // const { role, login } = await new DBQuery(mysql).call(`SELECT * FROM users WHERE email=${email} AND password=${encryptedPswd}`);
             res.statusCode = 200; // @todo: check data first
-            res.send({ ok: true, body: true });
+            res.send({
+                ok: true,
+                body: true });
         } else {
             res.statusCode = 500; // @todo: check data first
             res.send({ ok: false, body: 'No access token was found in the database' });
@@ -178,6 +185,77 @@ app.get('/api/messages', async (req, res) => {
         res.status(200).send(JSON.stringify(messages));
     } catch (error) {
         res.status(500).send({ server_message: 'Error reading messages', error });
+    }
+});
+
+app.post('/api/projects/add-new-project', async (req, res) => {
+    const {
+        projectTitle,
+        projectTopic,
+        projectDeadlines,
+        projectComplexity,
+        projectDescription,
+        author,
+    } = req.body;
+    // @todo: Code duplication, move to the shared lib between backend and frontend
+    const complexityMap = {
+        'лёгкий': 1,
+        'средний': 2,
+        'сложный': 3
+    }
+    try {
+        const dateNow = new Date();
+        new DBQuery(mysql).insert('projects', {
+            author,
+            name: projectTitle,
+            description: projectDescription,
+            topic: projectTopic,
+            deadline: projectDeadlines,
+            complexity: complexityMap[projectComplexity.toLowerCase()],
+            created_at: dateNow,
+            is_moderated: 0,
+        });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error writing new projects to the DB', error });
+    }
+});
+
+app.get('/api/projects/get-all', async (req, res) => {
+    try {
+        const projects = await new DBQuery(mysql).call('SELECT * FROM projects');
+        res.status(200).send(projects);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
+app.get('/api/projects/get-deleted', async (req, res) => {
+    try {
+        const deletedProjects = await new DBQuery(mysql).call('SELECT * FROM deleted_projects');
+        res.status(200).send(deletedProjects);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
+app.post('/api/projects/delete', async (req, res) => {
+    try {
+        const projectId = req.body.id;
+        const deletedProject = await new DBQuery(mysql).call(`SELECT * FROM projects WHERE id=${projectId}`);
+        await new DBQuery(mysql).call(`DELETE FROM projects WHERE id=${projectId}`);
+        new DBQuery(mysql).insert('deleted_projects', deletedProject[0]);
+        const deletedProjectExists = await new DBQuery(mysql).singleExists({
+            clmn: 'name',
+            table: 'projects',
+            condition: `id=${projectId}`
+        });
+        if (Object.values(deletedProjectExists[0])[0] === 1) {
+            res.status(500).send({ ok: false, message: 'Project is not deleted from DB' });
+        }
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading projects from the DB', error });
     }
 });
 

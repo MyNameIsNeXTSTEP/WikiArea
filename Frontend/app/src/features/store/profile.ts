@@ -1,26 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface IProfile {
-    id: number
+export interface IProfileAuthData {
+    accessToken: string,
+    role: string,
+    email: string,
+    login: string,
 };
 
 const initialState = {
-    profileData: [],
+    auth: {},
 };
 
 const profileSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
-        getProfileData: (state, action) => {
+        setProfileData: (state, action) => {
             // @ts-ignore
-            state.profileData.push({ id: Date.now(), text: action.payload });
-        },
-        deleteProfile: (state, action) => {
-            state.profileData = state.profileData.filter((profile: IProfile) => profile.id !== action.payload);
+            state.auth = action.payload as IProfileAuthData;
         },
     },
 });
 
-export const { getProfileData, deleteProfile } = profileSlice.actions;
+export const { setProfileData } = profileSlice.actions;
 export default profileSlice.reducer;

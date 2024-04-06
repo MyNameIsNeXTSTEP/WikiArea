@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { purpleMainColor } from "../../Tokens";
 
 export const Wrapper = styled.div<{
@@ -8,6 +8,7 @@ export const Wrapper = styled.div<{
   height?: string,
   $smallMargins?: boolean,
   $fullWidth?: boolean,
+  $override?: boolean,
 }>`
   display: flex;
   justify-content: space-between;

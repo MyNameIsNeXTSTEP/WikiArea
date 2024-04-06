@@ -24,4 +24,23 @@ export default function useGlobalDOMEvents(props: Props) {
       }
     };
   }, []);
+};
+
+export enum EUserRoles {
+  teacher = 'teachers',
+  student = 'students',
+  admin = 'admins'
+};
+
+
+export const complexityMapStrings = {
+  'лёгкий': 1,
+  'средний': 2,
+  'сложный': 3
+}
+
+export const complexityMapNumbers = {
+  'лёгкий': 1,
+  'средний': 2,
+  'сложный': 3
 }

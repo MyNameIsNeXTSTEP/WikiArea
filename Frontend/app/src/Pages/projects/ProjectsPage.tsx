@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as ST from './styled';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
 import Arrow from '~/src/assets/svg/Arrow.svg';
@@ -10,28 +10,24 @@ import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { H1, Title } from "~/src/UI-shared/Tokens";
-import { debounce } from '~/src/a-lib';
-import { useSelector } from 'react-redux';
-import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
+import { complexityMapNumbers, debounce, EUserRoles } from '~/src/a-lib';
+import { useDispatch, useSelector } from 'react-redux';
+import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
 import ModuleTests from './ModuleTests';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
+import ProjectsListControls from './ProjectControls/ProjectsListControls';
+import { IProject } from './types';
+import StandardProject from './StandardProject';
+import { setDeletedProjects, setProjectsAll, setShowModerated } from '~/src/features/store/projects';
+import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
+import Menu from '~/src/UI-shared/Organisms/Menu';
 
 interface IModule {
     projectModule: {
         name: string
     }
-}
-
-interface IProject {
-    id: number,
-    author: string,
-    title: string,
-    topic: string,
-    complexity: string,
-    lifetime: string,
-    description: string,
 }
 
 interface IProjectDetails {
@@ -40,35 +36,23 @@ interface IProjectDetails {
 }
 
 const ProjectsPage = (): JSX.Element => {
-    // const projectsData = useSelector(state => state.projects.all);
+    const dispatch = useDispatch();
+    const role = useSelector(state => state.profile.auth.role);
+    let projects = useSelector(state => state.projects.all);
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     const [projectDetails, openProjectDetails] = useState({} as IProjectDetails);
     const [isModuleTestsOpen, openModuleTests] = useState(false);
+    const [isOpenPopupFromControls, openPopupFromControls] = useState(false);
+    const [projectsToShow, updateProjectsToShow] = useState(projects)
+    const [popupFormControlConfig, updatePopupFormControlConfig] = useState({
+        isOpen: isOpenPopupFromControls,
+        text: '',
+        firstBtn: ''
+    });
+    
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
-    // const subscribedProjects = useSelector(state => state.projects.subscribed);
-    // @todo: Change to selectors data from store
-    const projectData = new Array(10).fill({
-        id: 1,
-        author: 'Автор',
-        title: 'Название',
-        topic: 'Тема',
-        complexity: 'Сложность',
-        lifetime: 'Срок проекта',
-        description: 'Описание проекта'
-    });
-    projectData.push({
-        id: 2,
-        author: 'abc',        
-        title: 'Название',
-        topic: 'Тема',
-        complexity: 'Сложность',
-        lifetime: 'Срок проекта',
-        description: 'Описание проекта'
-    });
-    const [projectsToShow, updateProjectsToShow] = useState(projectData)
-    // const [data, updateData] = useState(projectsToShow);
     const subscribedProjects = [{
         author: 'abc',
         title: 'Название',
@@ -82,7 +66,28 @@ const ProjectsPage = (): JSX.Element => {
         { name: 'Второй модуль' },
         { name: 'Третий модуль' },
     ];
-    //
+    
+    useEffect(() => {
+        const requestAll = {
+            uri: '/api/projects/get-all',
+            method: TRequestMethod.GET,
+        };
+        (async () => {
+            await new APIRequest(requestAll)
+                .doRequest()
+                .then(res => dispatch(setProjectsAll(res.payload)));
+        })();
+        const requestDeleted = {
+            uri: '/api/projects/get-deleted',
+            method: TRequestMethod.GET,
+        };
+        (async () => {
+            await new APIRequest(requestDeleted)
+                .doRequest()
+                .then(res => dispatch(setDeletedProjects(res.payload)));
+        })();
+    }, [])
+
     const doSearch = (e) => {
         const value = e.target?.value;
         const searchedData = projectsToShow.filter((el: Record<string, string>) => {
@@ -105,6 +110,10 @@ const ProjectsPage = (): JSX.Element => {
 
     // @todo: [BUG] when do searching the inout field rerenders and projects filtering went wrong (?)
     const ProjectsControls = (): JSX.Element => {
+        const controlRoleActions = {
+            students: openSubscribedProjects,
+        };
+
         if (isShowSubscribedProjects && subscribedProjects && subscribedProjects.length > 0) {
             return <WidgetWith2Items $transparent>
                 <Left width='auto'>
@@ -119,7 +128,13 @@ const ProjectsPage = (): JSX.Element => {
                 <StandartInput onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
             </Left>
             <Right>
-                <StandartButton $width='180px' onClick={openSubscribedProjects}>Мои проекты</StandartButton>
+                <ProjectsListControls
+                    role={role}
+                    controlRoleActions={controlRoleActions}
+                    updatePopupConfig={updatePopupFormControlConfig}
+                    popupConfig={popupFormControlConfig}
+                    openPopup={openPopupFromControls}
+                />
             </Right>
         </WidgetWith2Items>
     };
@@ -128,13 +143,22 @@ const ProjectsPage = (): JSX.Element => {
         if (!project) {
             return null;
         }
-        return <WidgetWith2Items $rounded height='100px'>
-                <Left style={{ flexDirection: 'column', display: 'flex' }}className="left">
-                    <ST.ImageBlock $abs style={{ marginTop: '10px' }}className="profile-block">
+        return <>
+            <WidgetWith2Items $rounded height='100px'>
+                <Left style={{ flexDirection: 'column', display: 'flex' }} className="left">
+                    <ST.ImageBlock $abs style={{ marginTop: '10px' }} className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
-                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                        {Object.keys(project.project).map((key: string) => {
+                            if (key === 'complexity') {
+                                const complexityNumber = project.project[key];
+                                return <StandartLabel $white>
+                                    {complexityMapNumbers[complexityNumber]}
+                                </StandartLabel>
+                            }
+                            return <StandartLabel $white>{project.project[key]}</StandartLabel>
+                        })}
                     </ST.ProjectsData>
                     <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
                 </Left>
@@ -150,26 +174,15 @@ const ProjectsPage = (): JSX.Element => {
                     <StandartButton $whiteBordered $width={'180px'} className="subscribtion" onClick={openUnsubscribePopup}>Отписаться</StandartButton>
                 </Right>
             </WidgetWith2Items>
-    };
-
-    const AllProjects = (project?: IProject): JSX.Element | null => {
-        if (!project) {
-            return null;
-        }
-        return <WidgetWith2Items $rounded height='100px'>
-                <Left className="left">
-                    <ST.ImageBlock $abs className="profile-block">
-                        <ProjectImage src={ProjectLogo} />
-                    </ST.ImageBlock>
-                    <ST.ProjectsData>
-                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
-                    </ST.ProjectsData>
-                </Left>
-                <Right className="right">
-                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion">Подписаться</StandartButton>
-                    <StandartLabel style={{ marginLeft: 20 }} $white>Подписано:</StandartLabel>
-                </Right>
-            </WidgetWith2Items>
+            {isOpenUnsubsribePopup &&
+                <StandartPopupWithContent
+                    isOpen={isOpenUnsubsribePopup}
+                    updateIsOpen={openUnsubscribePopup}
+                    text='Вы действительно хотите отписатья от проекта ?'
+                    firstBtn='Отписаться'
+                />
+            }
+        </>
     };
 
     const ProjectDetails = (project: IProject): JSX.Element | null => {
@@ -187,30 +200,113 @@ const ProjectsPage = (): JSX.Element => {
                 </Left>
             </WidgetWith2Items>
     };
-
-    const GeneralProjectsList = (): JSX.Element | null => {
-        return !projectDetails.isOpen && <>
-            {projectsToShow.length
-                ? projectsToShow.map((el: IProject) => 
-                    isShowSubscribedProjects
-                        ? <SubscribedProjects project={el}/>
-                        : <AllProjects project={el}/>
-                )
-                : "Совпадений не найдено"
-            }
-            {isOpenUnsubsribePopup &&
+     
+    const ProjectOnModeration = (project?: IProject): JSX.Element | null => {
+        const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
+        if (!project) {
+            return null;
+        };
+        const deleteProject = async () => {
+            const request = {
+                uri: '/api/projects/delete',
+                method: TRequestMethod.POST,
+                body: JSON.stringify({
+                    id: project.project.id,
+                })
+            };
+            await new APIRequest(request).doRequest();
+        };
+        return <>
+            <WidgetWith2Items $rounded height='180px'>
+                <Left style={{ flexDirection: 'column', display: 'flex', height: '100%' }} className="left">
+                    <ST.ImageBlock width={'100px'} $abs style={{ marginTop: '10px' }} className="profile-block">
+                        <ProjectImage src={ProjectLogo} />
+                    </ST.ImageBlock>
+                    <ST.ProjectsData>
+                        {Object.keys(project.project).map((key: string) => {
+                            if (key === 'is_moderated') {
+                                return <StandartLabel $white>Статус проекта:{
+                                    project.project[key] === 1 ? 'На рассмотрении' : 'Не рассмотрен'
+                                }</StandartLabel>
+                            }
+                            if (key === 'complexity') {
+                                const complexityNumber = project.project[key];
+                                return <StandartLabel $white>
+                                    {complexityMapNumbers[complexityNumber]}
+                                </StandartLabel>
+                            }
+                            return <StandartLabel $white>{project.project[key]}</StandartLabel>
+                        })}
+                    </ST.ProjectsData>
+                </Left>
+                <Right className="right" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <StandartButton
+                        $whiteBordered
+                        $width={'180px'}
+                        className="subscribtion"
+                        onClick={() => setIsOpenDeletePopup(true)}
+                    >
+                        Удалить проект
+                    </StandartButton>
+                </Right>
+            </WidgetWith2Items>
+            {isOpenDeletePopup &&
                 <StandartPopupWithContent
-                    isOpen={isOpenUnsubsribePopup}
-                    updateIsOpen={openUnsubscribePopup}
-                    text='Вы действительно хотите отписатья от проекта ?'
-                    firstBtn='Отписаться'
+                    isOpen={isOpenDeletePopup}
+                    updateIsOpen={setIsOpenDeletePopup}
+                    text='Вы действительно хотите удалить выбранный проект ?'
+                    firstBtn='Удалить'
+                    firstBtnOnClick={deleteProject}
                 />
             }
-        </> || null;
+            </>
+    };
+
+    const GeneralProjectsList = (): JSX.Element | null => {
+        const dispatch = useDispatch();
+        const showModerated = useSelector(state => state.projects.showModerated);
+        let ProjectComponent;
+        if (showModerated) {
+            projects = projects.filter(el => el.is_moderated === 1);
+            ProjectComponent = ({ ...props }) => <ProjectOnModeration {...props}/>
+        } else {
+            ProjectComponent = ({ ...props }) => <StandardProject {...props}/>;
+        };
+        useEffect(() => {
+            // @todo: Need strong refactor on the menu handling logic !!!
+            if (showModerated) {
+                dispatch(updateMainMenuFlag(false));
+                dispatch(changeBackBtnVisability(false));
+                dispatch(updateButtons([{
+                    id: 1,
+                    onClick: () => dispatch(setShowModerated(false)),
+                    src: 'Back',
+                }]));
+            } else {
+                dispatch(updateMainMenuFlag(true));
+                dispatch(changeBackBtnVisability(true));
+                dispatch(updateButtons([{
+                    id: 1,
+                    onClick: () => dispatch(setShowModerated(false)),
+                    src: 'Back',
+                }]));
+                dispatch(setShowModerated(false));
+            }
+        }, [showModerated]);
+        return !projectDetails.isOpen &&
+            <>
+                {projects.length
+                    ? projects.map((el: IProject) => 
+                        isShowSubscribedProjects
+                            ? <SubscribedProjects project={el}/>
+                            : <ProjectComponent project={el}/>
+                    )
+                    : "Совпадений не найдено"
+                }
+            </> || null;
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
-        // const accessToken = useSelector(state => state.auth.accessToken);
         type TFileForReq = {
             buffToSave: string | ArrayBuffer | null,
             name: string,
@@ -250,8 +346,15 @@ const ProjectsPage = (): JSX.Element => {
         const handleUploadBtn = () => {
             openFileUploadPopup(true);
             document.getElementById('upload-file')?.click();
+        };
+        const MenuAfterRedirect = (): JSX.Element | null => {
+            if (document.getElementsByClassName('main-menu').length === 0) {
+                return <Menu className="main-menu"/>
+            }
+            return null;
         }
         return <>
+            <MenuAfterRedirect/>
             <WidgetWith2Items $rounded height='80px'>
                 <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
                 <Right>
