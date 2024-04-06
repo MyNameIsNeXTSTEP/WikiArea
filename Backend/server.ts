@@ -230,6 +230,15 @@ app.get('/api/projects/get-all', async (req, res) => {
     }
 });
 
+app.get('/api/projects/get-deleted', async (req, res) => {
+    try {
+        const deletedProjects = await new DBQuery(mysql).call('SELECT * FROM deleted_projects');
+        res.status(200).send(deletedProjects);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
 app.post('/api/projects/delete', async (req, res) => {
     try {
         const projectId = req.body.id;
