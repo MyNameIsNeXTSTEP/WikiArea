@@ -47,13 +47,13 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
       <Right>
         {isMainMenu
             ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
-            : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={back} />
+            : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={buttons[0].onClick} />
         }
-        {buttons.map((button) => (
+        {/* {buttons.map((button) => {
           <StandartButton id="extra-menu-buttons" {...button.props} key={button.id} onClick={button.onClick}>
             {button.label}
           </StandartButton>
-        ))}  
+        ))}   */}
       </Right>
       {isOpen && (
         <ST.ProfileMenu>

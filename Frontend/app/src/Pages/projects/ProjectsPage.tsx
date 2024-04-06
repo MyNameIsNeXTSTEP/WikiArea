@@ -21,6 +21,8 @@ import ProjectsListControls from './ProjectControls/ProjectsListControls';
 import { IProject } from './types';
 import StandardProject from './StandardProject';
 import { setProjectsAll, setShowModerated } from '~/src/features/store/projects';
+import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
+import Menu from '~/src/UI-shared/Organisms/Menu';
 
 interface IModule {
     projectModule: {
@@ -153,9 +155,10 @@ const ProjectsPage = (): JSX.Element => {
         if (!project) {
             return null;
         }
-        return <WidgetWith2Items $rounded height='100px'>
-                <Left style={{ flexDirection: 'column', display: 'flex' }}className="left">
-                    <ST.ImageBlock $abs style={{ marginTop: '10px' }}className="profile-block">
+        return <>
+            <WidgetWith2Items $rounded height='100px'>
+                <Left style={{ flexDirection: 'column', display: 'flex' }} className="left">
+                    <ST.ImageBlock $abs style={{ marginTop: '10px' }} className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
@@ -175,6 +178,15 @@ const ProjectsPage = (): JSX.Element => {
                     <StandartButton $whiteBordered $width={'180px'} className="subscribtion" onClick={openUnsubscribePopup}>Отписаться</StandartButton>
                 </Right>
             </WidgetWith2Items>
+            {isOpenUnsubsribePopup &&
+                <StandartPopupWithContent
+                    isOpen={isOpenUnsubsribePopup}
+                    updateIsOpen={openUnsubscribePopup}
+                    text='Вы действительно хотите отписатья от проекта ?'
+                    firstBtn='Отписаться'
+                />
+            }
+        </>
     };
 
     const ProjectDetails = (project: IProject): JSX.Element | null => {
@@ -194,62 +206,106 @@ const ProjectsPage = (): JSX.Element => {
     };
      
     const ProjectOnModeration = (project?: IProject): JSX.Element | null => {
+        const [isOpenDeletePopup, setIsOpenDeletePopup] = useState(false);
         if (!project) {
             return null;
-        }
-        return <WidgetWith2Items $rounded height='100px'>
-                <Left style={{ flexDirection: 'column', display: 'flex' }}className="left">
-                    <ST.ImageBlock $abs style={{ marginTop: '10px' }}className="profile-block">
+        };
+        const deleteProject = async () => {
+            const request = {
+                uri: '/api/projects/delete',
+                method: TRequestMethod.POST,
+                body: JSON.stringify({
+                    id: project.project.id,
+                })
+            };
+            await new APIRequest(request).doRequest();
+        };
+        return <>
+            <WidgetWith2Items $rounded height='180px'>
+                <Left style={{ flexDirection: 'column', display: 'flex', height: '100%' }} className="left">
+                    <ST.ImageBlock width={'100px'} $abs style={{ marginTop: '10px' }} className="profile-block">
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
-                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                        {Object.keys(project.project).map((key: string) => {
+                            if (key === 'is_moderated') {
+                                return <StandartLabel $white>Статус проекта:{
+                                    project.project[key] === 1 ? 'На рассмотрении' : 'Не рассмотрен'
+                                }</StandartLabel>
+                            }
+                            return <StandartLabel $white>{project.project[key]}</StandartLabel>
+                        })}
                     </ST.ProjectsData>
-                    <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
                 </Left>
                 <Right className="right" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     <StandartButton
                         $whiteBordered
                         $width={'180px'}
                         className="subscribtion"
-                        onClick={() => dispatch(setShowModerated(true))}
+                        onClick={() => setIsOpenDeletePopup(true)}
                     >
-                        Просмотр
+                        Удалить проект
                     </StandartButton>
-                    <StandartButton $whiteBordered $width={'180px'} className="subscribtion" onClick={openUnsubscribePopup}>Отписаться</StandartButton>
                 </Right>
             </WidgetWith2Items>
+            {isOpenDeletePopup &&
+                <StandartPopupWithContent
+                    isOpen={isOpenDeletePopup}
+                    updateIsOpen={setIsOpenDeletePopup}
+                    text='Вы действительно хотите удалить выбранный проект ?'
+                    firstBtn='Удалить'
+                    firstBtnOnClick={deleteProject}
+                />
+            }
+            </>
     };
 
     const GeneralProjectsList = (): JSX.Element | null => {
-        let projects = useSelector(state => state.projects.all);
+        const dispatch = useDispatch();
         const showModerated = useSelector(state => state.projects.showModerated);
-        if (role === EUserRoles.teacher && showModerated) {
+        let projects = useSelector(state => state.projects.all);
+        let ProjectComponent;
+        if (showModerated) {
             projects = projects.filter(el => el.is_moderated === 1);
+            ProjectComponent = ({ ...props }) => <ProjectOnModeration {...props}/>
+        } else {
+            ProjectComponent = ({ ...props }) => <StandardProject {...props}/>;
         };
+        useEffect(() => {
+            // @todo: Need strong refactor on the menu handling logic !!!
+            if (showModerated) {
+                dispatch(updateMainMenuFlag(false));
+                dispatch(changeBackBtnVisability(false));
+                dispatch(updateButtons([{
+                    id: 1,
+                    onClick: () => dispatch(setShowModerated(false)),
+                    src: 'Back',
+                }]));
+            } else {
+                dispatch(updateMainMenuFlag(true));
+                dispatch(changeBackBtnVisability(true));
+                dispatch(updateButtons([{
+                    id: 1,
+                    onClick: () => dispatch(setShowModerated(false)),
+                    src: 'Back',
+                }]));
+                dispatch(setShowModerated(false));
+            }
+        }, [showModerated]);
         return !projectDetails.isOpen &&
             <>
                 {projects.length
                     ? projects.map((el: IProject) => 
                         isShowSubscribedProjects
                             ? <SubscribedProjects project={el}/>
-                            : <StandardProject project={el}/>
+                            : <ProjectComponent project={el}/>
                     )
                     : "Совпадений не найдено"
-                }
-                {isOpenUnsubsribePopup &&
-                    <StandartPopupWithContent
-                        isOpen={isOpenUnsubsribePopup}
-                        updateIsOpen={openUnsubscribePopup}
-                        text='Вы действительно хотите отписатья от проекта ?'
-                        firstBtn='Отписаться'
-                    />
                 }
             </> || null;
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
-        const accessToken = useSelector(state => state.profile.accessToken);
         type TFileForReq = {
             buffToSave: string | ArrayBuffer | null,
             name: string,
@@ -289,8 +345,15 @@ const ProjectsPage = (): JSX.Element => {
         const handleUploadBtn = () => {
             openFileUploadPopup(true);
             document.getElementById('upload-file')?.click();
+        };
+        const MenuAfterRedirect = (): JSX.Element | null => {
+            if (document.getElementsByClassName('main-menu').length === 0) {
+                return <Menu className="main-menu"/>
+            }
+            return null;
         }
         return <>
+            <MenuAfterRedirect/>
             <WidgetWith2Items $rounded height='80px'>
                 <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
                 <Right>

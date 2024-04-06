@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export const ImageBlock = styled.div<{ $abs?: boolean }>`
+export const ImageBlock = styled.div<{ $abs?: boolean, width?: string }>`
     display: flex;
     position: ${p => p.$abs && 'absolute'};
-    width: 60px;
+    width: ${p => p.width ?? '60px'};
     margin-right: 20px;
     align-self: flex-start;
 `;
