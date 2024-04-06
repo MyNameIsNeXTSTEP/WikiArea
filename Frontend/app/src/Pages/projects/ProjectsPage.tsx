@@ -10,7 +10,7 @@ import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { H1, Title } from "~/src/UI-shared/Tokens";
-import { debounce, EUserRoles } from '~/src/a-lib';
+import { complexityMapNumbers, debounce, EUserRoles } from '~/src/a-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
@@ -36,14 +36,15 @@ interface IProjectDetails {
 }
 
 const ProjectsPage = (): JSX.Element => {
-    // const projectsData = useSelector(state => state.projects.all);
     const dispatch = useDispatch();
     const role = useSelector(state => state.profile.auth.role);
+    let projects = useSelector(state => state.projects.all);
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     const [projectDetails, openProjectDetails] = useState({} as IProjectDetails);
     const [isModuleTestsOpen, openModuleTests] = useState(false);
     const [isOpenPopupFromControls, openPopupFromControls] = useState(false);
+    const [projectsToShow, updateProjectsToShow] = useState(projects)
     const [popupFormControlConfig, updatePopupFormControlConfig] = useState({
         isOpen: isOpenPopupFromControls,
         text: '',
@@ -52,28 +53,6 @@ const ProjectsPage = (): JSX.Element => {
     
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
-    // const subscribedProjects = useSelector(state => state.projects.subscribed);
-    // @todo: Change to selectors data from store
-    const projectData = new Array(10).fill({
-        id: 1,
-        author: 'Автор',
-        title: 'Название',
-        topic: 'Тема',
-        complexity: 'Сложность',
-        lifetime: 'Срок проекта',
-        description: 'Описание проекта'
-    });
-    projectData.push({
-        id: 2,
-        author: 'abc',        
-        title: 'Название',
-        topic: 'Тема',
-        complexity: 'Сложность',
-        lifetime: 'Срок проекта',
-        description: 'Описание проекта'
-    });
-    const [projectsToShow, updateProjectsToShow] = useState(projectData)
-    // const [data, updateData] = useState(projectsToShow);
     const subscribedProjects = [{
         author: 'abc',
         title: 'Название',
@@ -162,7 +141,15 @@ const ProjectsPage = (): JSX.Element => {
                         <ProjectImage src={ProjectLogo} />
                     </ST.ImageBlock>
                     <ST.ProjectsData>
-                        {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                        {Object.keys(project.project).map((key: string) => {
+                            if (key === 'complexity') {
+                                const complexityNumber = project.project[key];
+                                return <StandartLabel $white>
+                                    {complexityMapNumbers[complexityNumber]}
+                                </StandartLabel>
+                            }
+                            return <StandartLabel $white>{project.project[key]}</StandartLabel>
+                        })}
                     </ST.ProjectsData>
                     <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
                 </Left>
@@ -233,6 +220,12 @@ const ProjectsPage = (): JSX.Element => {
                                     project.project[key] === 1 ? 'На рассмотрении' : 'Не рассмотрен'
                                 }</StandartLabel>
                             }
+                            if (key === 'complexity') {
+                                const complexityNumber = project.project[key];
+                                return <StandartLabel $white>
+                                    {complexityMapNumbers[complexityNumber]}
+                                </StandartLabel>
+                            }
                             return <StandartLabel $white>{project.project[key]}</StandartLabel>
                         })}
                     </ST.ProjectsData>
@@ -263,7 +256,6 @@ const ProjectsPage = (): JSX.Element => {
     const GeneralProjectsList = (): JSX.Element | null => {
         const dispatch = useDispatch();
         const showModerated = useSelector(state => state.projects.showModerated);
-        let projects = useSelector(state => state.projects.all);
         let ProjectComponent;
         if (showModerated) {
             projects = projects.filter(el => el.is_moderated === 1);

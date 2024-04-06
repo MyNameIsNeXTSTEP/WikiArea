@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import AddNewProjectPopup from "../AddNewProject/AddNewProjectPopup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setShowModerated } from "~/src/features/store/projects";
 
 interface IProps {
@@ -16,6 +16,7 @@ interface IProps {
 
 const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
     const dispatch = useDispatch();
+    const showModerated = useSelector(state => state.projects.showModerated);
     const addProject = () => {
         // openPopup(true);
         updatePopupConfig({
@@ -32,7 +33,10 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
     };
 
     const moderateProjectByAdmin = () => {
+    };
 
+    const showDeletedProjects = () => {
+        
     };
 
     switch (role) {
@@ -40,9 +44,15 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
             return <StandartButton $width='180px' onClick={controlRoleActions[role]}>Мои проекты</StandartButton>
         case 'teachers':
             return <>
-                <StandartButton $width='180px' onClick={addProject}>Добавить проект</StandartButton>
-                <StandartButton $width='260px' style={{ marginLeft: '20px'}} onClick={openProjectOnModeration}>Проекты на модерации</StandartButton>
-                {popupConfig.isOpen && <AddNewProjectPopup onClose={() => updatePopupConfig({ isOpen: false })}/>}
+                {
+                    showModerated
+                        ? <StandartButton $width='260px' onClick={() => alert(1)}>Удалённые проекты</StandartButton>
+                        : <>
+                            <StandartButton $width='180px' onClick={addProject}>Добавить проект</StandartButton>
+                            <StandartButton $width='260px' style={{ marginLeft: '20px'}} onClick={openProjectOnModeration}>Проекты на модерации</StandartButton>
+                            {popupConfig.isOpen && <AddNewProjectPopup onClose={() => updatePopupConfig({ isOpen: false })}/>}
+                        </>
+                }
             </>
         case 'admins':
             return <StandartButton $width='180px' onClick={moderateProjectByAdmin}>Модерация проектов</StandartButton>

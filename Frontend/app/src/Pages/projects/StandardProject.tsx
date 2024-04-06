@@ -6,6 +6,7 @@ import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
 import { IProject } from './types';
 import Controls from './ProjectControls/StandardProjectControls';
+import { complexityMapNumbers } from '~/src/a-lib';
 
 const StandardProject = (project?: IProject): JSX.Element | null => {
     if (!project) {
@@ -18,7 +19,15 @@ const StandardProject = (project?: IProject): JSX.Element | null => {
                 <ProjectImage src={ProjectLogo} />
             </ST.ImageBlock>
             <ST.ProjectsData>
-                {Object.values(project.project).map((data: string) => <StandartLabel $white>{data}</StandartLabel>)}
+                {Object.keys(project.project).map((key: string) => {
+                    if (key === 'complexity') {
+                        const complexityNumber = project.project[key];
+                        return <StandartLabel $white>
+                            {complexityMapNumbers[complexityNumber]}
+                        </StandartLabel>
+                    }
+                    return <StandartLabel $white>{project.project[key]}</StandartLabel>
+                })}
             </ST.ProjectsData>
         </Left>
         <Right className="right">
