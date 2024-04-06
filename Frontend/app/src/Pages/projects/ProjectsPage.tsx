@@ -12,7 +12,7 @@ import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items
 import { H1, Title } from "~/src/UI-shared/Tokens";
 import { complexityMapNumbers, debounce, EUserRoles } from '~/src/a-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
+import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
 import ModuleTests from './ModuleTests';
 import { TRequestMethod } from '@api-package/types';
@@ -20,7 +20,7 @@ import APIRequest from '@api-package/index';
 import ProjectsListControls from './ProjectControls/ProjectsListControls';
 import { IProject } from './types';
 import StandardProject from './StandardProject';
-import { setProjectsAll, setShowModerated } from '~/src/features/store/projects';
+import { setDeletedProjects, setProjectsAll, setShowModerated } from '~/src/features/store/projects';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 import Menu from '~/src/UI-shared/Organisms/Menu';
 
@@ -68,14 +68,23 @@ const ProjectsPage = (): JSX.Element => {
     ];
     
     useEffect(() => {
-        const request = {
+        const requestAll = {
             uri: '/api/projects/get-all',
             method: TRequestMethod.GET,
         };
         (async () => {
-            await new APIRequest(request)
+            await new APIRequest(requestAll)
                 .doRequest()
                 .then(res => dispatch(setProjectsAll(res.payload)));
+        })();
+        const requestDeleted = {
+            uri: '/api/projects/get-deleted',
+            method: TRequestMethod.GET,
+        };
+        (async () => {
+            await new APIRequest(requestDeleted)
+                .doRequest()
+                .then(res => dispatch(setDeletedProjects(res.payload)));
         })();
     }, [])
 

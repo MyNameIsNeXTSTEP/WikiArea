@@ -11,10 +11,11 @@ export const Title = styled.h2<{ $white?: boolean }>`
     font-weight: 500;
 `;
 
-export const H1 = styled.h1<{ $white?: boolean}>`
+export const H1 = styled.h1<{ $white?: boolean, $underlined?: boolean}>`
     top: 0;
     margin-bottom: 20px;
     color: ${p => p.$white ? 'white' : purpleMainColor};
     font-size: xx-large;
     font-weight: 500;
+    text-decoration: ${p => p.$underlined ? 'underline' : 'none'};
 `;

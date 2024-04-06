@@ -3,6 +3,7 @@ import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import AddNewProjectPopup from "../AddNewProject/AddNewProjectPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowModerated } from "~/src/features/store/projects";
+import { RawPopupWithElements } from "~/src/Components/Popup/StandartPopupWithContent";
 
 interface IProps {
     role: string,
@@ -17,10 +18,11 @@ interface IProps {
 const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
     const dispatch = useDispatch();
     const showModerated = useSelector(state => state.projects.showModerated);
+    const deletedProjects = useSelector(state => state.projects.deleted);
     const addProject = () => {
-        // openPopup(true);
         updatePopupConfig({
             ...popupConfig,
+            id: 'add-new-project',
             isOpen: true,
             text: 'Добвление проекта',
             firstBtn: 'Добавить',
@@ -36,7 +38,14 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
     };
 
     const showDeletedProjects = () => {
-        
+        updatePopupConfig({
+            ...popupConfig,
+            id: 'show-deleted-projects',
+            isOpen: true,
+            text: 'Добвление проекта',
+            firstBtn: 'Добавить',
+            firstBtnOnClick: () => console.log(1),
+        })
     };
 
     switch (role) {
@@ -46,11 +55,16 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
             return <>
                 {
                     showModerated
-                        ? <StandartButton $width='260px' onClick={() => alert(1)}>Удалённые проекты</StandartButton>
+                        ? <>
+                            <StandartButton $width='260px' onClick={showDeletedProjects}>Удалённые проекты</StandartButton>
+                            {popupConfig.isOpen && popupConfig.id === 'show-deleted-projects' &&
+                            <RawPopupWithElements isOpen={popupConfig.isOpen} updateIsOpen={updatePopupConfig}
+                                textObj={{ title: 'Название проекта', text: 'Причина удаления' }} elements={deletedProjects}/>}
+                        </> 
                         : <>
                             <StandartButton $width='180px' onClick={addProject}>Добавить проект</StandartButton>
                             <StandartButton $width='260px' style={{ marginLeft: '20px'}} onClick={openProjectOnModeration}>Проекты на модерации</StandartButton>
-                            {popupConfig.isOpen && <AddNewProjectPopup onClose={() => updatePopupConfig({ isOpen: false })}/>}
+                            {popupConfig.isOpen && popupConfig.id === 'add-new-project' && <AddNewProjectPopup onClose={() => updatePopupConfig({ isOpen: false })}/>}
                         </>
                 }
             </>

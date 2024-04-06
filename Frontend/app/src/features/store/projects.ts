@@ -15,6 +15,7 @@ interface IProject {
 const initialState = {
     all: [] as IProject[],
     showModerated: false,
+    deleted: [] as IProject[],
 };
 
 const projectsSlice = createSlice({
@@ -27,8 +28,11 @@ const projectsSlice = createSlice({
         setShowModerated: (state, action) => {
             state.showModerated = action.payload;
         },
+        setDeletedProjects: (state, action) => {
+            state.deleted = action.payload;
+        },
     },
 });
 
-export const { setProjectsAll, setShowModerated } = projectsSlice.actions;
+export const { setProjectsAll, setShowModerated, setDeletedProjects } = projectsSlice.actions;
 export default projectsSlice.reducer;

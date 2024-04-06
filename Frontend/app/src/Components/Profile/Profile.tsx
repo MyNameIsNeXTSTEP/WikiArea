@@ -9,7 +9,7 @@ import WidgetsBlock from "./WidgetsBlock";
 import AdditionalDataControl from "./AdditionalDataControl";
 import { Title } from "~/src/UI-shared/Tokens";
 import { useEffect, useState } from "react";
-import StandartPopupWithContent from "../Popup/StandartPopupWithContent";
+import { StandartPopupWithContent } from "../Popup/StandartPopupWithContent";
 import { useDispatch, useSelector } from "react-redux";
 import Menu from '~/src/UI-shared/Organisms/Menu/index.js';
 import { getCookie } from "~/src/helpers";

@@ -3,6 +3,7 @@ import { ButtonRow } from "../BreakLine/styled";
 import DefaultPopup from "./DefaultPopup";
 import { H1 } from "~/src/UI-shared/Tokens";
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Cancel } from "./styled";
 
 export interface IPopupProps {
     isOpen?: boolean,
@@ -18,7 +19,18 @@ export interface IPopupProps {
     children?: ReactNode | ReactNode[] | JSX.Element | JSX.Element[],
 }
 
-const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image, width, height, ...rest }: IPopupProps): JSX.Element | null => {
+interface IRawPopupProps {
+    isOpen?: boolean,
+    textObj: Record<string, string>,
+    updateIsOpen?: any,
+    width?: string,
+    height?: string,
+    elements?: [any],
+    defaultText?: string,
+    children?: ReactNode | ReactNode[] | JSX.Element | JSX.Element[],
+}
+
+export const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image, width, height, ...rest }: IPopupProps): JSX.Element | null => {
     return isOpen ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
         <H1 $white>{text}</H1>
         {image}
@@ -37,4 +49,20 @@ const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, second
     </DefaultPopup> : null
 };
 
-export default StandartPopupWithContent;
+export const RawPopupWithElements = ({ updateIsOpen, isOpen, textObj, width, height, elements, defaultText }: IRawPopupProps): JSX.Element | null => {
+    return isOpen
+        ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
+            { updateIsOpen && <Cancel size={20} color={'white'} onClick={() => updateIsOpen({ isOpen: false })}/> }
+            {elements && elements?.length > 0
+                ? elements.map(el => {
+                    return <>
+                        <H1 $underlined $white>{textObj.title}</H1>
+                        <p>{el.name}</p>
+                        <H1 $underlined $white>{textObj.text}</H1>
+                        <p>{el.forText}</p>
+                    </>})
+                : <p>{defaultText}</p>
+            }
+        </DefaultPopup>
+        : null
+};

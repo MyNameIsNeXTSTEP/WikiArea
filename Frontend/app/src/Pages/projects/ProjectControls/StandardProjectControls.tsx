@@ -3,7 +3,7 @@ import { config } from './config';
 import { StandartButton } from '~/src/UI-shared/Atoms/Buttons';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import { useState } from 'react';
-import StandartPopupWithContent from '~/src/Components/Popup/StandartPopupWithContent';
+import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 
 const Controls = (): JSX.Element => {
     const role = useSelector(state => state.profile.auth.role);
