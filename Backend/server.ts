@@ -197,7 +197,12 @@ app.post('/api/projects/add-new-project', async (req, res) => {
         projectDescription,
         author,
     } = req.body;
-
+    // @todo: Code duplication, move to the shared lib between backend and frontend
+    const complexityMap = {
+        'лёгкий': 1,
+        'средний': 2,
+        'сложный': 3
+    }
     try {
         const dateNow = new Date();
         new DBQuery(mysql).insert('projects', {
@@ -206,7 +211,7 @@ app.post('/api/projects/add-new-project', async (req, res) => {
             description: projectDescription,
             topic: projectTopic,
             deadline: projectDeadlines,
-            complexity: projectComplexity,
+            complexity: complexityMap[projectComplexity.toLowerCase()],
             created_at: dateNow,
             is_moderated: 0,
         });
@@ -228,8 +233,9 @@ app.get('/api/projects/get-all', async (req, res) => {
 app.post('/api/projects/delete', async (req, res) => {
     try {
         const projectId = req.body.id;
+        const deletedProject = await new DBQuery(mysql).call(`SELECT * FROM projects WHERE id=${projectId}`);
         await new DBQuery(mysql).call(`DELETE FROM projects WHERE id=${projectId}`);
-
+        new DBQuery(mysql).insert('deleted_projects', deletedProject[0]);
         const deletedProjectExists = await new DBQuery(mysql).singleExists({
             clmn: 'name',
             table: 'projects',
