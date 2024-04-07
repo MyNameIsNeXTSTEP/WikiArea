@@ -18,7 +18,7 @@ import { restoreProfileMenu } from "~/src/features/store/menu";
 const Profile = (): JSX.Element => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(restoreProfileMenu());
+    dispatch(restoreProfileMenu(true));
   }, []);
   const menuBtnLogoSrc = useSelector(state => state.menu.buttons.src);
   const accessToken = getCookie('access_token');

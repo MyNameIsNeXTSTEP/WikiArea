@@ -66,9 +66,9 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
 
     return <>
         <DefaultPopup width={'450px'} height={'auto'}>
+            <Cancel size={20} color={'white'} onClick={onClose}/>
+            <Title>Добавление проекта</Title>
             <form id='post-form' onSubmit={formSumbit}>
-                <Cancel size={20} color={'white'} onClick={onClose}/>
-                <Title>Добавление проекта</Title>
                 <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Название проекта" />
                 <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Тема проекта" onClick={() => showTopicSelector(!isShowTopicSelector)}
                     style={{

@@ -10,7 +10,7 @@ import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { H1, Title } from "~/src/UI-shared/Tokens";
-import { complexityMapNumbers, debounce, EUserRoles } from '~/src/a-lib';
+import { complexityMapNumbers, debounce } from '~/src/a-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
@@ -38,7 +38,7 @@ interface IProjectDetails {
 const ProjectsPage = (): JSX.Element => {
     const dispatch = useDispatch();
     const role = useSelector(state => state.profile.auth.role);
-    let projects = useSelector(state => state.projects.all);
+    const projects = useSelector(state => state.projects.all);
     const [isShowSubscribedProjects, showSubscribedProjects] = useState(false);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     const [projectDetails, openProjectDetails] = useState({} as IProjectDetails);
@@ -124,8 +124,8 @@ const ProjectsPage = (): JSX.Element => {
         return <WidgetWith2Items $transparent>
             <Left width='auto'>
                 <Title>Проекты</Title>
-                <StandartInput onChange={debounce(doSearch, 300)} ref={searchRef} $bordered placeholder='Поиск'/>
-                <StandartInput onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
+                <StandartInput id='search-projects' onChange={debounce(doSearch, 300)} ref={searchRef} $bordered placeholder='Поиск'/>
+                <StandartInput id='filter-projects' onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
             </Left>
             <Right>
                 <ProjectsListControls
@@ -263,15 +263,16 @@ const ProjectsPage = (): JSX.Element => {
     };
 
     const GeneralProjectsList = (): JSX.Element | null => {
-        const dispatch = useDispatch();
         const showModerated = useSelector(state => state.projects.showModerated);
-        let ProjectComponent;
-        if (showModerated) {
-            projects = projects.filter(el => el.is_moderated === 1);
-            ProjectComponent = ({ ...props }) => <ProjectOnModeration {...props}/>
-        } else {
-            ProjectComponent = ({ ...props }) => <StandardProject {...props}/>;
-        };
+        useEffect(() => {
+            if (showModerated) {
+                updateProjectsToShow(
+                    projects.filter(el => el.is_moderated === 1)
+                );
+            } else {
+                updateProjectsToShow(projects);
+            };
+        }, []);
         useEffect(() => {
             // @todo: Need strong refactor on the menu handling logic !!!
             if (showModerated) {
@@ -280,30 +281,26 @@ const ProjectsPage = (): JSX.Element => {
                 dispatch(updateButtons([{
                     id: 1,
                     onClick: () => dispatch(setShowModerated(false)),
-                    src: 'Back',
+                    src: 'Profile',
                 }]));
             } else {
                 dispatch(updateMainMenuFlag(true));
                 dispatch(changeBackBtnVisability(true));
-                dispatch(updateButtons([{
-                    id: 1,
-                    onClick: () => dispatch(setShowModerated(false)),
-                    src: 'Back',
-                }]));
                 dispatch(setShowModerated(false));
             }
-        }, [showModerated]);
-        return !projectDetails.isOpen &&
-            <>
-                {projects.length
-                    ? projects.map((el: IProject) => 
-                        isShowSubscribedProjects
-                            ? <SubscribedProjects project={el}/>
-                            : <ProjectComponent project={el}/>
-                    )
-                    : "Совпадений не найдено"
-                }
-            </> || null;
+        }, [showModerated, projectsToShow]);
+        return !projectDetails.isOpen
+            ? <>
+                {projectsToShow.map((el: IProject) => {
+                    const ProjectComponent = showModerated
+                        ? ProjectOnModeration
+                        : StandardProject
+                    return isShowSubscribedProjects
+                        ? <SubscribedProjects project={el}/>
+                        : <ProjectComponent project={el}/>
+                })}
+            </>
+            : null
     };
 
     const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
@@ -312,7 +309,6 @@ const ProjectsPage = (): JSX.Element => {
             name: string,
             type: string,
         };
-        // const { testIsPassed } = useSelector(state => state.project.module.test);
         const [isDropDownOpen, openDropDown] = useState(false);
         const [isOpenFileUploadPopup, openFileUploadPopup] = useState(false);
         const [uploadedFile, setUploadedFile] = useState({} as TFileForReq);

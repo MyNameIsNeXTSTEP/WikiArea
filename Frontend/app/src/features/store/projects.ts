@@ -16,6 +16,7 @@ const initialState = {
     all: [] as IProject[],
     showModerated: false,
     deleted: [] as IProject[],
+    isOpenEditProjectPage: false,
 };
 
 const projectsSlice = createSlice({
@@ -31,8 +32,11 @@ const projectsSlice = createSlice({
         setDeletedProjects: (state, action) => {
             state.deleted = action.payload;
         },
+        setIsOpenEditProjectPage: (state, action) => {
+            state.isOpenEditProjectPage = action.payload;
+        }
     },
 });
 
-export const { setProjectsAll, setShowModerated, setDeletedProjects } = projectsSlice.actions;
+export const { setProjectsAll, setShowModerated, setDeletedProjects, setIsOpenEditProjectPage } = projectsSlice.actions;
 export default projectsSlice.reducer;

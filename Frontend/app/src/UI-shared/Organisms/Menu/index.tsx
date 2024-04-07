@@ -28,7 +28,6 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
   }));
   const [isOpen, openMenu] = useState(false);
 
-  const back = () => alert('back clicked');
   const exit = () => {
     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.clear();
@@ -41,6 +40,7 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
     { title: "Чат", route: "/chat" },
     { title: "Выход", route: "/", action: exit },
   ];
+ 
   return (
     <ST.Nav {...props}>
       <Left>Wikiarea</Left>

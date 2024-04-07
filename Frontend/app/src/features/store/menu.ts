@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface IMenuConfing {
   buttons: Array<{
-    props?: Record<string, string | number | boolean>,
-    src?: string,
-    onClick?: () => void,
     id: number,
+    onClick?: () => void,
+    src?: string,
+    props?: Record<string, string | number | boolean>,
   }>,
   isBackBtnDisabled: boolean,
   isMainMenu: boolean,
@@ -13,7 +13,7 @@ interface IMenuConfing {
 
 const initialState: IMenuConfing = {
   buttons: [
-    { id: 1, src: 'Profile' },
+    { id: 1, src: 'Profile', onClick: () => {} },
   ],
   isBackBtnDisabled: true,
   isMainMenu: true,
@@ -32,11 +32,11 @@ export const menuSlice = createSlice({
     updateMainMenuFlag: (state, action) => {
       state.isMainMenu = action.payload;
     },
-    restoreProfileMenu: (state) => {
+    restoreProfileMenu: (state, action) => {
       state.isMainMenu = true;
-      state.buttons = initialState.buttons;
       state.isBackBtnDisabled = true;
-    }
+      state.buttons = action.payload || initialState.buttons;
+    },
   }
 });
 

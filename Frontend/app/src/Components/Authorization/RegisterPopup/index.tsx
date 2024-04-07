@@ -80,8 +80,8 @@ const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
     };
     return isOpen
         ? <DefaultPopup>
+            <ST.Cancel size={20} color={'white'} onClick={close}/>
             <form id='post-form' onSubmit={formSumbit}>
-                <ST.Cancel size={20} color={'white'} onClick={close}/>
                 <ST.Title>Регистрация</ST.Title>
                 <StandartInput name={'email'} ref={email} placeholder="Введите email..." />
                 <StandartInput name={'login'} ref={login} placeholder="Придумайте логин..."/>
