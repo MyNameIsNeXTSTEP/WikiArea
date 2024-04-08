@@ -62,12 +62,11 @@ const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
         }
         
     };
-    const formSumbit = (e: React.FormEvent<HTMLFormElement>) => {
+    const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget as HTMLFormElement)
         let collectedFormFields = {} as TFormRequest;
         formData.forEach((value, property: string) => {
-            console.log(property, value);
             collectedFormFields[property] = value;
         });
         submitRegistration(collectedFormFields);
@@ -81,7 +80,7 @@ const RegisterPopup = ({ isOpen, close }: IProps): JSX.Element | null => {
     return isOpen
         ? <DefaultPopup>
             <ST.Cancel size={20} color={'white'} onClick={close}/>
-            <form id='post-form' onSubmit={formSumbit}>
+            <form id='post-form' onSubmit={formSubmit}>
                 <ST.Title>Регистрация</ST.Title>
                 <StandartInput name={'email'} ref={email} placeholder="Введите email..." />
                 <StandartInput name={'login'} ref={login} placeholder="Придумайте логин..."/>

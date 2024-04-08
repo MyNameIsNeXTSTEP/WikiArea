@@ -44,3 +44,18 @@ export const complexityMapNumbers = {
   'средний': 2,
   'сложный': 3
 }
+
+export interface IProjectDetails {
+    isOpen: boolean,
+    project?: IProject,
+}
+
+export interface IProject {
+    id: number,
+    author: string,
+    title: string,
+    topic: string,
+    complexity: string,
+    lifetime: string,
+    description: string,
+}

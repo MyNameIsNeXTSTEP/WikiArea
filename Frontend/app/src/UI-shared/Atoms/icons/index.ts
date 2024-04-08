@@ -1,5 +1,13 @@
 import styled, { css } from "styled-components";
 
+export const ImageBlock = styled.div<{ $abs?: boolean, width?: string }>`
+    display: flex;
+    position: ${p => p.$abs && 'absolute'};
+    width: ${p => p.width ?? '60px'};
+    margin-right: 20px;
+    align-self: flex-start;
+`;
+
 export const ProfileImage = styled.img`
   width: 60px;
   height: 60px;

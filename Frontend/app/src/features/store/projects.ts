@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IProjectDetails } from '~/src/a-lib';
 
 interface IProject {
     id: number,
@@ -17,10 +18,13 @@ const initialState = {
     showModerated: false,
     deleted: [] as IProject[],
     isOpenEditProjectPage: false,
+    isOpenSubscribedProjects: false,
+    projectDetailsPage: { isOpen: false } as IProjectDetails,
+    projectIdOnEdit: -1,
 };
 
 const projectsSlice = createSlice({
-    name: 'profile',
+    name: 'projects',
     initialState,
     reducers: {
         setProjectsAll: (state, action) => {
@@ -34,9 +38,27 @@ const projectsSlice = createSlice({
         },
         setIsOpenEditProjectPage: (state, action) => {
             state.isOpenEditProjectPage = action.payload;
+        },
+        setIsOpenSubscribedProjects: (state, action) => {
+            state.isOpenSubscribedProjects = action.payload;
+        },
+        setProjectDetailsPage: (state, action) => {
+            state.projectDetailsPage = action.payload;
+        },
+        setProjectIdOnEdit: (state, action) => {
+            state.projectIdOnEdit = action.payload;
         }
     },
 });
 
-export const { setProjectsAll, setShowModerated, setDeletedProjects, setIsOpenEditProjectPage } = projectsSlice.actions;
+export const {
+    setProjectsAll,
+    setShowModerated,
+    setDeletedProjects,
+    setIsOpenEditProjectPage,
+    setIsOpenSubscribedProjects,
+    setProjectDetailsPage,
+    setProjectIdOnEdit
+} = projectsSlice.actions;
+
 export default projectsSlice.reducer;

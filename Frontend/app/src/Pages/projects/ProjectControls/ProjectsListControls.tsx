@@ -15,7 +15,7 @@ interface IProps {
     popupConfig: any
 }
 
-const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
+const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig }: IProps): JSX.Element => {
     const dispatch = useDispatch();
     const showModerated = useSelector(state => state.projects.showModerated);
     const deletedProjects = useSelector(state => state.projects.deleted);
@@ -42,9 +42,6 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
             ...popupConfig,
             id: 'show-deleted-projects',
             isOpen: true,
-            text: 'Добвление проекта',
-            firstBtn: 'Добавить',
-            firstBtnOnClick: () => console.log(1),
         })
     };
 

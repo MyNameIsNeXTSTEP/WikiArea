@@ -1,13 +1,15 @@
-import { ProjectImage } from '~/src/UI-shared/Atoms/icons';
+import { ImageBlock, ProjectImage } from '~/src/UI-shared/Atoms/icons';
 import * as ST from './styled';
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { Left, Right } from '~/src/UI-shared/Atoms/Containers';
 import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
 import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
-import { IProject } from './types';
+import { IProject } from '~/src/a-lib/index';
 import Controls from './ProjectControls/StandardProjectControls';
 import { complexityMapNumbers } from '~/src/a-lib';
 
+// @todo: Use an IProps with { project } destructuring in the component props acceptance
+// for accessing props of a project directly, instead of `project.project`
 const StandardProject = (project?: IProject): JSX.Element | null => {
     if (!project) {
         return null;
@@ -15,9 +17,9 @@ const StandardProject = (project?: IProject): JSX.Element | null => {
 
     return <WidgetWith2Items $rounded height='180px'>
         <Left height='100%' className="left">
-            <ST.ImageBlock $abs className="profile-block">
+            <ImageBlock $abs className="profile-block">
                 <ProjectImage src={ProjectLogo} />
-            </ST.ImageBlock>
+            </ImageBlock>
             <ST.ProjectsData>
                 {Object.keys(project.project).map((key: string) => {
                     if (key === 'complexity') {
@@ -31,7 +33,7 @@ const StandardProject = (project?: IProject): JSX.Element | null => {
             </ST.ProjectsData>
         </Left>
         <Right className="right">
-            <Controls/>
+            <Controls project={project.project}/>
         </Right>
     </WidgetWith2Items>
 };
