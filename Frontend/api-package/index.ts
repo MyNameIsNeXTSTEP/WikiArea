@@ -5,7 +5,7 @@ class APIRequest {
         this.request = request;
     }
     public async doRequest<ResponseData>(): Promise<any> {
-        const baseURL = 'http://localhost:3000';
+        const baseURL = 'http://localhost:5002';
         const requestConfig = this.getConfig(this.request);
         try {
             const { uri, queryParams } = this.request;

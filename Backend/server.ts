@@ -6,11 +6,11 @@ import bodyParser from 'body-parser';
 import { DBQuery } from './src/db';
 import { createHash } from 'crypto';
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5001;
 const app = express();
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5002');
     next();
 });
 app.use(
@@ -256,6 +256,23 @@ app.post('/api/projects/delete', async (req, res) => {
         res.status(200).send({ ok: true });
     } catch (error) {
         res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
+app.post('/api/projects/edit', async (req, res) => {
+    try {
+        // const { name, topic, deadline, complexity, description } = req.body;
+        const projectForEdition = req.body;
+        console.log(projectForEdition);
+        new DBQuery(mysql).replace('projects',
+            {
+                ...projectForEdition,
+                created_at: new Date(),
+                is_moderated: 0, // set to 0 because admin should review an edited project
+            });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error editing the project in the DB', error });
     }
 });
 

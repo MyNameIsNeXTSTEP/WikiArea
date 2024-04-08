@@ -55,4 +55,8 @@ export class DBQuery {
         const query = `INSERT INTO ${table} SET ` + this.dbConn.escape(insertObj);
         this.call(query);
     }
+    public replace<T>(table: string, insertObj: T) {
+        const query = `REPLACE INTO ${table} SET ` + this.dbConn.escape(insertObj);
+        this.call(query);
+    }
 };
