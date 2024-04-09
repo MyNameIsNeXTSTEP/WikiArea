@@ -9,6 +9,13 @@ import { createHash } from 'crypto';
 const PORT = process.env.PORT || 5001;
 const app = express();
 
+// @todo: Code duplication, move to the shared lib between backend and frontend
+const complexityMap = {
+    'лёгкий': 1,
+    'средний': 2,
+    'сложный': 3
+}
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5002');
     next();
@@ -197,12 +204,6 @@ app.post('/api/projects/add-new-project', async (req, res) => {
         projectDescription,
         author,
     } = req.body;
-    // @todo: Code duplication, move to the shared lib between backend and frontend
-    const complexityMap = {
-        'лёгкий': 1,
-        'средний': 2,
-        'сложный': 3
-    }
     try {
         const dateNow = new Date();
         new DBQuery(mysql).insert('projects', {
@@ -261,12 +262,14 @@ app.post('/api/projects/delete', async (req, res) => {
 
 app.post('/api/projects/edit', async (req, res) => {
     try {
-        // const { name, topic, deadline, complexity, description } = req.body;
-        const projectForEdition = req.body;
-        console.log(projectForEdition);
+        const {id, name, description, deadline, projectComplexity } = req.body;
         new DBQuery(mysql).replace('projects',
             {
-                ...projectForEdition,
+                id,
+                name,
+                description,
+                deadline,
+                complexity: complexityMap[projectComplexity.toLowerCase()],
                 created_at: new Date(),
                 is_moderated: 0, // set to 0 because admin should review an edited project
             });

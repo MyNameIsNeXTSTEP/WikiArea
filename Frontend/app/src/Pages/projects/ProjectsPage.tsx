@@ -157,7 +157,7 @@ const ProjectsPage = (): JSX.Element => {
             openModuleTests(true);
             dispatch(setProjectDetailsPage({ isOpen: false }));
         };
-        const processUploadedImage = (files: FileList | null) => { // @todo: fix the bug when form isn't submotable on the first click (async usaState issue)
+        const processUploadedFile = (files: FileList | null) => { // @todo: fix the bug when form isn't submotable on the first click (async usaState issue)
             if (!files) throw new Error('No image was found in the request form');
             let reader = new FileReader();
             reader.readAsDataURL(files[0])
@@ -229,7 +229,7 @@ const ProjectsPage = (): JSX.Element => {
                                         type='file'
                                         id='upload-file'
                                         style={{ display: 'none' }}
-                                        onChange={event => processUploadedImage(event.target.files)}
+                                        onChange={event => processUploadedFile(event.target.files)}
                                     />
                                 </StandartButton>
                                 <StandartButton className="download-button">Удалить</StandartButton>

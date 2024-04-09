@@ -6,3 +6,7 @@ export const Form = styled.form`
     height: 100px;
     margin-left: 130px;
 `;
+
+export const ProjectImageUpload = styled.input`
+    display: none;
+`;

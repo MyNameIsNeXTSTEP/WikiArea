@@ -80,7 +80,13 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
                         marginTop: isShowTopicSelector ? '100px' : ''
                     }}
                 />
-                <StandartInput name={'projectComplexity'} ref={projectComplexity} value={selectedComplexity} placeholder="Уровень сложности проекта" onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}/>
+                <StandartInput
+                    name={'projectComplexity'}
+                    ref={projectComplexity}
+                    value={selectedComplexity}
+                    placeholder="Уровень сложности проекта"
+                    onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}
+                />
                 <ComplexitySelector updateComplexity={selectComplexity} isOpen={isShowComplexitySelector}/>
                 <StandartInput name={'projectDescription'} ref={projectDescription} placeholder="Описани проекта" />
                 <ButtonRow>

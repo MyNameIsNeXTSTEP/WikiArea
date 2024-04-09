@@ -28,7 +28,7 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
   }));
   const [isOpen, openMenu] = useState(false);
 
-  const exit = () => {
+  const onExit = () => {
     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.clear();
   };
@@ -38,7 +38,7 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
     { title: "Проекты", route: "/projects" },
     { title: "Аналитика", route: "/analytics" },
     { title: "Чат", route: "/chat" },
-    { title: "Выход", route: "/", action: exit },
+    { title: "Выход", route: "/", action: onExit },
   ];
  
   return (

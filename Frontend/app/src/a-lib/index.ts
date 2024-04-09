@@ -58,4 +58,10 @@ export interface IProject {
     complexity: string,
     lifetime: string,
     description: string,
-}
+};
+
+export type imageForFormReq = {
+  imgBuffToSave: string | ArrayBuffer,
+  imgName: string,
+  type: string,
+};
