@@ -26,9 +26,9 @@ export const Right = styled.span<{ width?: string }>`
     }
 `;
 
-export const ButtonRow = styled.span`
+export const ButtonRow = styled.span<{ width?: string }>`
     display: flex;
-    width: fit-content;
+    width: ${p => p.width ?? 'fit-content'};
     flex-direction: row;
     justify-content: space-between;
     gap: 10px;

@@ -4,11 +4,14 @@ import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
 import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { Title } from "~/src/UI-shared/Tokens";
 
+interface IProps {
+    projectId: number,
+}
 
-const AddModule = (): JSX.Element => {
+const AddModule = ({ projectId }: IProps): JSX.Element => {
     return <>
         <WidgetWith2Items $rounded height='150px'>
-            <Title $white>ID</Title>
+            <Title $white style={{ marginLeft: '20px'}}>{projectId}.</Title>
             <StandartInput
                 name={'name'}
                 placeholder="Название модуля"
@@ -18,7 +21,7 @@ const AddModule = (): JSX.Element => {
                     marginLeft: '50px',
                 }}
             />
-            <Left height='50%' width='320px'
+            <Left height='50%' width='25%'
                 style={{
                     position: 'absolute',
                     right: '230px',
@@ -31,7 +34,7 @@ const AddModule = (): JSX.Element => {
                     <StandartButton $whiteBordered $width="200px">Добавить задание</StandartButton>
                 </ButtonRow>
             </Left>
-            <Right width='300px'
+            <Right width='25%'
                 style={{
                     position: 'absolute',
                     right: '230px',
