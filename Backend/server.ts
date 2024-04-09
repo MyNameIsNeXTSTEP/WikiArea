@@ -6,11 +6,18 @@ import bodyParser from 'body-parser';
 import { DBQuery } from './src/db';
 import { createHash } from 'crypto';
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5001;
 const app = express();
 
+// @todo: Code duplication, move to the shared lib between backend and frontend
+const complexityMap = {
+    'лёгкий': 1,
+    'средний': 2,
+    'сложный': 3
+}
+
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5002');
     next();
 });
 app.use(
@@ -197,12 +204,6 @@ app.post('/api/projects/add-new-project', async (req, res) => {
         projectDescription,
         author,
     } = req.body;
-    // @todo: Code duplication, move to the shared lib between backend and frontend
-    const complexityMap = {
-        'лёгкий': 1,
-        'средний': 2,
-        'сложный': 3
-    }
     try {
         const dateNow = new Date();
         new DBQuery(mysql).insert('projects', {
@@ -256,6 +257,25 @@ app.post('/api/projects/delete', async (req, res) => {
         res.status(200).send({ ok: true });
     } catch (error) {
         res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
+app.post('/api/projects/edit', async (req, res) => {
+    try {
+        const {id, name, description, deadline, projectComplexity } = req.body;
+        new DBQuery(mysql).replace('projects',
+            {
+                id,
+                name,
+                description,
+                deadline,
+                complexity: complexityMap[projectComplexity.toLowerCase()],
+                created_at: new Date(),
+                is_moderated: 0, // set to 0 because admin should review an edited project
+            });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error editing the project in the DB', error });
     }
 });
 

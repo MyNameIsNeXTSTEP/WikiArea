@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import AddNewProjectPopup from "../AddNewProject/AddNewProjectPopup";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowModerated } from "~/src/features/store/projects";
+import { setIsOpenEditProjectPage, setShowModerated } from "~/src/features/store/projects";
 import { RawPopupWithElements } from "~/src/Components/Popup/StandartPopupWithContent";
 
 interface IProps {
@@ -11,11 +11,10 @@ interface IProps {
     // actual other roles handlers are present just inside this component
     controlRoleActions: Record<string, Function | Record<string, Function>>,
     updatePopupConfig: Dispatch<SetStateAction<any>>,
-    openPopup: Dispatch<SetStateAction<boolean>>,
     popupConfig: any
 }
 
-const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig, openPopup }: IProps): JSX.Element => {
+const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, popupConfig }: IProps): JSX.Element => {
     const dispatch = useDispatch();
     const showModerated = useSelector(state => state.projects.showModerated);
     const deletedProjects = useSelector(state => state.projects.deleted);
@@ -32,6 +31,7 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
 
     const openProjectOnModeration = () => {
         dispatch(setShowModerated(true))
+        dispatch(setIsOpenEditProjectPage(false));
     };
 
     const moderateProjectByAdmin = () => {
@@ -42,9 +42,6 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
             ...popupConfig,
             id: 'show-deleted-projects',
             isOpen: true,
-            text: 'Добвление проекта',
-            firstBtn: 'Добавить',
-            firstBtnOnClick: () => console.log(1),
         })
     };
 

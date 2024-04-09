@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { purpleMainColor } from "../../Tokens";
 
-export const StandartInput = styled.input<{marginDensitive?: boolean, $bordered?: boolean }>`
-    width: 200px;
-    height: 25px;
+export const StandartInput = styled.input<{marginDensitive?: boolean, $bordered?: boolean, width?: string, height?: string }>`
+    width: ${p => p.width ?? '200px'};
+    height: ${p => p.height ?? '25px'};
     border-radius: 12.5px;
     background-color: white;
     text-decoration: none;

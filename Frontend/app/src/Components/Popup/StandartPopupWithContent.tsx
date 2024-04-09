@@ -52,7 +52,7 @@ export const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn,
 export const RawPopupWithElements = ({ updateIsOpen, isOpen, textObj, width, height, elements, defaultText }: IRawPopupProps): JSX.Element | null => {
     return isOpen
         ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
-            { updateIsOpen && <Cancel size={20} color={'white'} onClick={() => updateIsOpen({ isOpen: false })}/> }
+            {updateIsOpen && <Cancel size={20} color={'white'} onClick={() => updateIsOpen({ isOpen: false })}/> }
             {elements && elements?.length > 0
                 ? elements.map(el => {
                     return <>

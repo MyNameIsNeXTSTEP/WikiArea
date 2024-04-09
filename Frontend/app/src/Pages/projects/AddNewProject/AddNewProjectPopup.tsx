@@ -66,9 +66,9 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
 
     return <>
         <DefaultPopup width={'450px'} height={'auto'}>
+            <Cancel size={20} color={'white'} onClick={onClose}/>
+            <Title>Добавление проекта</Title>
             <form id='post-form' onSubmit={formSumbit}>
-                <Cancel size={20} color={'white'} onClick={onClose}/>
-                <Title>Добавление проекта</Title>
                 <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Название проекта" />
                 <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Тема проекта" onClick={() => showTopicSelector(!isShowTopicSelector)}
                     style={{
@@ -80,7 +80,13 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
                         marginTop: isShowTopicSelector ? '100px' : ''
                     }}
                 />
-                <StandartInput name={'projectComplexity'} ref={projectComplexity} value={selectedComplexity} placeholder="Уровень сложности проекта" onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}/>
+                <StandartInput
+                    name={'projectComplexity'}
+                    ref={projectComplexity}
+                    value={selectedComplexity}
+                    placeholder="Уровень сложности проекта"
+                    onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}
+                />
                 <ComplexitySelector updateComplexity={selectComplexity} isOpen={isShowComplexitySelector}/>
                 <StandartInput name={'projectDescription'} ref={projectDescription} placeholder="Описани проекта" />
                 <ButtonRow>

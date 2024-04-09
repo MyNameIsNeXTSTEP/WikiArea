@@ -1,13 +1,5 @@
 import styled from "styled-components";
 
-export const ImageBlock = styled.div<{ $abs?: boolean, width?: string }>`
-    display: flex;
-    position: ${p => p.$abs && 'absolute'};
-    width: ${p => p.width ?? '60px'};
-    margin-right: 20px;
-    align-self: flex-start;
-`;
-
 export const ProjectsData = styled.div`
     height: 100%;
     display: flex;
