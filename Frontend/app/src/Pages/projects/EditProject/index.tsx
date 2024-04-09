@@ -5,6 +5,7 @@ import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/sr
 import { setIsOpenEditProjectPage } from '~/src/features/store/projects';
 import { StandartButton } from '~/src/UI-shared/Atoms/Buttons';
 import AddModule from '../ProjectModules/AddModule';
+import { ButtonRow } from '~/src/UI-shared/Atoms/Containers';
 
 const EditProjectPage = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -20,17 +21,22 @@ const EditProjectPage = (): JSX.Element => {
     }, [projectIdOnEdit])
     return <>
         <ProjectEditWidget projectId={projectIdOnEdit}/>
-        <StandartButton
-            $width='200px'
-            style={{
-                right: '180px',
-                position: 'absolute'
-            }}
-            onClick={() => alert(1)}
-        >
-            Добавить модуль
-        </StandartButton>
-        <AddModule/>
+        <ButtonRow width='80%' style={{
+            marginRight: 'auto',
+            marginLeft: 'auto',
+        }}>
+            <StandartButton
+                $width='200px'
+                style={{
+                    right: '180px',
+                    marginLeft: 'auto'
+                }}
+                onClick={() => alert(1)}
+            >
+                Добавить модуль
+            </StandartButton>
+        </ButtonRow>
+        <AddModule projectId={projectIdOnEdit}/>
     </>
 };
 
