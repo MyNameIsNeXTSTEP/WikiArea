@@ -1,6 +1,8 @@
 ## Installation
 Pull the project: `git pull <this repo-url>.git`
 
+**You need the latest Node, typescript, yarn installed.**
+
 Each folder *Frontend* and *Backend* need to be installed with yard:
 
 - Go to the *Backend* dir and install:
