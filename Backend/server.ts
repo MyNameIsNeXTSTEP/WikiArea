@@ -308,6 +308,15 @@ app.post('/api/projects/edit', async (req, res) => {
     }
 });
 
+app.get('/api/users/get-all', async (req, res) => {
+    try {
+        const users = await new DBQuery(mysql).call('SELECT * FROM users');
+        res.status(200).send(users);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error editing the project in the DB', error });
+    }
+});
+
 app.get('/api', (req, res) => {
     res.json({ message: 'Backend API is up and accessable' });
 });

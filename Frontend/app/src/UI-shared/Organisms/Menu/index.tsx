@@ -32,10 +32,13 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.clear();
   };
-
+  const menuDoubleItem = {
+    titile: role !== 'admins' ? 'Проекты' : 'Пользователи',
+    route: role !== 'admins' ? '/projects' : '/other-users'
+  }
   const menuItems: IMenuItem[] = [
     { title: "Профиль", route: `/user/${role}` },
-    { title: "Проекты", route: "/projects" },
+    { title: menuDoubleItem.titile, route: menuDoubleItem.route },
     { title: "Аналитика", route: "/analytics" },
     { title: "Чат", route: "/chat" },
     { title: "Выход", route: "/", action: onExit },

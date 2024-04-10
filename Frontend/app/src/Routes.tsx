@@ -5,6 +5,7 @@ import ProjectsPage from "./Pages/projects/ProjectsPage";
 import AnalyticsPage from "./Pages/analytics/AnalyticsPage";
 import ChatPage from "./Pages/chat/ChatPage";
 import Menu from "./UI-shared/Organisms/Menu";
+import OtherUsers from "./Pages/admin/OtherUsers";
 
 const AppRoutes = () => {
     return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
                 <Route path="/" element={<MainPage/>} />
                 <Route path="/user/:role" element={<UserPage/>} />
                 <Route path="/projects" element={<ProjectsPage/>} />
+                <Route path="/other-users" element={<OtherUsers/>} />
                 <Route path="/analytics" element={<AnalyticsPage/>} />
                 <Route path="/chat" element={<ChatPage/>} />
             </Routes>

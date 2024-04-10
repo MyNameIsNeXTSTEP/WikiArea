@@ -6,21 +6,35 @@ import SliderList from '~/src/Components/Slider/SliderList';
 import { useState } from 'react';
 import AuthPopup from '~/src/Components/Authorization/AuthPopup';
 import RegisterPopup from '~/src/Components/Authorization/RegisterPopup';
-import { getCookie } from '~/src/helpers';
+import { useDispatch } from 'react-redux';
+import APIRequest from '@api-package/index';
+import { setUsersData } from '~/src/features/store/users';
+import { TRequestMethod } from '@api-package/types';
 
 const MainPage = (): JSX.Element => {
+    const dispatch = useDispatch();
+    const getAllUsers = async () => {
+        const res = await new APIRequest({
+            uri: '/api/users/get-all',
+            method: TRequestMethod.GET,
+        }).doRequest();
+        if (res.isSuccess && res.statusCode === 200) {
+            const set = res.payload.map(user => ({
+                role: user.role,
+                email: user.email,
+                login: user.login,
+            }));
+            console.log(set, 'set');
+            dispatch(setUsersData(set))
+        }
+    };
+    useEffect(() => {
+        localStorage.clear();
+        document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        (async () => await getAllUsers())();
+    }, []);
     const [isAuthPopupOpen, updateIsAuthPopupOpen] = useState(false);
     const [isRegisterPopupOpen, updateIsRegisterPopupOpen] = useState(false);
-    // const [lkStatus, updateLkStatus] = useState('');
-    // const accessToken = getCookie('access_token');
-    // useEffect(() => {
-    //     if (accessToken && accessToken?.length > 0) {
-    //         updateLkStatus('Вы в авторизованной зоне');
-    //         return;
-    //     } else {
-    //         updateLkStatus('Вы в неавторизованной зоне');
-    //     }
-    // }, []);
     return (
         <ST.PageContainer className='page_container'>
             {/* {lkStatus} */}
