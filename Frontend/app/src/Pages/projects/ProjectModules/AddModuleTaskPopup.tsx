@@ -1,5 +1,5 @@
 import * as ST from './styled';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { setProjectModulesAll } from '~/src/features/store/projectModule';
@@ -15,7 +15,7 @@ const AddModuleTaskPopup = ({ projectId, isOpen, updateIsOpen }: IProps): JSX.El
     const [taskModuleText, setTaskModuleText] = useState('');
     const handleAddClick = () => {
         dispatch(setProjectModulesAll({
-            id: projectId,
+            projectId,
             text: taskModuleText,
         }));
     };

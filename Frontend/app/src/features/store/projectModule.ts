@@ -1,16 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface IProjectModule {
-    id: number,
-    name: string,
-    description: string,
-    createdAt: string,
-    author: string,
-    topic: string,
-    deadline: string,
-    complexity: number,
-    isModerated: number,
-};
+import type { IProjectModule } from "~/src/a-lib";
 
 interface IInitialState {
     all: IProjectModule[],
@@ -42,6 +31,9 @@ const ModulesSlice = createSlice({
         setModuleTests: (state, action) => {
             state.tests.push(action.payload);
         },
+        setDeleteModule: (state, action) => {
+            state.all = state.all.filter(el => el.projectId !== action.payload)
+        }
     },
 });
 
@@ -50,6 +42,7 @@ export const {
     setProjectModulesDeleted,
     setIsOpenAddModuleBlock,
     setModuleTests,
+    setDeleteModule,
 } = ModulesSlice.actions;
 
 export default ModulesSlice.reducer;

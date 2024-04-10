@@ -65,3 +65,8 @@ export type imageForFormReq = {
   imgName: string,
   type: string,
 };
+
+export type IProjectModule = {
+  projectId: number,
+  text: string,
+};

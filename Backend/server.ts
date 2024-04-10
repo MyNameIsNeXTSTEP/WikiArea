@@ -148,6 +148,7 @@ app.post('/api/auth', async (req, res) => {
 app.post('/api/upload-test-file', async (req, res) => {
     console.log(req.body.file);
     const body = req.body;
+    const projectId = body.projectId;
     let base64Data = body.file.buffToSave.replace(/^data:text\/plain;base64,/, "");
     base64Data = body.file.buffToSave.replace(/^data:application\/pdf;base64,/, "");
     base64Data = body.file.buffToSave.replace(/^data:application\/vnd.openxmlformats-officedocument.wordprocessingml\/document;base64,/, "");
@@ -167,7 +168,35 @@ app.post('/api/upload-test-file', async (req, res) => {
             err && console.log(err, '__File_SAVING_ERROR__');
         }
     );
-    // new DBQuery(mysql).insert<ITask>('tasks', { ...body, image: body.image.imgName });
+    // new DBQuery(mysql).insert('module_files', { name, module_task_id: body.moduleTaskId  });
+    res.statusCode = 200; // @todo: check data first
+    res.send({ ok: true });
+});
+
+app.post('/api/upload-module-file', async (req, res) => {
+    console.log(req.body.file);
+    const body = req.body;
+    const projectId = body.projectId;
+    let base64Data = body.file.buffToSave.replace(/^data:text\/plain;base64,/, "");
+    base64Data = body.file.buffToSave.replace(/^data:application\/pdf;base64,/, "");
+    base64Data = body.file.buffToSave.replace(/^data:application\/vnd.openxmlformats-officedocument.wordprocessingml\/document;base64,/, "");
+    const fileBuffer = Buffer.from(base64Data, 'base64');
+    const fileType = (function () {
+        const type = body.file.type;
+        if (type === 'plain') return 'text';
+        if (type.includes('pdf')) return 'pdf';
+        if (type.includes('document')) return 'doc';
+    })();
+    const name = body.file.name.split('.')[0];
+    fs.writeFile(
+        `./uploaded-files/module-task-files/${name}_${projectId}_${new Date()}.${fileType}`,
+        fileBuffer,
+        'utf-8',
+        err => {
+            err && console.log(err, '__File_SAVING_ERROR__');
+        }
+    );
+    new DBQuery(mysql).insert('module_files', { name, module_task_id: body.moduleTaskId  });
     res.statusCode = 200; // @todo: check data first
     res.send({ ok: true });
 });

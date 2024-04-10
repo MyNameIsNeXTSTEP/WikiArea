@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import { ButtonRow, Left, Right } from "~/src/UI-shared/Atoms/Containers";
 import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
-import { Title } from "~/src/UI-shared/Tokens";
+import { purpleMainColor, Title } from "~/src/UI-shared/Tokens";
 
 export const ModuleInput = styled(StandartInput)<{$noShifts?: boolean}>`
     position: absolute;
@@ -10,8 +10,16 @@ export const ModuleInput = styled(StandartInput)<{$noShifts?: boolean}>`
     margin-left: ${p => !p.$noShifts ? '50px' : 'unset'};
 `;
 
-export const TaskMaterialsInput = styled(StandartInput)<{$noShifts?: boolean}>`
+export const TaskText = styled.div<{$noShifts?: boolean}>`
     position: absolute;
+    text-align: start;
+    padding-left: 10px;
+    padding-top: 5px;
+    width: 99%;
+    min-height: 40px;
+    height: auto;
+    overflow: scroll;
+    border: 2px solid ${purpleMainColor};
     left: ${p => !p.$noShifts ? 0 : 'unset'};
     margin-left: ${p => !p.$noShifts ? '50px' : 'unset'};
     border-radius: 20px;
@@ -65,4 +73,4 @@ export const AddTaskModuleText = styled.textarea`
     border: none !important;
     outline: none;
     background: white;
-`
+`;
