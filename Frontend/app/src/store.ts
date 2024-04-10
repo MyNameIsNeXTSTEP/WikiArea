@@ -5,6 +5,7 @@ import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist
 import profileReducer from "./features/store/profile";
 import projectsReducer from "./features/store/projects";
 import menuReducer from "./features/store/menu";
+import modulesReducer from "./features/store/projectModule";
 
 const persistConfig = {
     key: 'root',
@@ -15,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     profile: profileReducer,
     projects: projectsReducer,
+    modules: modulesReducer,
     menu: menuReducer,
 });
 

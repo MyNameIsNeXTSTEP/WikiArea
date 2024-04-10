@@ -8,7 +8,6 @@ export const Wrapper = styled.div<{
   height?: string,
   $smallMargins?: boolean,
   $fullWidth?: boolean,
-  $override?: boolean,
 }>`
   display: flex;
   justify-content: space-between;

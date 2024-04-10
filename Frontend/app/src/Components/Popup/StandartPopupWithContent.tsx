@@ -12,7 +12,7 @@ export interface IPopupProps {
     secondBtn?: string
     firstBtnOnClick?: () => void,
     secondBtnOnClick?: () => void,
-    updateIsOpen?: Dispatch<SetStateAction<boolean>>,
+    updateIsOpen: Dispatch<SetStateAction<boolean>>,
     image?: ReactNode | null | undefined,
     width?: string,
     height?: string,
@@ -22,7 +22,7 @@ export interface IPopupProps {
 interface IRawPopupProps {
     isOpen?: boolean,
     textObj: Record<string, string>,
-    updateIsOpen?: any,
+    updateIsOpen?: Dispatch<SetStateAction<any>>,
     width?: string,
     height?: string,
     elements?: [any],
@@ -30,10 +30,22 @@ interface IRawPopupProps {
     children?: ReactNode | ReactNode[] | JSX.Element | JSX.Element[],
 }
 
-export const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn, secondBtn, firstBtnOnClick, secondBtnOnClick, image, width, height, ...rest }: IPopupProps): JSX.Element | null => {
+export const StandartPopupWithContent = ({
+    updateIsOpen,
+    isOpen, text,
+    firstBtn,
+    secondBtn,
+    firstBtnOnClick,
+    secondBtnOnClick,
+    image,
+    width,
+    height,
+    ...rest
+}: IPopupProps): JSX.Element | null => {
     return isOpen ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
         <H1 $white>{text}</H1>
         {image}
+        {rest.children}
         <ButtonRow style={{
             paddingBottom: 10,
             paddingTop: 20,
@@ -43,7 +55,6 @@ export const StandartPopupWithContent = ({ updateIsOpen, isOpen, text, firstBtn,
         }}>
             { firstBtn && <StandartButton $white onClick={firstBtnOnClick}>{firstBtn}</StandartButton> }
             { secondBtn && <StandartButton $white onClick={secondBtnOnClick}>{secondBtn}</StandartButton> }
-            {rest.children}
             <StandartButton $white onClick={() => updateIsOpen(!isOpen)}>Отмена</StandartButton>
         </ButtonRow>
     </DefaultPopup> : null
