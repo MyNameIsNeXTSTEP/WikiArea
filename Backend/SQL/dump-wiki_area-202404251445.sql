@@ -29,7 +29,7 @@ CREATE TABLE `access_tokens` (
   `expiration_date` datetime DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `access_tokens` (
 
 LOCK TABLES `access_tokens` WRITE;
 /*!40000 ALTER TABLE `access_tokens` DISABLE KEYS */;
-INSERT INTO `access_tokens` VALUES ('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:09:22',62),('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:10:20',63),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 01:57:49',64),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 02:44:28',65),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log2','log3','2024-04-05 02:47:37',66),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 02:52:33',67),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 16:53:57',68),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log3','log3','2024-04-05 22:16:52',69),('55b98320882ed11cb2847d3ff1f70e1c18ee79f5ae0b5a9a2cbdbbeff2db3e38','log4','log4','2024-04-10 23:07:30',70);
+INSERT INTO `access_tokens` VALUES ('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:09:22',62),('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:10:20',63),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 01:57:49',64),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 02:44:28',65),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log2','log3','2024-04-05 02:47:37',66),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 02:52:33',67),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 16:53:57',68),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log3','log3','2024-04-05 22:16:52',69),('55b98320882ed11cb2847d3ff1f70e1c18ee79f5ae0b5a9a2cbdbbeff2db3e38','log4','log4','2024-04-10 23:07:30',70),('9849fb510b96926fc3671b327041c1ec89da2f4cde2a99f6dae5b5add5382299','log9','log9','2024-04-10 23:35:14',71),('707ba0f804a2a8206eb95eb26f98ee1229b782ca2c0163b1fae111c70fa0ca85','pp2','pp2','2024-04-10 23:38:40',72),('d6b95f11373d4121efa628e82dd3670a63ca4f85b578b3b2fdb6d101c73f40ce','pp3','pp3','2024-04-10 23:42:55',73),('95a4aa42f9d48d5aa917649d44c87b8a9fd726beb8921ea6a6ad26291ade7add','log0','log0','2024-04-25 13:45:52',74),('e83d0f2797226acc0b52198a0cf8387855a9428c7e5b91a913d7c501cec6d6a5','log99','log99','2024-04-25 16:17:45',75);
 /*!40000 ALTER TABLE `access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +57,7 @@ CREATE TABLE `admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `admins` (
 
 LOCK TABLES `admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT INTO `admins` VALUES (NULL,'log1','log1','2024-04-05',1,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log4','log4','2024-04-10',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb');
+INSERT INTO `admins` VALUES (NULL,'log1','log1','2024-04-05',1,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log4','log4','2024-04-10',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log99','log99','2024-04-25',3,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +117,7 @@ CREATE TABLE `messages` (
   `user_login` varchar(100) DEFAULT NULL,
   `message_id` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,6 +126,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+INSERT INTO `messages` VALUES (1,'student','2024-04-10 18:43:39','hi','user123','c6562e1466ad'),(2,'student','2024-04-10 18:43:42','test','user123','a2d095b7d562'),(3,'student','2024-04-10 18:43:45','oppo','user123','b35f7bcaa30e');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,6 +155,33 @@ LOCK TABLES `module_files` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `project_modules`
+--
+
+DROP TABLE IF EXISTS `project_modules`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(250) DEFAULT NULL,
+  `exercise` text,
+  `project_id` int(11) DEFAULT NULL,
+  `material_id` int(11) DEFAULT NULL,
+  `test_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `project_modules`
+--
+
+LOCK TABLES `project_modules` WRITE;
+/*!40000 ALTER TABLE `project_modules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project_modules` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `projects`
 --
 
@@ -167,7 +195,7 @@ CREATE TABLE `projects` (
   `created_at` date DEFAULT NULL,
   `author` varchar(100) DEFAULT NULL,
   `topic` varchar(300) DEFAULT NULL,
-  `deadline` date DEFAULT NULL,
+  `deadline` varchar(100) DEFAULT NULL,
   `complexity` int(11) DEFAULT NULL,
   `is_moderated` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -180,7 +208,7 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` VALUES (1,'','','2024-04-09',NULL,NULL,'2001-02-25',3,0),(3,'Семинары по веб','Семинары по веб разработке в действии','2024-04-06','log2','Web-разработка','2001-01-05',2,1),(4,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0),(5,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0);
+INSERT INTO `projects` VALUES (1,'','','2024-04-09',NULL,NULL,'2001-02-25',3,0),(3,'','','2024-04-25',NULL,NULL,'',NULL,0),(4,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0),(5,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +251,7 @@ CREATE TABLE `students` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +260,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (NULL,'log3','log3','2024-04-05',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb');
+INSERT INTO `students` VALUES (NULL,'log3','log3','2024-04-05',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log9','log9','2024-04-10',3,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'pp2','pp2','2024-04-10',4,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'pp3','pp3','2024-04-10',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,8 +305,11 @@ CREATE TABLE `teachers` (
   `created_at` datetime NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(100) DEFAULT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `second_name` varchar(100) DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,7 +318,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (NULL,'log2','log2','2024-04-05 14:53:57',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb');
+INSERT INTO `teachers` VALUES (NULL,'log2','log2','2024-04-05 14:53:57',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL),(NULL,'log0','log0','2024-04-25 11:45:52',6,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','test','test','1980-08-08');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +369,7 @@ CREATE TABLE `users` (
   `password` varchar(64) DEFAULT NULL,
   `role` enum('admins','teachers','students') DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -347,7 +378,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,NULL,NULL,'log1','log1',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins'),(3,NULL,NULL,'log2','log2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers'),(4,NULL,NULL,'log3','log3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(5,NULL,NULL,'log4','log4',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins');
+INSERT INTO `users` VALUES (2,NULL,NULL,'log1','log1',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins'),(3,NULL,NULL,'log2','log2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers'),(4,NULL,NULL,'log3','log3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(5,NULL,NULL,'log4','log4',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins'),(6,NULL,NULL,'log9','log9',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(7,NULL,NULL,'pp2','pp2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(8,NULL,NULL,'pp3','pp3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(9,NULL,NULL,'log0','log0',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers'),(10,NULL,NULL,'log99','log99',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,4 +395,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-10 21:32:22
+-- Dump completed on 2024-04-25 14:45:51
