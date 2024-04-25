@@ -15,7 +15,7 @@ const TaskMaterials = ({ isOpen, projectId }: IProps): JSX.Element | null => {
     return isOpen && currentModuleTask
         ? <SimpleWidget $bordered height='150px' $autoMargins $relative>
             { currentModuleTask && <ST.TaskText $noShifts>
-                {currentModuleTask[currentModuleTask.length - 1].text}
+                {/* {currentModuleTask[currentModuleTask.length - 1].text} */}
             </ST.TaskText> }
             <ST.PlainFlexContainer>
                 <Left width='90%'>

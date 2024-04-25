@@ -47,7 +47,6 @@ app.use(
  */
 app.post('/api/user/register', async (req, res) => {
     const { login, password, role, email } = req.body;
-    console.log(login, password, role, email);
     const encryptStr = `${email};${password};${"register_secret"}`;
     const accessToken = createHash('sha256')
         .update(encryptStr)
@@ -75,6 +74,30 @@ app.post('/api/user/register', async (req, res) => {
         body: { accessToken, dateNow }
     });
     return;
+});
+
+app.get('/api/user/get-personal-data', async (req, res) => {
+    try {
+        const { role, login } = req.query;
+        const data = await new DBQuery(mysql).call(`SELECT first_name, second_name, birth_date FROM ${role} WHERE login='${login}'`);
+        res.status(200).send({ ok: true, data });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error editing the users personal data in the DB', error });
+    }
+});
+
+app.post('/api/user/change-personal-data', async (req, res) => {
+    try {
+        const { first_name, second_name, birth_date, role } = req.body;
+        new DBQuery(mysql).replace(role,{
+            first_name,
+            second_name,
+            birth_date
+        });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error editing the users personal data in the DB', error });
+    }
 });
 
 /**

@@ -1,5 +1,17 @@
 import { useEffect } from "react";
 
+export type TFormRequest = Record<string, any>
+
+export const useFormSubmitHandler = () => (e: React.FormEvent<HTMLFormElement>): TFormRequest => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+    let collectedFormFields = {} as TFormRequest;
+    formData.forEach((value, property: string) => {
+        collectedFormFields[property] = value;
+    });
+    return collectedFormFields;
+}; 
+
 export const debounce = (fn: Function, delay: number) => {
     let timeout: NodeJS.Timeout;
     return function () {

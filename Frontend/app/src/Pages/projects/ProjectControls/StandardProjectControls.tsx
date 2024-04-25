@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { setIsOpenEditProjectPage, setProjectIdOnEdit } from '~/src/features/store/projects';
 import { IProject } from '~/src/a-lib';
+import { setPageStagesData } from '~/src/features/store/pages';
 
 interface IProps {
     project: IProject;
@@ -17,6 +18,10 @@ const Controls = ({ project }: IProps): JSX.Element => {
     const [isOpenTecherDeleteProjectPopup, setIsOpenTecherDeleteProjectPopup] = useState(false);
     const controlState = config[role];
     const openEditProjectPage = () => {
+        dispatch(setPageStagesData({
+            page: '/projects',
+            stage: 2
+        }))
         dispatch(setIsOpenEditProjectPage(true));
         dispatch(setProjectIdOnEdit(project.id));
     }

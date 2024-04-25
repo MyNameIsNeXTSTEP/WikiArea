@@ -5,9 +5,21 @@ import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items
 import { Title } from "~/src/UI-shared/Tokens";
 
 const OtherUsers = (): JSX.Element => {
-    const users = useSelector(state => state.users) || [{login: '123'}] ;
+    const  { users } = useSelector(state => state.users) || [{login: '123'}] ;
+    const openAddNewUserPopup = () => {
+
+    }
     return <>
-        <Title>Пользователи</Title>
+        <WidgetWith2Items $transparent>
+            <Left width='auto'>
+                <Title>Пользователи</Title>
+            </Left>
+            <Right>
+                <StandartButton $bordered $width="300px" onClick={openAddNewUserPopup}>
+                    Добавить пользователя
+                </StandartButton>
+            </Right>
+        </WidgetWith2Items>
         {users.map(el => {
             return <WidgetWith2Items $rounded>
                 <Left>

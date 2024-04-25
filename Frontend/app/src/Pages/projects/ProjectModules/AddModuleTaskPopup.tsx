@@ -16,7 +16,7 @@ const AddModuleTaskPopup = ({ projectId, isOpen, updateIsOpen }: IProps): JSX.El
     const handleAddClick = () => {
         dispatch(setProjectModulesAll({
             projectId,
-            text: taskModuleText,
+            exercise: taskModuleText,
         }));
     };
     return <StandartPopupWithContent

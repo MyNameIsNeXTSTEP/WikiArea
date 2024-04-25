@@ -22,6 +22,7 @@ import { IProject } from '~/src/a-lib';
 import { setDeletedProjects, setIsOpenSubscribedProjects, setProjectDetailsPage, setProjectsAll } from '~/src/features/store/projects';
 import Menu from '~/src/UI-shared/Organisms/Menu';
 import GeneralProjectsList from './GeneralProjectsList';
+import { setPageStagesData } from '~/src/features/store/pages';
 
 interface IModule {
     projectModule: {
@@ -56,6 +57,10 @@ const ProjectsPage = (): JSX.Element => {
         { name: 'Второй модуль' },
         { name: 'Третий модуль' },
     ];
+
+    useEffect(() => {
+        dispatch(setPageStagesData({ page: '/projects', stage: 0 }))
+    }, [])
     
     useEffect(() => {
         const requestAll = {

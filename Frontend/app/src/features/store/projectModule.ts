@@ -16,7 +16,7 @@ const initialState: IInitialState = {
 };
 
 const ModulesSlice = createSlice({
-    name: 'projects',
+    name: 'modules',
     initialState,
     reducers: {
         setProjectModulesAll: (state, action) => {

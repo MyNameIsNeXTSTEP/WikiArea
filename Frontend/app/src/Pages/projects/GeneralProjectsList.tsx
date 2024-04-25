@@ -61,11 +61,11 @@ const GeneralProjectsList = (): JSX.Element | null => {
             </>
             : null
         }
-        { (userRole === EUserRoles.teacher && !isOpenEditProjectPage)
+        { (userRole !== EUserRoles.teacher && !isOpenEditProjectPage)
             ? <>
                 {projectsToShow.map((el: IProject) => <ProjectComponent project={el}/>)}
             </>
-            : <EditProjectPage/>
+            : (userRole === EUserRoles.teacher && isOpenEditProjectPage) ? <EditProjectPage/> : projectsToShow.map((el: IProject) => <ProjectComponent project={el}/>)
         }
     </>
 };

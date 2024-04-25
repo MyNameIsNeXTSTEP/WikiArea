@@ -6,6 +6,8 @@ import profileReducer from "./features/store/profile";
 import projectsReducer from "./features/store/projects";
 import menuReducer from "./features/store/menu";
 import modulesReducer from "./features/store/projectModule";
+import pagesReducer from "./features/store/pages";
+import usersReducer from "./features/store/users";
 
 const persistConfig = {
     key: 'root',
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
     projects: projectsReducer,
     modules: modulesReducer,
     menu: menuReducer,
+    pages: pagesReducer,
+    users: usersReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
