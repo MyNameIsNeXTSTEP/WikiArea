@@ -14,10 +14,7 @@ interface IProps {
 }
 
 const AddNewUserPopup = ({ onClose }: IProps ): JSX.Element => {
-    const [isShowTopicSelector, showTopicSelector] = useState(false);
-    const [isShowComplexitySelector, setIsShowComplexitySelector] = useState(false);
-    const [selectedTopic, setSelectedTopic] = useState('');
-    const [selectedComplexity, setSelectedComplexity] = useState('');
+    const [isShowRoleSelector, showRoleSelector] = useState(false);
     const login = useSelector(state => state.profile.auth.login) // teacher
     const projectTitle = useRef<HTMLInputElement>(null);
     const projectTopic = useRef<HTMLInputElement>(null);
@@ -56,39 +53,21 @@ const AddNewUserPopup = ({ onClose }: IProps ): JSX.Element => {
         alert('Auth error');
     };
 
-    const selectTheme = (selectedTheme: string) => {
-        setSelectedTopic(selectedTheme);
-    };
-
-    const selectComplexity = (selectedTopic: string) => {
-        setSelectedComplexity(selectedTopic);
-    };
-
     return <>
         <DefaultPopup width={'450px'} height={'auto'}>
             <Cancel size={20} color={'white'} onClick={onClose}/>
             <Title>Добавление проекта</Title>
             <form id='post-form' onSubmit={formSumbit}>
-                <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Название проекта" />
-                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Тема проекта" onClick={() => showTopicSelector(!isShowTopicSelector)}
-                    style={{
-                        marginBottom: isShowTopicSelector ? '100px' : ''
-                    }}/>
-                <TopicSelector updateTopic={selectTheme} isOpen={isShowTopicSelector}/>
-                <StandartInput name={'projectDeadlines'} ref={projectDeadlines} placeholder="Сроки проекта"
-                    style={{
-                        marginTop: isShowTopicSelector ? '100px' : ''
-                    }}
-                />
+                <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Придумайте логин" />
+                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Введите пароль" onClick={}/>
+                <StandartInput name={'projectDeadlines'} ref={projectDeadlines} placeholder="Повторите пароль"/>
                 <StandartInput
                     name={'projectComplexity'}
                     ref={projectComplexity}
                     value={selectedComplexity}
-                    placeholder="Уровень сложности проекта"
+                    placeholder="Выберите роль"
                     onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}
                 />
-                <ComplexitySelector updateComplexity={selectComplexity} isOpen={isShowComplexitySelector}/>
-                <StandartInput name={'projectDescription'} ref={projectDescription} placeholder="Описани проекта" />
                 <ButtonRow>
                     <StandartButton
                         $whiteBordered
