@@ -141,8 +141,10 @@ CREATE TABLE `module_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(300) DEFAULT NULL,
   `module_task_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `fk_module_files_on_tasks` (`module_task_id`),
+  CONSTRAINT `fk_module_files_on_tasks` FOREIGN KEY (`module_task_id`) REFERENCES `tasks` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,6 +153,7 @@ CREATE TABLE `module_files` (
 
 LOCK TABLES `module_files` WRITE;
 /*!40000 ALTER TABLE `module_files` DISABLE KEYS */;
+INSERT INTO `module_files` VALUES (1,'mock file ref',1);
 /*!40000 ALTER TABLE `module_files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,8 +171,10 @@ CREATE TABLE `project_modules` (
   `project_id` int(11) DEFAULT NULL,
   `material_id` int(11) DEFAULT NULL,
   `test_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `fk_project` (`project_id`),
+  CONSTRAINT `fk_project` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,6 +183,7 @@ CREATE TABLE `project_modules` (
 
 LOCK TABLES `project_modules` WRITE;
 /*!40000 ALTER TABLE `project_modules` DISABLE KEYS */;
+INSERT INTO `project_modules` VALUES (1,NULL,NULL,1,NULL,NULL),(2,NULL,NULL,3,NULL,NULL);
 /*!40000 ALTER TABLE `project_modules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,13 +278,17 @@ DROP TABLE IF EXISTS `tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tasks` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `description` text NOT NULL,
   `tests_link` int(11) DEFAULT NULL,
-  `file_name` varchar(300) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `file_name` varchar(300) DEFAULT NULL,
+  `module_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_tasks` (`module_id`),
+  CONSTRAINT `fk_tasks` FOREIGN KEY (`module_id`) REFERENCES `project_modules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,7 +297,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (1,2,'Задание-1','Нужно что-то сделать',123,NULL),(2,3,'Задание-2','Описание',122,NULL);
+INSERT INTO `tasks` VALUES (1,2,'Задание-1','Нужно что-то сделать',123,NULL,1),(2,3,'Задание-2','Описание',122,NULL,2);
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +348,10 @@ CREATE TABLE `tests` (
   `description` varchar(250) DEFAULT NULL,
   `answer_id` int(11) DEFAULT NULL,
   `id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `module_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_tests` (`module_id`),
+  CONSTRAINT `fk_tests` FOREIGN KEY (`module_id`) REFERENCES `project_modules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -348,7 +361,7 @@ CREATE TABLE `tests` (
 
 LOCK TABLES `tests` WRITE;
 /*!40000 ALTER TABLE `tests` DISABLE KEYS */;
-INSERT INTO `tests` VALUES ('Тест-1',1,'Вопрос-1',2,'ответ-1','описание теста',1,0);
+INSERT INTO `tests` VALUES ('Тест-1',1,'Вопрос-1',2,'ответ-1','описание теста',1,0,1);
 /*!40000 ALTER TABLE `tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +381,10 @@ CREATE TABLE `users` (
   `created_at` datetime DEFAULT NULL,
   `password` varchar(64) DEFAULT NULL,
   `role` enum('admins','teachers','students') DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `role_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_role` (`role_id`),
+  CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -378,7 +394,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,NULL,NULL,'log1','log1',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins'),(3,NULL,NULL,'log2','log2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers'),(4,NULL,NULL,'log3','log3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(5,NULL,NULL,'log4','log4',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins'),(6,NULL,NULL,'log9','log9',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(7,NULL,NULL,'pp2','pp2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(8,NULL,NULL,'pp3','pp3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students'),(9,NULL,NULL,'log0','log0',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers'),(10,NULL,NULL,'log99','log99',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins');
+INSERT INTO `users` VALUES (2,NULL,NULL,'log1','log1',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',NULL),(3,NULL,NULL,'log2','log2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL),(4,NULL,NULL,'log3','log3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(5,NULL,NULL,'log4','log4',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',NULL),(6,NULL,NULL,'log9','log9',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(7,NULL,NULL,'pp2','pp2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(8,NULL,NULL,'pp3','pp3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(9,NULL,NULL,'log0','log0',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL),(10,3,NULL,'log99','log99',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,4 +411,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-25 14:45:51
+-- Dump completed on 2024-04-27 22:41:37
