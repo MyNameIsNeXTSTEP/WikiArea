@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { purpleMainColor } from "~/src/UI-shared/Tokens";
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
 import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
 
 export const Container = styled.div`

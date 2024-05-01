@@ -7,7 +7,6 @@ import { Cancel, Title } from "~/src/Components/Popup/styled";
 import { useRef, useState } from "react";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import { useSelector } from "react-redux";
-import RolesSelector from "~/src/Components/Authorization/RegisterPopup/RolesSelector";
 
 interface IProps {
     onClose: () => void,

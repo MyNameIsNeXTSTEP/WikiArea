@@ -2,8 +2,6 @@ import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items
 import { Right, Left } from "~/src/UI-shared/Atoms/Containers/index";
 import ProfileLogo from "~/src/assets/svg/Profile.svg";
 import { ProfileBlock, ProfileImage } from "./styled";
-// import { ReactNode, useState } from "react";
-// import { useSelector } from "react-redux";
 import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
 import WidgetsBlock from "./WidgetsBlock";
 import AdditionalDataControl from "./AdditionalDataControl";
@@ -73,6 +71,7 @@ const Profile = (): JSX.Element => {
           updateIsOpen={updateOpenStatus}
           text='Вы действительно хотите удалить свой профиль'
           firstBtn='Удалить'
+          firstBtnOnClick={() => alert(1)}
         />
     </>
   );
