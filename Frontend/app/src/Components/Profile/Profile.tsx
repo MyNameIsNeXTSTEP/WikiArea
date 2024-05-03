@@ -1,15 +1,15 @@
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import { Right, Left } from "~/src/UI-shared/Atoms/Containers/index";
-import ProfileLogo from "~/src/assets/svg/Profile.svg";
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
+import { Right, Left } from "@ui/Atoms/Containers/index";
+import { ProfileLogo } from "@ui/assets/svg";
 import { ProfileBlock, ProfileImage } from "./styled";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { StandartButton } from "@ui/Atoms/Buttons";
 import WidgetsBlock from "./WidgetsBlock";
 import AdditionalDataControl from "./AdditionalDataControl";
-import { Title } from "~/src/UI-shared/Tokens";
+import { Title } from "@ui/Tokens";
 import { useEffect, useState } from "react";
 import { StandartPopupWithContent } from "../Popup/StandartPopupWithContent";
 import { useDispatch, useSelector } from "react-redux";
-import Menu from '~/src/UI-shared/Organisms/Menu/index.js';
+// import Menu from '@ui/Organisms/Menu/index.js';
 import { getCookie } from "~/src/helpers";
 import { restoreProfileMenu } from "~/src/features/store/menu";
 
@@ -35,16 +35,16 @@ const Profile = (): JSX.Element => {
    * Need for mounting the <Menu/> once, otherwise get double component mounted,
    * because of the react-router-dom redirect (it's not updating the whole <App/>, but the main <Menu/> is there)
    */
-  const MenuAfterRedirect = (): JSX.Element | null => {
-    if (document.getElementsByClassName('main-menu').length === 0) {
-      return <Menu className="main-menu"/>
-    }
-    return null;
-  }
+  // const MenuAfterRedirect = (): JSX.Element | null => {
+  //   if (document.getElementsByClassName('main-menu').length === 0) {
+  //     return <Menu className="main-menu"/>
+  //   }
+  //   return null;
+  // }
 
   return (
     <>
-      <MenuAfterRedirect/>
+      {/* <MenuAfterRedirect/> */}
       <Title style={{ textAlign: 'start', marginLeft: '150px' }}>Личные данные</Title>
       <WidgetWith2Items $rounded>
         <Left className="left">

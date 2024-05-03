@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import { BoundedContainer, ButtonRow, Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { StandartLabel } from "~/src/UI-shared/Atoms/Labels";
-import { SimpleWidget } from "~/src/UI-shared/Organisms/Widgets/SimpleWidget";
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import { H1, purpleMainColor } from "~/src/UI-shared/Tokens";
+import { StandartButton } from "@ui/Atoms/Buttons";
+import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
+import { StandartLabel } from "@ui/Atoms/Labels";
+import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
+import { H1, purpleMainColor } from "@ui/Tokens";
 
 export const AnalyticsPage = (): JSX.Element => {
     const dataPoints = [{ x: 'Модуль 1', y: 20 }, { x: 'Модуль 2', y: 40 }, { x: ' Модуль 3', y: 15 }, { x: 'Модуль 4', y: 60 }];

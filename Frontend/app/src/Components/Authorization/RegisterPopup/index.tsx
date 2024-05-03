@@ -3,7 +3,7 @@ import * as ST from '../../Popup/styled';
 import APIRequest from '@api-package/index';
 
 import { TRequestMethod } from '@api-package/types';
-import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
+import { StandartInput } from "@ui/Atoms/Inputs";
 import DefaultPopup from "../../Popup/DefaultPopup";
 import { Button, ButtonRow } from '../../BreakLine/styled';
 import RolesSelector from './RolesSelector';

@@ -34,18 +34,16 @@ app.use(
 /** NEED TO IMPLEMENT
  * Registration (path: /register-user) DONE
  * Authorization (path: /auth) + auth middleware (req.header: X-Auth-Token) DONE
- * Profile CRUD managing (path: /profile/{operation}) [teachers, students, admins]
- * Projetcs studying (path: /projects/?{operation})
- * Getting analytics (path: /analytics)
+ * Profile CRUD managing (path: /profile/{operation}) [teachers, students, admins] DONE
+ * Projetcs studying (path: /projects/?{operation}) DONE
+ * Getting analytics (path: /analytics) ?
  */
-// app.post('/api/user/register', async (req, res) => {
-
-// })
 
 /**
  * Signs up a user using email, login, password, role
  */
 app.post('/api/user/register', async (req, res) => {
+    console.log('API request on: /api/user/register');
     const { login, password, role, email } = req.body;
     const encryptStr = `${email};${password};${"register_secret"}`;
     const accessToken = createHash('sha256')
@@ -171,7 +169,8 @@ app.post('/api/auth', async (req, res) => {
 app.post('/api/upload-test-file', async (req, res) => {
     console.log(req.body.file);
     const body = req.body;
-    const projectId = body.projectId;
+    // const projectId = body.projectId;
+    
     let base64Data = body.file.buffToSave.replace(/^data:text\/plain;base64,/, "");
     base64Data = body.file.buffToSave.replace(/^data:application\/pdf;base64,/, "");
     base64Data = body.file.buffToSave.replace(/^data:application\/vnd.openxmlformats-officedocument.wordprocessingml\/document;base64,/, "");
@@ -200,11 +199,15 @@ app.post('/api/upload-module-file', async (req, res) => {
     console.log(req.body.file);
     const body = req.body;
     const projectId = body.projectId;
+    if (!body.file.buffToSave) {
+        res.status(400).send({ error: 'No file buffer data to save, please check the request payload' });
+    }
     let base64Data = body.file.buffToSave.replace(/^data:text\/plain;base64,/, "");
     base64Data = body.file.buffToSave.replace(/^data:application\/pdf;base64,/, "");
     base64Data = body.file.buffToSave.replace(/^data:application\/vnd.openxmlformats-officedocument.wordprocessingml\/document;base64,/, "");
-    const fileBuffer = Buffer.from(base64Data, 'base64');
-    const fileType = (function () {
+    try {
+        const fileBuffer = Buffer.from(base64Data, 'base64');
+        const fileType = (function () {
         const type = body.file.type;
         if (type === 'plain') return 'text';
         if (type.includes('pdf')) return 'pdf';
@@ -218,13 +221,15 @@ app.post('/api/upload-module-file', async (req, res) => {
         err => {
             err && console.log(err, '__File_SAVING_ERROR__');
         }
-    );
-    new DBQuery(mysql).insert('module_files', { name, module_task_id: body.moduleTaskId  });
-    res.statusCode = 200; // @todo: check data first
-    res.send({ ok: true });
+        );
+        new DBQuery(mysql).insert('module_files', { name, module_task_id: body.moduleTaskId  });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error });
+    }
 });
 
-// POST messages
 app.post('/api/messages', (req, res) => {
     const { role, text, user_login } = req.body;
     // const date = new Date().toISOString();
@@ -237,7 +242,6 @@ app.post('/api/messages', (req, res) => {
     res.status(200).send({ id: message_id});
 });
 
-// GET messages
 app.get('/api/messages', async (req, res) => {
     try {
         const messages = await new DBQuery(mysql).call('SELECT * FROM messages')
@@ -280,6 +284,21 @@ app.get('/api/projects/get-all', async (req, res) => {
         res.status(200).send(projects);
     } catch (error) {
         res.status(500).send({ server_message: 'Error reading projects from the DB', error });
+    }
+});
+
+app.get('/api/projects/get-subscribed-by-student/:email', async (req, res) => {
+    try {
+        const email = req.params.email
+        const sql = 'SELECT p.* ' +
+            'FROM projects p ' +
+            'JOIN student_projects sp ON p.id = sp.project_id ' +
+            'JOIN students s ON sp.student_id = s.id ' +
+            `WHERE s.email = '${email}'`
+        const subscribedProjects = await new DBQuery(mysql).call(sql);
+        res.status(200).send(subscribedProjects);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading subscribed projects from the DB', error });
     }
 });
 

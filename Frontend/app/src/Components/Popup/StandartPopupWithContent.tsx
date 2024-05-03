@@ -1,7 +1,7 @@
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { StandartButton } from "@ui/Atoms/Buttons";
 import { ButtonRow } from "../BreakLine/styled";
 import DefaultPopup from "./DefaultPopup";
-import { H1 } from "~/src/UI-shared/Tokens";
+import { H1 } from "@ui/Tokens";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { Cancel } from "./styled";
 

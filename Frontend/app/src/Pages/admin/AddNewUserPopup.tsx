@@ -1,11 +1,11 @@
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
-import { ButtonRow } from "~/src/UI-shared/Atoms/Containers";
-import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
+import { ButtonRow } from "@ui/Atoms/Containers";
+import { StandartInput } from "@ui/Atoms/Inputs";
 import DefaultPopup from "~/src/Components/Popup/DefaultPopup";
 import { Cancel, Title } from "~/src/Components/Popup/styled";
 import { useRef, useState } from "react";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { StandartButton } from "@ui/Atoms/Buttons";
 import { useSelector } from "react-redux";
 
 interface IProps {

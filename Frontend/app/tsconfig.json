@@ -25,9 +25,12 @@
       "@api-package/*": [
           "../api-package/*"
       ],
+      "@ui/*": [
+          "../UI-shared/*"
+      ],
     }
   },
-  "include": ["src", "api-package"],
+  "include": ["src", "./*"],
   "exclude": ["node_modules", "dist", ".vscode"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

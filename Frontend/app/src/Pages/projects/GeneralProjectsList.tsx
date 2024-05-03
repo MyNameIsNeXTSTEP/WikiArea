@@ -8,13 +8,13 @@ import { setShowModerated } from "~/src/features/store/projects";
 import { IProject } from '~/src/a-lib/index';
 import ProjectOnModeration from "./ProjectsOnModeration";
 import SubscribedProjects from './SubscribedProjects';
-import EditProjectPage from "./EditProject";
+import EditProjectPage from "./Components/Edit-project";
 
 const GeneralProjectsList = (): JSX.Element | null => {
     const dispatch = useDispatch();
     const {
         all: projectsAll,
-        isOpenShowSubscridebProjects,
+        isOpenSubscridebProjects,
         projectDetailsPage,
         isOpenEditProjectPage
     } = useSelector(state => state.projects);
@@ -54,7 +54,7 @@ const GeneralProjectsList = (): JSX.Element | null => {
         { (userRole === EUserRoles.student && !projectDetailsPage.isOpen)
             ? <>
                 {projectsToShow.map((el: IProject) => {
-                    return isOpenShowSubscridebProjects
+                    return isOpenSubscridebProjects
                         ? <SubscribedProjects project={el}/>
                         : <ProjectComponent project={el}/>
                 })}

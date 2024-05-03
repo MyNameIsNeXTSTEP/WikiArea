@@ -51,6 +51,7 @@ export const complexityMapStrings = {
   'сложный': 3
 }
 
+// @refactor
 export const complexityMapNumbers = {
   'лёгкий': 1,
   'средний': 2,
@@ -70,6 +71,7 @@ export interface IProject {
     complexity: string,
     lifetime: string,
     description: string,
+    created_at: string,
 };
 
 export type imageForFormReq = {

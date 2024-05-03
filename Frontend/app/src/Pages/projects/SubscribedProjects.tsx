@@ -1,18 +1,22 @@
-import * as ST from './styled';
-import WidgetWith2Items from '~/src/UI-shared/Organisms/Widgets/WidgetWith2Items';
-import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
+import * as ST from './Components/Project-deatails/styled';
+import WidgetWith2Items from '@ui/Organisms/Widgets/WidgetWith2Items';
+import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
 import { IProject } from '~/src/a-lib';
-import { ImageBlock, ProjectImage } from '~/src/UI-shared/Atoms/icons';
-import { Left, Right } from '~/src/UI-shared/Atoms/Containers';
-import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
+import { ImageBlock, ProjectImage } from '@ui/Atoms/icons';
+import { Left, Right } from '@ui/Atoms/Containers';
+import { StandartLabel } from '@ui/Atoms/Labels';
 import { complexityMapNumbers } from '~/src/a-lib';
-import { StandartButton } from '~/src/UI-shared/Atoms/Buttons';
+import { StandartButton } from '@ui/Atoms/Buttons';
 import { setProjectDetailsPage } from '~/src/features/store/projects';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 
-const SubscribedProjects = (project?: IProject): JSX.Element | null => {
+interface IProps {
+    project?: IProject,
+}
+
+const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
     const dispatch = useDispatch();
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     if (!project) {
@@ -25,14 +29,14 @@ const SubscribedProjects = (project?: IProject): JSX.Element | null => {
                     <ProjectImage src={ProjectLogo} />
                 </ImageBlock>
                 <ST.ProjectsData>
-                    {Object.keys(project.project).map((key: string) => {
+                    {Object.keys(project).map((key: string) => {
                         if (key === 'complexity') {
-                            const complexityNumber = project.project[key];
+                            const complexityNumber = project[key];
                             return <StandartLabel $white>
                                 {complexityMapNumbers[complexityNumber]}
                             </StandartLabel>;
                         }
-                        return <StandartLabel $white>{project.project[key]}</StandartLabel>;
+                        return <StandartLabel $white>{project[key]}</StandartLabel>;
                     })}
                 </ST.ProjectsData>
                 <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>
