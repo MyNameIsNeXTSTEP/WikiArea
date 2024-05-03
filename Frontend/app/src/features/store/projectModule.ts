@@ -20,6 +20,9 @@ const ModulesSlice = createSlice({
     initialState,
     reducers: {
         setProjectModulesAll: (state, action) => {
+            state.all = action.payload;
+        },
+        pushProjectModulesAll: (state, action) => {
             state.all.push(action.payload);
         },
         setProjectModulesDeleted: (state, action) => {
@@ -43,6 +46,7 @@ export const {
     setIsOpenAddModuleBlock,
     setModuleTests,
     setDeleteModule,
+    pushProjectModulesAll,
 } = ModulesSlice.actions;
 
 export default ModulesSlice.reducer;

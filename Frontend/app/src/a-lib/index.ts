@@ -84,3 +84,18 @@ export type IProjectModule = {
   projectId: number,
   text: string,
 };
+
+export interface IModule {
+    id?: number,
+    title?: string,
+    exercise?: string,
+    project_id?: number,
+    material_id?: number,
+    test_id?: number,
+}
+
+export type TFileForReq = {
+    buffToSave: string | ArrayBuffer | null,
+    name: string,
+    type: string,
+};

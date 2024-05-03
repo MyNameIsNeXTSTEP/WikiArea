@@ -12,25 +12,13 @@ import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
 import { H1, Title } from "@ui/Tokens";
 import { DropdownArrow, FileIcon, ImageBlock } from "@ui/Atoms/icons";
+import { IModule, TFileForReq } from "~/src/a-lib";
 
-interface IModule {
-    projectModule: {
-        name: string
-    }
+interface IProps {
+    projectModule: IModule,
 }
-type TFileForReq = {
-    buffToSave: string | ArrayBuffer | null,
-    name: string,
-    type: string,
-};
 
-const projectModules = [
-    { name: 'Первый модуль' },
-    { name: 'Второй модуль' },
-    { name: 'Третий модуль' },
-];
-
-const ProjectModule = ({ projectModule }: IModule): JSX.Element => {
+const ProjectModule = ({ projectModule }: IProps): JSX.Element => {
     const dispatch = useDispatch();
     const [isDropDownOpen, openDropDown] = useState(false);
     const [isOpenFileUploadPopup, openFileUploadPopup] = useState(false);

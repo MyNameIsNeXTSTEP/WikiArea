@@ -22,6 +22,7 @@ const initialState = {
     projectDetailsPage: { isOpen: false } as IProjectDetails,
     projectIdOnEdit: -1,
     stage: 0,
+    subscribedProjectsIds: [],
 };
 
 const projectsSlice = createSlice({
@@ -36,6 +37,9 @@ const projectsSlice = createSlice({
         },
         setDeletedProjects: (state, action) => {
             state.deleted = action.payload;
+        },
+        setSubscribedProjectsIds: (state, action) => {
+            state.subscribedProjectsIds = action.payload;
         },
         setIsOpenEditProjectPage: (state, action) => {
             state.isOpenEditProjectPage = action.payload;
@@ -64,6 +68,7 @@ export const {
     setProjectDetailsPage,
     setProjectIdOnEdit,
     setStage,
+    setSubscribedProjectsIds,
 } = projectsSlice.actions;
 
 export default projectsSlice.reducer;

@@ -280,25 +280,15 @@ app.post('/api/projects/add-new-project', async (req, res) => {
 
 app.get('/api/projects/get-all', async (req, res) => {
     try {
+        const { email } = req.query;
         const projects = await new DBQuery(mysql).call('SELECT * FROM projects');
-        res.status(200).send(projects);
+        const modules = await new DBQuery(mysql).call('SELECT * FROM project_modules');
+        const subscribedProjectIds = await new DBQuery(mysql).call(
+            `select s.project_id from student_projects s where s.student_id = (select id from students st where st.email = '${email}')`
+        ).then(res => res.map(el => el.project_id));
+        res.status(200).send({ projects, subscribedProjectIds, modules });
     } catch (error) {
         res.status(500).send({ server_message: 'Error reading projects from the DB', error });
-    }
-});
-
-app.get('/api/projects/get-subscribed-by-student/:email', async (req, res) => {
-    try {
-        const email = req.params.email
-        const sql = 'SELECT p.* ' +
-            'FROM projects p ' +
-            'JOIN student_projects sp ON p.id = sp.project_id ' +
-            'JOIN students s ON sp.student_id = s.id ' +
-            `WHERE s.email = '${email}'`
-        const subscribedProjects = await new DBQuery(mysql).call(sql);
-        res.status(200).send(subscribedProjects);
-    } catch (error) {
-        res.status(500).send({ server_message: 'Error reading subscribed projects from the DB', error });
     }
 });
 

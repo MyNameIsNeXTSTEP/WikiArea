@@ -7,10 +7,11 @@ import { Left, Right } from '@ui/Atoms/Containers';
 import { StandartLabel } from '@ui/Atoms/Labels';
 import { complexityMapNumbers } from '~/src/a-lib';
 import { StandartButton } from '@ui/Atoms/Buttons';
-import { setProjectDetailsPage } from '~/src/features/store/projects';
+import { setIsOpenSubscribedProjects, setProjectDetailsPage, setStage } from '~/src/features/store/projects';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
+import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 
 interface IProps {
     project?: IProject,
@@ -22,6 +23,19 @@ const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
     if (!project) {
         return null;
     }
+    const onOpenDetailedPage = useCallback(() => {
+        dispatch(setStage(2));
+        dispatch(setProjectDetailsPage({ isOpen: true, project }))
+        dispatch(setIsOpenSubscribedProjects(false));
+        dispatch(updateButtons([{
+            id: 1,
+            onClick: () => {
+                dispatch(setStage(1));
+                dispatch(setIsOpenSubscribedProjects(true));
+                dispatch(setProjectDetailsPage({ isOpen: false }));
+            },
+        }]));
+    }, [])
     return <>
         <WidgetWith2Items $rounded height='100px'>
             <Left style={{ flexDirection: 'column', display: 'flex' }} className="left">
@@ -46,7 +60,7 @@ const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
                     $whiteBordered
                     $width={'180px'}
                     className="subscribtion"
-                    onClick={() => dispatch(setProjectDetailsPage({ isOpen: true, project: project }))}
+                    onClick={onOpenDetailedPage}
                 >
                     Просмотр
                 </StandartButton>
