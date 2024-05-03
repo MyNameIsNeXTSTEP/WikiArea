@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import { ButtonRow, Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { StandartInput } from "~/src/UI-shared/Atoms/Inputs";
-import { purpleMainColor, Title } from "~/src/UI-shared/Tokens";
+import { StandartButton } from "@ui/Atoms/Buttons";
+import { ButtonRow, Left, Right } from "@ui/Atoms/Containers";
+import { StandartInput } from "@ui/Atoms/Inputs";
+import { purpleMainColor, Title } from "@ui/Tokens";
 
 export const ModuleInput = styled(StandartInput)<{$noShifts?: boolean}>`
     position: absolute;

@@ -1,4 +1,4 @@
-import { Breakline } from "~/src/UI-shared/Organisms/BreakLine/styled";
+import { Breakline } from "@ui/Organisms/BreakLine/styled";
 import * as ST from "./styled";
 import { Dispatch, SetStateAction } from "react";
 

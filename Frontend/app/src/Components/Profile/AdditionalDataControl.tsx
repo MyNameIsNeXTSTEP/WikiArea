@@ -1,8 +1,8 @@
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import { Right, Left } from "~/src/UI-shared/Atoms/Containers/index";
-import { H1Description } from "~/src/UI-shared/Tokens/components";
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
+import { Right, Left } from "@ui/Atoms/Containers/index";
+import { H1Description } from "@ui/Tokens/components";
 import { Input } from './styled';
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { StandartButton } from "@ui/Atoms/Buttons";
 
 const AdditionalDataControl = (): JSX.Element => {
     return <>

@@ -4,13 +4,13 @@ import UserPage from "./Pages/user/UserPage";
 import ProjectsPage from "./Pages/projects/ProjectsPage";
 import AnalyticsPage from "./Pages/analytics/AnalyticsPage";
 import ChatPage from "./Pages/chat/ChatPage";
-import Menu from "./UI-shared/Organisms/Menu";
+import Menu from "../../UI-shared/Organisms/Menu";
 import OtherUsers from "./Pages/admin/OtherUsers";
 
 const AppRoutes = () => {
     return (
         <Router>
-            {window.location.pathname !== '/' && <Menu className='main-menu'/>}
+            <Menu className='main-menu'/>
             <Routes>
                 <Route path="/" element={<MainPage/>} />
                 <Route path="/user/:role" element={<UserPage/>} />

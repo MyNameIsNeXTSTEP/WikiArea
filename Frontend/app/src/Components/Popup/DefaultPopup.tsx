@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 import styled from "styled-components";
-import { purpleMainColor } from "~/src/UI-shared/Tokens";
+import { purpleMainColor } from "@ui/Tokens";
 import useGlobalDOMEvents from "~/src/a-lib";
 
 interface IProps {

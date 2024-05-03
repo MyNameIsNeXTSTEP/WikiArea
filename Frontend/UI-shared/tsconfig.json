@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "rootDir": "../", // Your TypeScript source files location,
+    "rootDir": "./", // Your TypeScript source files location,
     "outDir": "dist",
     /* Linting */
     "strict": true,
@@ -21,16 +21,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "~/*": ["./*"],
-      "@api-package/*": [
-          "../api-package/*"
-      ],
-      "@ui/*": [
-          "../UI-shared/*"
-      ],
+      "@ui/*": ["./*"],
     }
   },
-  "include": ["src", "./*"],
+  "include": ["Atoms", "Organisms", "Tokens", "assets", "*.ts", "*.tsx"],
   "exclude": ["node_modules", "dist", ".vscode"],
-  "references": [{ "path": "./tsconfig.node.json" }]
 }

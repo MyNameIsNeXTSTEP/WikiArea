@@ -1,28 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as ST from './styled';
-import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
-import Arrow from '~/src/assets/svg/Arrow.svg';
-import File from '~/src/assets/svg/File.svg';
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import { BoundedContainer, ButtonRow, Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { DropdownArrow, FileIcon, ImageBlock, ProjectImage } from '~/src/UI-shared/Atoms/icons';
-import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
-import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import { H1, Title } from "~/src/UI-shared/Tokens";
-import { debounce } from '~/src/a-lib'
+import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
+import { Arrow, File } from '@ui/assets/svg';
+import { StandartButton } from "@ui/Atoms/Buttons";
+import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
+import { DropdownArrow, FileIcon, ImageBlock, ProjectImage } from '@ui/Atoms/icons';
+import { StandartLabel } from '@ui/Atoms/Labels';
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
+import { H1, Title } from "@ui/Tokens";
+import { EUserRoles } from '~/src/a-lib'
 import { useDispatch, useSelector } from 'react-redux';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
-import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
-import ModuleTests from './ModuleTests';
+import { SimpleWidget } from '@ui/Organisms/Widgets/SimpleWidget';
+import ModuleTests from './Components/ModuleTests';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
-import ProjectsListControls from './ProjectControls/ProjectsListControls';
 import { IProject } from '~/src/a-lib';
-import { setDeletedProjects, setIsOpenSubscribedProjects, setProjectDetailsPage, setProjectsAll } from '~/src/features/store/projects';
-import Menu from '~/src/UI-shared/Organisms/Menu';
+import { setDeletedProjects, setProjectDetailsPage, setProjectsAll } from '~/src/features/store/projects';
+import Menu from '@ui/Organisms/Menu';
 import GeneralProjectsList from './GeneralProjectsList';
 import { setPageStagesData } from '~/src/features/store/pages';
+import AdminsProjects from './AdminsProjects';
+import StudentsProjects from './StudentProjects';
+import TeachersProjects from './TeachersProjects';
 
 interface IModule {
     projectModule: {
@@ -33,25 +33,8 @@ interface IModule {
 const ProjectsPage = (): JSX.Element => {
     const dispatch = useDispatch();
     const role = useSelector(state => state.profile.auth.role);
-    const { projects, isOpenShowSubscridebProjects, projectDetailsPage } = useSelector(state => state.projects);
+    const { projectDetailsPage } = useSelector(state => state.projects);
     const [isModuleTestsOpen, openModuleTests] = useState(false);
-    const [projectsToShow, updateProjectsToShow] = useState(projects)
-    const [popupFormControlConfig, updatePopupFormControlConfig] = useState({
-        isOpen: false,
-        text: '',
-        firstBtn: ''
-    });
-    
-    const searchRef = useRef<HTMLInputElement>(null);
-    const filterRef = useRef<HTMLInputElement>(null);
-    const subscribedProjects = [{
-        author: 'abc',
-        title: 'Название',
-        topic: 'Тема',
-        complexity: 'Сложность',
-        lifetime: 'Срок проекта',
-        description: 'Описание проекта'
-    }]
     const projectModules = [
         { name: 'Первый модуль' },
         { name: 'Второй модуль' },
@@ -82,56 +65,6 @@ const ProjectsPage = (): JSX.Element => {
                 .then(res => dispatch(setDeletedProjects(res.payload)));
         })();
     }, [])
-
-    const doSearch = (e) => {
-        const value = e.target?.value;
-        const searchedData = projectsToShow.filter((el: Record<string, string>) => {
-            const keys = Object.keys(el);
-            for (const key of keys) {
-                if (el[key].toLowerCase().match(value.toLowerCase())) {
-                    return true;
-                }
-                continue;
-            };
-            return false;
-        });
-        updateProjectsToShow(searchedData)
-    };
-
-    const openSubscribedProjects = () => {
-        dispatch(setIsOpenSubscribedProjects(true));
-        updateProjectsToShow(subscribedProjects);
-    };
-
-    // @todo: [BUG] when do searching the inout field rerenders and projects filtering went wrong (?)
-    const ProjectsControls = (): JSX.Element => {
-        const controlRoleActions = {
-            students: openSubscribedProjects,
-        };
-
-        if (isOpenShowSubscridebProjects && subscribedProjects && subscribedProjects.length > 0) {
-            return <WidgetWith2Items $transparent>
-                <Left width='auto'>
-                    <StandartInput onChange={debounce(doSearch, 300)} ref={searchRef} $bordered placeholder='Поиск'/>
-                </Left>
-            </WidgetWith2Items> 
-        };
-        return <WidgetWith2Items $transparent>
-            <Left width='auto'>
-                <Title>Проекты</Title>
-                <StandartInput id='search-projects' onChange={debounce(doSearch, 300)} ref={searchRef} $bordered placeholder='Поиск'/>
-                <StandartInput id='filter-projects' onChange={debounce(doSearch, 300)} ref={filterRef} style={{ marginLeft: 20 }} $bordered placeholder='Фильтр'/>
-            </Left>
-            <Right>
-                <ProjectsListControls
-                    role={role}
-                    controlRoleActions={controlRoleActions}
-                    updatePopupConfig={updatePopupFormControlConfig}
-                    popupConfig={popupFormControlConfig}
-                />
-            </Right>
-        </WidgetWith2Items>
-    };
 
     const ProjectDetails = (project: IProject): JSX.Element | null => {
         if (!project) {
@@ -255,12 +188,14 @@ const ProjectsPage = (): JSX.Element => {
     };
     
     return <>
-        {/* @todo: Use with steps from redux store to keep state of the components and page progress consistent */}
-        <ProjectsControls/>
-        { !isModuleTestsOpen && <GeneralProjectsList/> }
+        { role === EUserRoles.student && <StudentsProjects/> }
+        { role === EUserRoles.teacher && <TeachersProjects/> }
+        { role === EUserRoles.admin && <AdminsProjects/> }
+
+        {/* { !isModuleTestsOpen && <GeneralProjectsList/> }
         { projectDetailsPage.isOpen && <ProjectDetails project={projectDetailsPage.project}/> }
         { projectDetailsPage.isOpen && projectModules.map(el => <ProjectModule projectModule={el}/>) }
-        { isModuleTestsOpen && <ModuleTests/> }
+        { isModuleTestsOpen && <ModuleTests/> } */}
     </>
 };
 

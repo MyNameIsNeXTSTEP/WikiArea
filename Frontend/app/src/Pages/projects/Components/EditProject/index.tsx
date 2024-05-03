@@ -3,9 +3,9 @@ import ProjectEditWidget from './ProjectEditWidget';
 import { useEffect, useState } from 'react';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 import { setIsOpenEditProjectPage } from '~/src/features/store/projects';
-import { StandartButton } from '~/src/UI-shared/Atoms/Buttons';
+import { StandartButton } from '@ui/Atoms/Buttons';
 import AddModule from '../ProjectModules/AddModule';
-import { ButtonRow } from '~/src/UI-shared/Atoms/Containers';
+import { ButtonRow } from '@ui/Atoms/Containers';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 
 const EditProjectPage = (): JSX.Element => {

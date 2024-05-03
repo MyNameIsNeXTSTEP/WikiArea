@@ -51,6 +51,7 @@ export const complexityMapStrings = {
   'сложный': 3
 }
 
+// @refactor
 export const complexityMapNumbers = {
   'лёгкий': 1,
   'средний': 2,

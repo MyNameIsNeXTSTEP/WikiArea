@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
-import Eye from "~/src/assets/svg/Eye.svg";
-import { SimpleWidget } from "~/src/UI-shared/Organisms/Widgets/SimpleWidget";
-import { Title } from "~/src/UI-shared/Tokens";
-import { RawInput } from "~/src/UI-shared/Atoms/Inputs";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { Eye } from "@ui/assets/svg";
+import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
+import { Title } from "@ui/Tokens";
+import { RawInput } from "@ui/Atoms/Inputs";
+import { StandartButton } from "@ui/Atoms/Buttons";
 import { TFormRequest, useFormSubmitHandler } from "~/src/a-lib";
 import * as ST from "./styled";
 import { TRequestMethod } from "@api-package/types";

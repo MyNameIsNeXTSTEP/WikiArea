@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { purpleMainColor } from "~/src/UI-shared/Tokens";
-import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
+import { purpleMainColor } from "@ui/Tokens";
+import { Left, Right } from "@ui/Atoms/Containers";
 
 export const Container = styled.div`
     display: flex;

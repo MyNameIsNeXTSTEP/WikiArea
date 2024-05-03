@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { IProject } from "./types";
+import { IProject } from "~/src/a-lib";
 import { TRequestMethod } from "@api-package/types";
 import APIRequest from "@api-package/index";
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import * as ST from './styled';
-import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
-import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { ImageBlock, ProjectImage } from "~/src/UI-shared/Atoms/icons";
-import { StandartLabel } from "~/src/UI-shared/Atoms/Labels";
+import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
+import { Left, Right } from "@ui/Atoms/Containers";
+import { ImageBlock, ProjectImage } from "@ui/Atoms/icons";
+import { StandartLabel } from "@ui/Atoms/Labels";
 import { complexityMapNumbers } from "~/src/a-lib";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { StandartButton } from "@ui/Atoms/Buttons";
 import { StandartPopupWithContent } from "~/src/Components/Popup/StandartPopupWithContent";
 
 const ProjectOnModeration = (project?: IProject): JSX.Element | null => {

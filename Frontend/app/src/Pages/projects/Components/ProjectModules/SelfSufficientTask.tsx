@@ -1,6 +1,6 @@
-import { Left, Right } from '~/src/UI-shared/Atoms/Containers';
+import { Left, Right } from '@ui/Atoms/Containers';
 import * as ST from './styled';
-import { SimpleWidget } from "~/src/UI-shared/Organisms/Widgets/SimpleWidget";
+import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 
 const SelfSufficiencyTask = (): JSX.Element => {
     return <SimpleWidget $bordered height='80px' $autoMargins $relative>

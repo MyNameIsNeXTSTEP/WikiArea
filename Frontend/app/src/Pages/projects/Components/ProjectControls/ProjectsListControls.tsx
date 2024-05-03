@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
+import { StandartButton } from "@ui/Atoms/Buttons";
 import AddNewProjectPopup from "../AddNewProject/AddNewProjectPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpenEditProjectPage, setShowModerated } from "~/src/features/store/projects";

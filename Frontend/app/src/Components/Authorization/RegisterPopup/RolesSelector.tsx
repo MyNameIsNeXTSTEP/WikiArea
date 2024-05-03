@@ -1,4 +1,4 @@
-import { StandartDropdown, StandartDropdownOption } from "~/src/UI-shared/Atoms/Inputs"
+import { StandartDropdown, StandartDropdownOption } from "@ui/Atoms/Inputs"
 
 interface IProps {
     updateRole: (role: string) => void,

@@ -9,7 +9,9 @@
             "@api-package/*": [
                 "./api-package/*"
             ],
+            "@ui/*": ["./UI-shared/*"],
         }
     },
+    "include": ["app", "api-package", "UI-shared"],
     "exclude": ["node_modules"]
 }

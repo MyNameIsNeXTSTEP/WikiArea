@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import { Title } from "~/src/UI-shared/Tokens";
+import { StandartButton } from "@ui/Atoms/Buttons";
+import { Left, Right } from "@ui/Atoms/Containers";
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
+import { Title } from "@ui/Tokens";
 
 const OtherUsers = (): JSX.Element => {
     const  { users } = useSelector(state => state.users) || [{login: '123'}] ;

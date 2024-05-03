@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { purpleMainColor } from '~/src/UI-shared/Tokens';
-export { Left, Right, ButtonRow } from '~/src/UI-shared/Atoms/Containers';
+import { purpleMainColor } from '@ui/Tokens';
+export { Left, Right, ButtonRow } from '@ui/Atoms/Containers';
 
 export const Button = styled.button<{$purple?: boolean}>`
     display: flex;

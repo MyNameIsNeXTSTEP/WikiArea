@@ -1,12 +1,10 @@
-import { useState } from "react";
-import { Left, Right } from "../../Atoms/Containers";
 import * as ST from "./styled";
-import ProfileLogo from "~/src/assets/svg/Profile.svg";
-import Back from "~/src/assets/svg/Back.svg";
-import { BackMenuBtn, ProfileImage } from "../../Atoms/icons";
+import { useState } from "react";
+import { Left, Right } from "@ui/Atoms/Containers";
+import { BackMenuBtn, ProfileImage } from "@ui/Atoms/icons";
 import { useSelector } from "react-redux";
-import { StandartButton } from "../../Atoms/Buttons";
 import { Link } from "react-router-dom";
+import { ProfileLogo, Back } from "@ui/assets/svg";
 
 interface IMenuItem {
   title: string;
@@ -30,7 +28,7 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
 
   const onExit = () => {
     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    localStorage.clear();
+    window.localStorage.clear();
   };
   const menuDoubleItem = {
     titile: role !== 'admins' ? 'Проекты' : 'Пользователи',
@@ -52,11 +50,6 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
             ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
             : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={buttons[0].onClick} />
         }
-        {/* {buttons.map((button) => {
-          <StandartButton id="extra-menu-buttons" {...button.props} key={button.id} onClick={button.onClick}>
-            {button.label}
-          </StandartButton>
-        ))}   */}
       </Right>
       {isOpen && (
         <ST.ProfileMenu>

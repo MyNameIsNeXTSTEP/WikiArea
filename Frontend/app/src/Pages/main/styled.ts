@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { purpleMainColor } from '~/src/UI-shared/Tokens';
+import { purpleMainColor } from '@ui/Tokens';
 
 export const PageContainer = styled.div`
     width: 100%;

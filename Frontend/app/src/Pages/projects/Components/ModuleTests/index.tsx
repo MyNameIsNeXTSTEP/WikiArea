@@ -1,11 +1,11 @@
 import { useEffect, useCallback, useState } from 'react';
-import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
+import { SimpleWidget } from '@ui/Organisms/Widgets/SimpleWidget';
 import { useDispatch } from 'react-redux';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 import * as ST from './styled';
-import { ButtonRow } from '~/src/UI-shared/Atoms/Containers';
-import { H1 } from '~/src/UI-shared/Tokens';
-import ProgressBar from '~/src/UI-shared/Atoms/ProgressBar';
+import { ButtonRow } from '@ui/Atoms/Containers';
+import { H1 } from '@ui/Tokens';
+import ProgressBar from '@ui/Atoms/ProgressBar';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 
 export const ModuleTests = (): JSX.Element => {

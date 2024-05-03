@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { SimpleWidget } from "~/src/UI-shared/Organisms/Widgets/SimpleWidget";
-import { Wrapper } from "~/src/UI-shared/Organisms/Widgets/styled";
-import { purpleMainColor } from "~/src/UI-shared/Tokens";
+import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
+import { Wrapper } from "@ui/Organisms/Widgets/styled";
+import { purpleMainColor } from "@ui/Tokens";
 
 export const Container = styled.div`
     display: flex;

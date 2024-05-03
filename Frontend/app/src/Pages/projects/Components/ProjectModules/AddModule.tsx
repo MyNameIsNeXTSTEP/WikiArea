@@ -1,6 +1,6 @@
 import * as ST from './styled';
-import { StandartButton } from "~/src/UI-shared/Atoms/Buttons";
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
+import { StandartButton } from "@ui/Atoms/Buttons";
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import TaskMaterials from './TaskMaterials';
 import { useState } from 'react';
 import AddModuleTaskPopup from './AddModuleTaskPopup';

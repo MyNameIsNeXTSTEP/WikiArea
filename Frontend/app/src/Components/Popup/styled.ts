@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CancelIcon from "~/src/assets/svg/Cancel";
+import CancelIcon from "../../../../UI-shared/assets/components/Cancel";
 
 export const Title = styled.h2`
     margin-bottom: 20px;

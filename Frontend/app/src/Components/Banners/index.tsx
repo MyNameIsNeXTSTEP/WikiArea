@@ -1,4 +1,4 @@
-import { Banner } from '~/src/UI-shared/Atoms/Banners';
+import { Banner } from '@ui/Atoms/Banners';
 
 const WikiBanner = (): JSX.Element => {
     return <Banner>

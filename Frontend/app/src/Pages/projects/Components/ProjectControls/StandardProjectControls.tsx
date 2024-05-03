@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { config } from './config';
-import { StandartButton } from '~/src/UI-shared/Atoms/Buttons';
-import { StandartLabel } from '~/src/UI-shared/Atoms/Labels';
+import { StandartButton } from '@ui/Atoms/Buttons';
+import { StandartLabel } from '@ui/Atoms/Labels';
 import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { setIsOpenEditProjectPage, setProjectIdOnEdit } from '~/src/features/store/projects';

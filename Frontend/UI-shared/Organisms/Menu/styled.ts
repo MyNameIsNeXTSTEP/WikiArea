@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { purpleMainColor } from '~/src/UI-shared/Tokens';
-import { CancelIconSVG } from "~/src/assets/svg/Cancel";
+import { purpleMainColor } from '@ui/Tokens';
+import { CancelIconSVG } from "../../assets/components/Cancel";
 import { createSvg } from "../../Atoms/svg/createSvg";
 
 export const Nav = styled.nav`

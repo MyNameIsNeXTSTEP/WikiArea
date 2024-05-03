@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { Wrapper } from "~/src/UI-shared/Organisms/Widgets/styled";
-export { ProfileImage, EyeIcon } from "~/src/UI-shared/Atoms/icons";
-import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
-import { purpleMainColor } from "~/src/UI-shared/Tokens";
+import { Wrapper } from "@ui/Organisms/Widgets/styled";
+export { ProfileImage, EyeIcon } from "@ui/Atoms/icons";
+import { StandartInput } from '@ui/Atoms/Inputs';
+import { purpleMainColor } from "@ui/Tokens";
 
 export const ProfileBlock = styled.div`
   display: inline;

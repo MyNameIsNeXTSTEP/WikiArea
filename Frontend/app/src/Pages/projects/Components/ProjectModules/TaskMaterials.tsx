@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import * as ST from './styled';
-import { Left, Right } from '~/src/UI-shared/Atoms/Containers';
-import { SimpleWidget } from '~/src/UI-shared/Organisms/Widgets/SimpleWidget';
+import { Left, Right } from '@ui/Atoms/Containers';
+import { SimpleWidget } from '@ui/Organisms/Widgets/SimpleWidget';
 import type { IProjectModule } from '~/src/a-lib';
 
 interface IProps {

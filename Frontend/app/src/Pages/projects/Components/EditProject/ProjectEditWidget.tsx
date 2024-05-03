@@ -1,10 +1,10 @@
 import * as ST from './styled';
-import { StandartButton } from '~/src/UI-shared/Atoms/Buttons';
-import { Left, Right } from "~/src/UI-shared/Atoms/Containers";
-import { ImageBlock, ProjectImage } from '~/src/UI-shared/Atoms/icons';
-import WidgetWith2Items from "~/src/UI-shared/Organisms/Widgets/WidgetWith2Items";
-import ProjectLogo from '~/src/assets/svg/ProjectSlug.svg';
-import { StandartInput } from '~/src/UI-shared/Atoms/Inputs';
+import { StandartButton } from '@ui/Atoms/Buttons';
+import { Left, Right } from "@ui/Atoms/Containers";
+import { ImageBlock, ProjectImage } from '@ui/Atoms/icons';
+import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
+import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
+import { StandartInput } from '@ui/Atoms/Inputs';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
 import { useState } from 'react';
