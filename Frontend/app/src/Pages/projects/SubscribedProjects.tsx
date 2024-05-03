@@ -1,4 +1,4 @@
-import * as ST from './styled';
+import * as ST from './Components/Project-deatails/styled';
 import WidgetWith2Items from '@ui/Organisms/Widgets/WidgetWith2Items';
 import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
 import { IProject } from '~/src/a-lib';
@@ -12,7 +12,11 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 
-const SubscribedProjects = (project?: IProject): JSX.Element | null => {
+interface IProps {
+    project?: IProject,
+}
+
+const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
     const dispatch = useDispatch();
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
     if (!project) {
@@ -32,7 +36,7 @@ const SubscribedProjects = (project?: IProject): JSX.Element | null => {
                                 {complexityMapNumbers[complexityNumber]}
                             </StandartLabel>;
                         }
-                        return <StandartLabel $white>{project.project[key]}</StandartLabel>;
+                        return <StandartLabel $white>{project[key]}</StandartLabel>;
                     })}
                 </ST.ProjectsData>
                 <StandartLabel style={{ alignSelf: 'flex-start' }} $white>Подписано:</StandartLabel>

@@ -13,6 +13,8 @@ import { TRequestMethod } from '@api-package/types';
 
 const MainPage = (): JSX.Element => {
     const dispatch = useDispatch();
+    const [isAuthPopupOpen, updateIsAuthPopupOpen] = useState(false);
+    const [isRegisterPopupOpen, updateIsRegisterPopupOpen] = useState(false);
     const getAllUsers = async () => {
         const res = await new APIRequest({
             uri: '/api/users/get-all',
@@ -33,8 +35,7 @@ const MainPage = (): JSX.Element => {
         document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         (async () => await getAllUsers())();
     }, []);
-    const [isAuthPopupOpen, updateIsAuthPopupOpen] = useState(false);
-    const [isRegisterPopupOpen, updateIsRegisterPopupOpen] = useState(false);
+
     return (
         <ST.PageContainer className='page_container'>
             {/* {lkStatus} */}

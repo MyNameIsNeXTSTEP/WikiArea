@@ -3,7 +3,7 @@ import { IProject } from "~/src/a-lib";
 import { TRequestMethod } from "@api-package/types";
 import APIRequest from "@api-package/index";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
-import * as ST from './styled';
+import * as ST from './Components/Project-deatails/styled';
 import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
 import { Left, Right } from "@ui/Atoms/Containers";
 import { ImageBlock, ProjectImage } from "@ui/Atoms/icons";

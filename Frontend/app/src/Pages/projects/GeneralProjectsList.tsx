@@ -8,7 +8,7 @@ import { setShowModerated } from "~/src/features/store/projects";
 import { IProject } from '~/src/a-lib/index';
 import ProjectOnModeration from "./ProjectsOnModeration";
 import SubscribedProjects from './SubscribedProjects';
-import EditProjectPage from "./Components/EditProject";
+import EditProjectPage from "./Components/Edit-project";
 
 const GeneralProjectsList = (): JSX.Element | null => {
     const dispatch = useDispatch();

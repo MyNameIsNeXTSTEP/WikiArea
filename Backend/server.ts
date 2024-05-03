@@ -287,6 +287,21 @@ app.get('/api/projects/get-all', async (req, res) => {
     }
 });
 
+app.get('/api/projects/get-subscribed-by-student/:email', async (req, res) => {
+    try {
+        const email = req.params.email
+        const sql = 'SELECT p.* ' +
+            'FROM projects p ' +
+            'JOIN student_projects sp ON p.id = sp.project_id ' +
+            'JOIN students s ON sp.student_id = s.id ' +
+            `WHERE s.email = '${email}'`
+        const subscribedProjects = await new DBQuery(mysql).call(sql);
+        res.status(200).send(subscribedProjects);
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error reading subscribed projects from the DB', error });
+    }
+});
+
 app.get('/api/projects/get-deleted', async (req, res) => {
     try {
         const deletedProjects = await new DBQuery(mysql).call('SELECT * FROM deleted_projects');

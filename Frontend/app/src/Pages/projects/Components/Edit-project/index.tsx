@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 import { setIsOpenEditProjectPage } from '~/src/features/store/projects';
 import { StandartButton } from '@ui/Atoms/Buttons';
-import AddModule from '../ProjectModules/AddModule';
+import AddModule from '../Project-modules/AddModule';
 import { ButtonRow } from '@ui/Atoms/Containers';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 

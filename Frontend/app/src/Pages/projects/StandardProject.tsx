@@ -1,11 +1,11 @@
 import { ImageBlock, ProjectImage } from '@ui/Atoms/icons';
-import * as ST from './styled';
+import * as ST from './Components/Project-deatails/styled';
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { Left, Right } from '@ui/Atoms/Containers';
 import { StandartLabel } from '@ui/Atoms/Labels';
 import { ProjectSlug as ProjectLogo } from '@ui/assets/svg';
 import { IProject } from '~/src/a-lib/index';
-import Controls from './Components/ProjectControls/StandardProjectControls';
+import Controls from './Components/Project-controls/StandardProjectControls';
 import { complexityMapNumbers } from '~/src/a-lib';
 
 interface IProps {

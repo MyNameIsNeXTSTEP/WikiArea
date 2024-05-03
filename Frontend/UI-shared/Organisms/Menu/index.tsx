@@ -55,7 +55,7 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
         <ST.ProfileMenu>
           <ST.MenuItemsList>
             <ST.IconBlock>
-              <ST.Cancel size={40} color={"white"} onClick={close} />
+              <ST.Cancel size={40} color={"white"} onClick={() => openMenu(false)} />
             </ST.IconBlock>
             {menuItems.map((item: IMenuItem) => (
               <ST.MenuItem>

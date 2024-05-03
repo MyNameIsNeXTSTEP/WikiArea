@@ -71,6 +71,7 @@ export interface IProject {
     complexity: string,
     lifetime: string,
     description: string,
+    created_at: string,
 };
 
 export type imageForFormReq = {

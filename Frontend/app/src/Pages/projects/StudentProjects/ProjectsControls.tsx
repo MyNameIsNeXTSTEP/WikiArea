@@ -5,7 +5,7 @@ import { Title } from "@ui/Tokens";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpenSubscribedProjects, setStage } from "~/src/features/store/projects";
-import ProjectsListControls from "../Components/ProjectControls/ProjectsListControls";
+import ProjectsListControls from "../Components/Project-controls/ProjectsListControls";
 import { debounce, IProject } from "~/src/a-lib";
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/src/features/store/menu";
 
