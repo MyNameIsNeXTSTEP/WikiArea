@@ -11,7 +11,7 @@ import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/sr
 
 interface IProps {
     projectsToShow: IProject[],
-    updateProjectsToShow: Dispatch<SetStateAction<IProject>>,
+    updateProjectsToShow: Dispatch<SetStateAction<IProject[]>>,
 }
 
 // @todo: [BUG] when do searching the inout field rerenders and projects filtering went wrong (?)
@@ -43,9 +43,10 @@ const ProjectsControls = ({ projectsToShow, updateProjectsToShow }: IProps): JSX
 
     const doSearch = (e) => {
         const value = e.target?.value;
-        const searchedData = projectsToShow.filter((el: Record<string, string>) => {
+        const searchedData = projectsToShow.filter((el: IProject) => {
             const keys = Object.keys(el);
             for (const key of keys) {
+                // @ts-ignore
                 if (el[key].toLowerCase().match(value.toLowerCase())) {
                     return true;
                 }

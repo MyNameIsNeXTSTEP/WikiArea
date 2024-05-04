@@ -22,6 +22,8 @@ const initialState = {
     projectDetailsPage: { isOpen: false } as IProjectDetails,
     projectIdOnEdit: -1,
     stage: 0,
+    subscribedProjectsIds: [],
+    isAddTestsOpen: false
 };
 
 const projectsSlice = createSlice({
@@ -37,6 +39,9 @@ const projectsSlice = createSlice({
         setDeletedProjects: (state, action) => {
             state.deleted = action.payload;
         },
+        setSubscribedProjectsIds: (state, action) => {
+            state.subscribedProjectsIds = action.payload;
+        },
         setIsOpenEditProjectPage: (state, action) => {
             state.isOpenEditProjectPage = action.payload;
         },
@@ -51,6 +56,9 @@ const projectsSlice = createSlice({
         },
         setStage: (state, action) => {
             state.stage = action.payload;
+        },
+        setChangeAddTestsOpen: (state, action) => {
+            state.isAddTestsOpen = action.payload;
         }
     },
 });
@@ -64,6 +72,8 @@ export const {
     setProjectDetailsPage,
     setProjectIdOnEdit,
     setStage,
+    setSubscribedProjectsIds,
+    setChangeAddTestsOpen,
 } = projectsSlice.actions;
 
 export default projectsSlice.reducer;

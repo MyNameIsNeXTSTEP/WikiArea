@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 import { Wrapper } from "@ui/Organisms/Widgets/styled";
 import { purpleMainColor } from "@ui/Tokens";
@@ -29,7 +29,7 @@ export const TestText = styled.p`
     color: white;
 `;
 
-export const RadioSelector = styled.input`
+export const RadioSelector = styled.input<{ right?: boolean, $finished?: boolean }>`
     align-self: center;
     appearance: none;
     accent-color: ${purpleMainColor};
@@ -41,7 +41,16 @@ export const RadioSelector = styled.input`
     border: 2px solid white;
     background-color: white;
     &:checked {
-        background-color: ${purpleMainColor};
-        padding: 4px;
+        background-color: ${p => p.$finished
+            ? p.right
+                ? 'green'
+                : 'orange'
+            : purpleMainColor
+        };
+        padding: 2px;
     }
+    ${p => p.$finished && css`
+        cursor: not-allowed;
+        pointer-events: none;
+    `}
 `;

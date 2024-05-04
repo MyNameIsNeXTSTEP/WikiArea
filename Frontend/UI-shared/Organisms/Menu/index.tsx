@@ -1,16 +1,25 @@
 import * as ST from "./styled";
 import { useState } from "react";
-import { Left, Right } from "@ui/Atoms/Containers";
+import { ButtonRow, Left, Right } from "@ui/Atoms/Containers";
 import { BackMenuBtn, ProfileImage } from "@ui/Atoms/icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ProfileLogo, Back } from "@ui/assets/svg";
+import { StandartButton } from "@ui/Atoms/Buttons";
 
 interface IMenuItem {
   title: string;
   route: string;
   action?: () => void;
 }
+
+type TMenuButton = {
+    id: number,
+    onClick?: () => void,
+    src?: string,
+    props?: Record<string, string | number | boolean>,
+    label?: string,
+};
 
 interface IProps {
   className?: string,
@@ -21,8 +30,8 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
     menu: { buttons, isBackBtnDisabled, isMainMenu },
     role,
   } = useSelector(state => ({
-    menu: state.menu,
-    role: state.profile.auth.role,
+      menu: state.menu,
+      role: state.profile.auth.role,
   }));
   const [isOpen, openMenu] = useState(false);
 
@@ -49,6 +58,15 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
         {isMainMenu
             ? <ProfileImage src={ProfileLogo} onClick={() => openMenu(!isOpen)} />
             : !isBackBtnDisabled && <BackMenuBtn src={Back} onClick={buttons[0].onClick} />
+        }
+        {!isMainMenu && isBackBtnDisabled && buttons.length &&
+            <ButtonRow>
+                {buttons.map((btn: TMenuButton) =>
+                    <StandartButton {...btn.props} onClick={btn.onClick}>
+                        {btn.label}
+                    </StandartButton>
+                )}
+            </ButtonRow>
         }
       </Right>
       {isOpen && (

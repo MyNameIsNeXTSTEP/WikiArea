@@ -3,38 +3,43 @@ import { EUserRoles } from '~/src/a-lib'
 import { useDispatch, useSelector } from 'react-redux';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
-import { setDeletedProjects, setProjectsAll } from '~/src/features/store/projects';
+import { setDeletedProjects, setProjectsAll, setSubscribedProjectsIds } from '~/src/features/store/projects';
 import { setPageStagesData } from '~/src/features/store/pages';
 import AdminsProjects from './AdminsProjects';
 import StudentsProjects from './StudentProjects';
 import TeachersProjects from './TeachersProjects';
+import { setProjectModulesAll } from '~/src/features/store/projectModule';
 
 const ProjectsPage = (): JSX.Element => {
     const dispatch = useDispatch();
-    const role = useSelector(state => state.profile.auth.role);
+    const { role, email } = useSelector(state => state.profile.auth);
 
     useEffect(() => {
         dispatch(setPageStagesData({ page: '/projects', stage: 0 }))
     }, [])
     
     useEffect(() => {
-        const requestAll = {
-            uri: '/api/projects/get-all',
-            method: TRequestMethod.GET,
-        };
         (async () => {
-            await new APIRequest(requestAll)
-                .doRequest()
-                .then(res => dispatch(setProjectsAll(res.payload)));
+            await new APIRequest({
+                uri: `/api/projects/get-all`,
+                method: TRequestMethod.GET,
+                queryParams: { email },
+            })
+            .doRequest()
+            .then(res => {
+                dispatch(setProjectsAll(res.payload.projects))
+                dispatch(setProjectModulesAll(res.payload.modules))
+                dispatch(setSubscribedProjectsIds(res.payload.subscribedProjectIds))
+            });
         })();
-        const requestDeleted = {
-            uri: '/api/projects/get-deleted',
-            method: TRequestMethod.GET,
-        };
+
         (async () => {
-            await new APIRequest(requestDeleted)
-                .doRequest()
-                .then(res => dispatch(setDeletedProjects(res.payload)));
+            await new APIRequest({
+                uri: '/api/projects/get-deleted',
+                method: TRequestMethod.GET,
+            })
+            .doRequest()
+            .then(res => dispatch(setDeletedProjects(res.payload)));
         })();
     }, [])
 
@@ -42,11 +47,6 @@ const ProjectsPage = (): JSX.Element => {
         { role === EUserRoles.student && <StudentsProjects/> }
         { role === EUserRoles.teacher && <TeachersProjects/> }
         { role === EUserRoles.admin && <AdminsProjects/> }
-
-        {/* { !isModuleTestsOpen && <GeneralProjectsList/> }
-        { projectDetailsPage.isOpen && <ProjectDetails project={projectDetailsPage.project}/> }
-        { projectDetailsPage.isOpen && projectModules.map(el => <ProjectModule projectModule={el}/>) }
-        { isModuleTestsOpen && <ModuleTests/> } */}
     </>
 };
 
