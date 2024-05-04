@@ -12,6 +12,7 @@ import { setChangeAddTestsOpen } from "~/src/features/store/projects";
 const AddTests = (): JSX.Element => {
     const dispatch = useDispatch();
     const [variants, setVariants] = useState(['ответ 1', 'ответ 2', 'ответ 3', 'ответ 4']);
+    const [mainBlockHeight, setMainBlockHeight] = useState(450);
     const onChangeVariant = (answer: string, id: number) => {
         setVariants(prevState => {
             prevState[id] = answer;
@@ -19,6 +20,7 @@ const AddTests = (): JSX.Element => {
         });
     };
     const onAddNewVariant = () => {
+        setMainBlockHeight(prevState => prevState + 80);
         setVariants([...variants, '']);
     };
 
@@ -43,7 +45,7 @@ const AddTests = (): JSX.Element => {
         ]));
     }, [])
 
-    return <WidgetWith2Items $rounded height='500px'>
+    return <WidgetWith2Items $rounded height={`${String(mainBlockHeight)}px`}>
             <Left height='100%' width='400px' className="left" style={{ display: 'flex', marginTop: '50px' }}>
                 <StandartInput
                     name={'test-question'}
@@ -64,11 +66,13 @@ const AddTests = (): JSX.Element => {
             <div style={{
                 position: 'absolute',
                 left: 0,
+                top: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 height: '400px',
                 width: '100%',
-                marginTop: '50px'
+                marginTop: '50px',
+                marginBottom: '20px',
             }}>
                 {variants.map((v, id) => {
                     return <ButtonRow key={v} style={{ marginTop: '40px', width: '60%', marginLeft: '20px' }}>
