@@ -47,9 +47,6 @@ const ProjectsPage = (): JSX.Element => {
         { role === EUserRoles.student && <StudentsProjects/> }
         { role === EUserRoles.teacher && <TeachersProjects/> }
         { role === EUserRoles.admin && <AdminsProjects/> }
-
-        {/* { !isModuleTestsOpen && <GeneralProjectsList/> }
-        { isModuleTestsOpen && <ModuleTests/> } */}
     </>
 };
 

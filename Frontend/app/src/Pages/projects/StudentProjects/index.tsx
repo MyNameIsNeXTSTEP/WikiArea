@@ -7,7 +7,8 @@ import SubscribedProjects from '../SubscribedProjects';
 import ProjectsControls from "./ProjectsControls";
 import { setIsOpenSubscribedProjects, setProjectDetailsPage, setStage } from "~/src/features/store/projects";
 import ProjectDetails from "../Components/Project-deatails/ProjetcDetails";
-import ProjectModule from "../Components/Project-modules/ProjectModule";
+import ProjectModule from "./ProjectModule";
+import ModuleTests from "../Components/Module-tests";
 
 const StudentsProjects = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const StudentsProjects = (): JSX.Element => {
         projectModules: state.modules.all,
     }));
     const [projectsToShow, updateProjectsToShow] = useState<IProject[]>(projectsAll);
+    const [isModuleTestsOpen, openModuleTests] = useState(false);
 
     useEffect(() => {
         dispatch(setStage(0));
@@ -35,8 +37,8 @@ const StudentsProjects = (): JSX.Element => {
     }, []);
 
     const showSubscribedProjects = useCallback(() => {
-        // const sunscribedProjects = projectsAll.filter((pr: IProject) => subscribedProjectIds.includes(pr.id));
-        // updateProjectsToShow(sunscribedProjects);
+        const sunscribedProjects = projectsAll.filter((pr: IProject) => subscribedProjectsIds.includes(pr.id));
+        updateProjectsToShow(sunscribedProjects);
     }, []);
 
     useEffect(() => {
@@ -57,13 +59,14 @@ const StudentsProjects = (): JSX.Element => {
 
     return <>
         { stage === 0 && <ProjectsControls projectsToShow={projectsToShow} updateProjectsToShow={updateProjectsToShow}/> }
-        {!projectDetailsPage.isOpen && projectsToShow.map((el: IProject) => {
+        {!projectDetailsPage.isOpen && !isModuleTestsOpen && projectsToShow.map((el: IProject) => {
             return !isOpenSubscribedProjects
                 ? <StandardProject project={el}/>
                 : <SubscribedProjects project={el}/>
         })}
         { projectDetailsPage.isOpen && <ProjectDetails project={projectDetailsPage.project}/> }
-        { projectDetailsPage.isOpen && projectModules.map((el: IModule) => <ProjectModule projectModule={el}/>) }
+        { projectDetailsPage.isOpen && !isModuleTestsOpen && projectModules.map((el: IModule) => <ProjectModule projectModule={el} openModuleTests={openModuleTests}/>) }
+        { !projectDetailsPage.isOpen && isModuleTestsOpen && <ModuleTests/> }
     </>
 };
 

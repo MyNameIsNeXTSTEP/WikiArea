@@ -1,12 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { TMenuButton } from '~/src/a-lib';
 
 interface IMenuConfing {
-  buttons: Array<{
-    id: number,
-    onClick?: () => void,
-    src?: string,
-    props?: Record<string, string | number | boolean>,
-  }>,
+  buttons: TMenuButton[],
   isBackBtnDisabled: boolean,
   isMainMenu: boolean,
 }

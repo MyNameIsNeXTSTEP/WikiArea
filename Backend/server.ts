@@ -349,6 +349,19 @@ app.get('/api/users/get-all', async (req, res) => {
     }
 });
 
+app.put('/api/users/subscribe-to-project/:projectId', async (req, res) => {
+    try {
+        const projectId = req.params.projectId;
+        const { email } = req.body;
+        const sql = 'INSERT INTO student_projects (student_id, project_id)' +
+            `VALUES (( select id from students WHERE email = '${email}'), ${projectId})`;
+        await new DBQuery(mysql).call(sql);
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error putting a subscription relation the student_projects table in the DB', error });
+    }
+});
+
 app.get('/api', (req, res) => {
     res.json({ message: 'Backend API is up and accessable' });
 });

@@ -1,8 +1,8 @@
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
 import Menu from "@ui/Organisms/Menu";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useDispatch } from "react-redux";
 import { setProjectDetailsPage } from "~/src/features/store/projects";
 import { Arrow, File } from '@ui/assets/svg';
 import { StandartButton } from "@ui/Atoms/Buttons";
@@ -16,18 +16,18 @@ import { IModule, TFileForReq } from "~/src/a-lib";
 
 interface IProps {
     projectModule: IModule,
+    openModuleTests: Dispatch<SetStateAction<Boolean>>,
 }
 
-const ProjectModule = ({ projectModule }: IProps): JSX.Element => {
+const ProjectModule = ({ projectModule, openModuleTests }: IProps): JSX.Element => {
     const dispatch = useDispatch();
     const [isDropDownOpen, openDropDown] = useState(false);
     const [isOpenFileUploadPopup, openFileUploadPopup] = useState(false);
     const [uploadedFile, setUploadedFile] = useState({} as TFileForReq);
-    // const [isModuleTestsOpen, openModuleTests] = useState(false);
-    // const openTests = () => {
-    //     openModuleTests(true);
-    //     dispatch(setProjectDetailsPage({ isOpen: false }));
-    // };
+    const onOpenTests = () => {
+        openModuleTests(true);
+        dispatch(setProjectDetailsPage({ isOpen: false }));
+    };
     const processUploadedFile = (files: FileList | null) => { // @todo: fix the bug when form isn't submotable on the first click (async usaState issue)
         if (!files) throw new Error('No image was found in the request form');
         let reader = new FileReader();
@@ -77,7 +77,7 @@ const ProjectModule = ({ projectModule }: IProps): JSX.Element => {
                     <Left><Title>Материал</Title></Left>
                     { false
                         ? <StandartButton $width='200px' className="take-test-button">Посмотреть итоги теста</StandartButton>
-                        : <StandartButton $width='200px' className="take-test-button" onClick={() => alert('open tests')}>Пройти тест</StandartButton>
+                        : <StandartButton $width='200px' className="take-test-button" onClick={onOpenTests}>Пройти тест</StandartButton>
                     }
                     <Right>
                         <StandartButton className="download-button">Скачать</StandartButton>

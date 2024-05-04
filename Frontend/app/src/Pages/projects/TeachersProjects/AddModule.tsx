@@ -1,14 +1,16 @@
-import * as ST from './styled';
+import * as ST from '../Components/Project-modules/styled';
 import { StandartButton } from "@ui/Atoms/Buttons";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
-import TaskMaterials from './TaskMaterials';
+import TaskMaterials from '../Components/Project-modules/TaskMaterials';
 import { useState } from 'react';
-import AddModuleTaskPopup from './AddModuleTaskPopup';
-import SelfSufficiencyTask from './SelfSufficientTask';
+import AddModuleTaskPopup from '../Components/Project-modules/AddModuleTaskPopup';
+import SelfSufficiencyTask from '../Components/Project-modules/SelfSufficientTask';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
 import { getCookie } from '~/src/helpers';
-import DeleteModulePopup from './DeleteModulePopup';
+import DeleteModulePopup from '../Components/Project-modules/DeleteModulePopup';
+import { setChangeAddTestsOpen } from '~/src/features/store/projects';
+import { useDispatch } from 'react-redux';
 
 interface IProps {
     projectId: number,
@@ -21,6 +23,7 @@ type TFileForReq = {
 };
 
 const AddModule = ({ projectId }: IProps): JSX.Element => {
+    const dispatch = useDispatch();
     const [isOpenTaskMaterials, setIsOpenTaskMaterials] = useState(false);
     const [isOpenAddModuleTaskPopup, setIsOpenAddModuleTask] = useState(false);
     const [isOpenDeleteModulePopup, setIsOpenDeleteModulePopup] = useState(false);
@@ -72,7 +75,7 @@ const AddModule = ({ projectId }: IProps): JSX.Element => {
             />
             <ST.ButtonsLeft height='50%' width='25%' className="left">
                 <ST.StyledButtonRow1>
-                    <StandartButton $whiteBordered $width="200px">Добавить тест</StandartButton>
+                    <StandartButton $whiteBordered $width="200px" onClick={() => dispatch(setChangeAddTestsOpen(true))}>Добавить тест</StandartButton>
                     <StandartButton $whiteBordered $width="200px" onClick={() => setIsOpenAddModuleTask(true)}>Добавить задание</StandartButton>
                 </ST.StyledButtonRow1>
             </ST.ButtonsLeft>

@@ -6,8 +6,9 @@ import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { H1, purpleMainColor } from "@ui/Tokens";
 
+const dataPoints = [{ x: 'Модуль 1', y: 20 }, { x: 'Модуль 2', y: 40 }, { x: ' Модуль 3', y: 15 }, { x: 'Модуль 4', y: 60 }];
+
 export const AnalyticsPage = (): JSX.Element => {
-    const dataPoints = [{ x: 'Модуль 1', y: 20 }, { x: 'Модуль 2', y: 40 }, { x: ' Модуль 3', y: 15 }, { x: 'Модуль 4', y: 60 }];
     const xNames = dataPoints.map(point => point.x);
     const yValues = dataPoints.map(point => point.y);
     console.log(xNames, yValues);
@@ -64,7 +65,6 @@ export const AnalyticsPage = (): JSX.Element => {
                         <canvas id="analytics-chart" style={{ border: 'none' }}></canvas>
                     </SimpleWidget>
                 <StandartLabel>Информация о проекте:</StandartLabel>
-                {/* @todo: redux select info */}
             </SimpleWidget>
         </BoundedContainer>
     </>;

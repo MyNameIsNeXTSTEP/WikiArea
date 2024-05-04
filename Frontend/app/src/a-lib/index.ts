@@ -99,3 +99,11 @@ export type TFileForReq = {
     name: string,
     type: string,
 };
+
+export type TMenuButton = {
+    id: number,
+    onClick?: () => void,
+    src?: string,
+    props?: Record<string, string | number | boolean>,
+    label?: string,
+};

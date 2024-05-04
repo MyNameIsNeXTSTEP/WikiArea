@@ -23,6 +23,7 @@ const initialState = {
     projectIdOnEdit: -1,
     stage: 0,
     subscribedProjectsIds: [],
+    isAddTestsOpen: false
 };
 
 const projectsSlice = createSlice({
@@ -55,6 +56,9 @@ const projectsSlice = createSlice({
         },
         setStage: (state, action) => {
             state.stage = action.payload;
+        },
+        setChangeAddTestsOpen: (state, action) => {
+            state.isAddTestsOpen = action.payload;
         }
     },
 });
@@ -69,6 +73,7 @@ export const {
     setProjectIdOnEdit,
     setStage,
     setSubscribedProjectsIds,
+    setChangeAddTestsOpen,
 } = projectsSlice.actions;
 
 export default projectsSlice.reducer;
