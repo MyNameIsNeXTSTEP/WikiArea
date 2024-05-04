@@ -10,7 +10,7 @@ import OtherUsers from "./Pages/admin/OtherUsers";
 const AppRoutes = () => {
     return (
         <Router>
-            <Menu className='main-menu'/>
+            { window.location.pathname !== '/' && <Menu className='main-menu'/> }
             <Routes>
                 <Route path="/" element={<MainPage/>} />
                 <Route path="/user/:role" element={<UserPage/>} />

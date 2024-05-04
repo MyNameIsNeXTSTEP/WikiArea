@@ -2,6 +2,10 @@ import { useEffect } from "react";
 
 export type TFormRequest = Record<string, any>
 
+export const scrollTo = (hash: string) => {
+  location.hash = "#" + hash;
+} 
+
 export const useFormSubmitHandler = () => (e: React.FormEvent<HTMLFormElement>): TFormRequest => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)

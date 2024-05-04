@@ -1,5 +1,6 @@
-import { Breakline } from "@ui/Organisms/BreakLine/styled";
 import * as ST from "./styled";
+import WikiareaSmall from './Wikiarea-small.png';
+import { Breakline } from "@ui/Organisms/BreakLine/styled";
 import { Dispatch, SetStateAction } from "react";
 
 interface IButtonProps {
@@ -16,9 +17,9 @@ export const BreakLineWithButtons = ({
     openRegisterPopup(conf[1]);
   };
   return (
-    <Breakline $white>
+    <Breakline $white style={{ marginBottom: '60px', marginTop: '60px' }}>
       <ST.Left>
-        <strong>Wikiarea</strong>
+        <img src={WikiareaSmall} style={{ width: '200px' }}/>
       </ST.Left>
       <ST.Right>
         <ST.ButtonRow>
@@ -36,9 +37,9 @@ export const BreakLineWithButtons = ({
 
 export const BreakLineWithContacts = (): JSX.Element => {
   return (
-    <Breakline $white>
+    <Breakline $white style={{ marginBottom: '60px', marginTop: '60px' }}>
       <ST.Left>
-        <strong>Wikiarea</strong>
+        <img src={WikiareaSmall} style={{ width: '200px' }}/>
       </ST.Left>
       <ST.Right>
         <p>Contacts</p>

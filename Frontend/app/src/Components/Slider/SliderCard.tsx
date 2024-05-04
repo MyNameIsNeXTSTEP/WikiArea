@@ -1,3 +1,4 @@
+import { Text } from './styled';
 import { SliderCardWrapper } from './styled';
 
 interface IProps {
@@ -6,7 +7,7 @@ interface IProps {
 
 const SliderCard = ({ text }: IProps): JSX.Element => {
     return <SliderCardWrapper>
-        <p>{text}</p>
+        <Text>{text}</Text>
     </SliderCardWrapper>
 };
 

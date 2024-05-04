@@ -1,3 +1,4 @@
+import { purpleMainColor } from '@ui/Tokens';
 import { Carousel } from 'react-responsive-carousel';
 import styled from 'styled-components';
 
@@ -16,4 +17,8 @@ export const SliderCardWrapper = styled.div`
     margin: 10px;
     border-radius: 10px;
     background-color: white;
+`;
+
+export const Text = styled.p`
+    color: ${purpleMainColor};
 `;

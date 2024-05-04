@@ -38,18 +38,19 @@ const MainPage = (): JSX.Element => {
 
     return (
         <ST.PageContainer className='page_container'>
-            {/* {lkStatus} */}
             <AuthPopup isOpen={isAuthPopupOpen} close={() => updateIsAuthPopupOpen(false)}/>
             <RegisterPopup isOpen={isRegisterPopupOpen} close={() => updateIsRegisterPopupOpen(false)}/>
-            <h1>Main page</h1> 
             <WikiBanner/>
             <BreakLineWithButtons
                 openAuthPopup={updateIsAuthPopupOpen}
                 openRegisterPopup={updateIsRegisterPopupOpen}
             />
-            <p>Добро пожаловать на Wikiarea</p>
+                <a id="main-description"></a>
+                <p>Добро пожаловать на WikiArea – вашу платформу для управления образовательными проектами!</p><br/>
+                <p>Простота использования, мощные функциональные возможности и инновационные подходы делают WikiArea идеальным выбором для обучения и преподавания.</p>
             <BreakLineWithContacts/>
-            <p>Платформа Wikiarea - ваш главный инструмент</p>
+                <p>Платформа WikiArea - ваш главный инструмент для эффективного управления образовательными проектами!</p>
+                <p style={{ marginBottom: '60px' }}>Почему именно наша платформа подходит лучше всего:</p>
             <SliderList/>
             <BreakLineWithContacts/>
         </ST.PageContainer>
