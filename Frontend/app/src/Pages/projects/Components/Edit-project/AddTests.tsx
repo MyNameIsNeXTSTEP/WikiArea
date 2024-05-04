@@ -4,10 +4,8 @@ import { StandartInput } from "@ui/Atoms/Inputs";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { RadioSelector } from "../Module-tests/styled";
 import { debounce } from "~/src/a-lib";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/src/features/store/menu";
-import { setChangeAddTestsOpen } from "~/src/features/store/projects";
 
 const AddTests = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -23,27 +21,6 @@ const AddTests = (): JSX.Element => {
         setMainBlockHeight(prevState => prevState + 80);
         setVariants([...variants, '']);
     };
-
-    useEffect(() => {
-        dispatch(updateMainMenuFlag(false));
-        dispatch(changeBackBtnVisability(false));
-        dispatch(updateButtons([
-            {
-                id: 2,
-                onClick: () => setChangeAddTestsOpen(false)
-            },
-            {
-                id: 1,
-                onClick: () => console.log(true),
-                label: 'Сохранить',
-                props: {
-                    $whiteBordered: true,
-                    width: '150px',
-                    style: { marginTop: '15px', marginBottom: '15px'}
-                },
-            },
-        ]));
-    }, [])
 
     return <WidgetWith2Items $rounded height={`${String(mainBlockHeight)}px`}>
             <Left height='100%' width='400px' className="left" style={{ display: 'flex', marginTop: '50px' }}>

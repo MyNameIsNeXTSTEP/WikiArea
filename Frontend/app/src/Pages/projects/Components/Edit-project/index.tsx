@@ -31,7 +31,7 @@ const EditProjectPage = (): JSX.Element => {
             },
             src: 'Back',
         }]));
-    }, [projectIdOnEdit]);
+    }, []);
 
     const ConfirmExitPopup = (): JSX.Element => {
         return <StandartPopupWithContent

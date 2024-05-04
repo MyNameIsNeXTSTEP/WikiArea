@@ -3,17 +3,19 @@ import { IProject } from "~/src/a-lib";
 import StandardProject from "../StandardProject";
 import { useEffect, useState } from "react";
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/src/features/store/menu";
-import { setShowModerated } from "~/src/features/store/projects";
+import { setChangeAddTestsOpen, setShowModerated, setStage } from "~/src/features/store/projects";
 import EditProjectPage from "../Components/Edit-project";
+import ProjectsControls from "../Components/Project-controls/ProjectsControls";
 
 const TeachersProjects = (): JSX.Element => {
     const dispatch = useDispatch();
     const {
         projects: {
             all: projectsAll,
-            projectDetailsPage,
             showModerated,
             isOpenEditProjectPage,
+            isAddTestsOpen,
+            stage,
         }
     } = useSelector(state => ({
         projects: state.projects
@@ -24,11 +26,12 @@ const TeachersProjects = (): JSX.Element => {
     useEffect(() => {
         if (showModerated) {
             updateProjectsToShow(
-                projectsAll.filter(el => el.is_moderated === 1)
+                projectsAll.filter(el => el.is_moderation_in_progress === 1)
             );
         } else {
             updateProjectsToShow(projectsAll);
         }
+        dispatch(setStage(0));
     }, [showModerated]);
 
     useEffect(() => {
@@ -46,7 +49,31 @@ const TeachersProjects = (): JSX.Element => {
         }
     }, [showModerated]);
 
+    useEffect(() => {
+        if (isAddTestsOpen) {
+            dispatch(updateMainMenuFlag(false));
+            dispatch(changeBackBtnVisability(false));
+            dispatch(updateButtons([
+                {
+                    id: 1,
+                    onClick: () => dispatch(setChangeAddTestsOpen(false)),
+                },
+                {
+                    id: 2,
+                    onClick: () => console.log(true),
+                    label: 'Сохранить',
+                    props: {
+                        $whiteBordered: true,
+                        width: '150px',
+                        style: { marginTop: '15px', marginBottom: '15px'}
+                    },
+                },
+            ]));
+        }
+    }, []);
+
     return <>
+        { stage === 0 && <ProjectsControls projectsToShow={projectsToShow} updateProjectsToShow={updateProjectsToShow}/> }
         {isOpenEditProjectPage
             ? <EditProjectPage/> 
             : projectsToShow.map((el: IProject) => <StandardProject project={el}/>)

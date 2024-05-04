@@ -4,7 +4,7 @@ import StandardProject from '../StandardProject';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/src/features/store/menu";
 import { IModule, IProject } from '~/src/a-lib/index';
 import SubscribedProjects from '../SubscribedProjects';
-import ProjectsControls from "./ProjectsControls";
+import ProjectsControls from "../Components/Project-controls/ProjectsControls";
 import { setIsOpenSubscribedProjects, setProjectDetailsPage, setStage } from "~/src/features/store/projects";
 import ProjectDetails from "../Components/Project-deatails/ProjetcDetails";
 import ProjectModule from "./ProjectModule";
