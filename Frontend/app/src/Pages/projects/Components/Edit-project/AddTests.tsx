@@ -3,10 +3,14 @@ import { ButtonRow, Left, Right } from "@ui/Atoms/Containers";
 import { StandartInput } from "@ui/Atoms/Inputs";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { RadioSelector } from "../Module-tests/styled";
-import { debounce, useFormSubmitHandler } from "~/src/a-lib";
-import { useState } from "react";
+import { debounce } from "~/src/a-lib";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/src/features/store/menu";
+import { setChangeAddTestsOpen } from "~/src/features/store/projects";
 
 const AddTests = (): JSX.Element => {
+    const dispatch = useDispatch();
     const [variants, setVariants] = useState(['ответ 1', 'ответ 2', 'ответ 3', 'ответ 4']);
     const onChangeVariant = (answer: string, id: number) => {
         setVariants(prevState => {
@@ -18,19 +22,29 @@ const AddTests = (): JSX.Element => {
         setVariants([...variants, '']);
     };
 
-    const formSumbit = (e) => {
-        const formData = useFormSubmitHandler(e);
-        console.log(formData);
-    }
+    useEffect(() => {
+        dispatch(updateMainMenuFlag(false));
+        dispatch(changeBackBtnVisability(false));
+        dispatch(updateButtons([
+            {
+                id: 2,
+                onClick: () => setChangeAddTestsOpen(false)
+            },
+            {
+                id: 1,
+                onClick: () => console.log(true),
+                label: 'Сохранить',
+                props: {
+                    $whiteBordered: true,
+                    width: '150px',
+                    style: { marginTop: '15px', marginBottom: '15px'}
+                },
+            },
+        ]));
+    }, [])
 
     return <WidgetWith2Items $rounded height='500px'>
-        <form id='post-add-test-form' onSubmit={formSumbit}
-        style={{
-            display: 'flex',
-            width: '100%',
-            height: '100%'
-        }}>
-            <Left height='100%' width='400px' className="left" style={{ display: 'flex', marginTop: '20px' }}>
+            <Left height='100%' width='400px' className="left" style={{ display: 'flex', marginTop: '50px' }}>
                 <StandartInput
                     name={'test-question'}
                     placeholder="Введите вопрос"
@@ -66,7 +80,6 @@ const AddTests = (): JSX.Element => {
                     </ButtonRow>
                 })}
             </div>
-        </form>
     </WidgetWith2Items>
 }
 
