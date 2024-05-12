@@ -31,14 +31,6 @@ app.use(
     }),
 );
 
-/** NEED TO IMPLEMENT
- * Registration (path: /register-user) DONE
- * Authorization (path: /auth) + auth middleware (req.header: X-Auth-Token) DONE
- * Profile CRUD managing (path: /profile/{operation}) [teachers, students, admins] DONE
- * Projetcs studying (path: /projects/?{operation}) DONE
- * Getting analytics (path: /analytics) ?
- */
-
 /**
  * Signs up a user using email, login, password, role
  */
@@ -349,16 +341,52 @@ app.get('/api/users/get-all', async (req, res) => {
     }
 });
 
-app.put('/api/users/subscribe-to-project/:projectId', async (req, res) => {
+app.put('/api/users/subscribe-to-project', async (req, res) => {
     try {
-        const projectId = req.params.projectId;
-        const { email } = req.body;
-        const sql = 'INSERT INTO student_projects (student_id, project_id)' +
-            `VALUES (( select id from students WHERE email = '${email}'), ${projectId})`;
+        const { email, projectId } = req.body;
+        const sql = `INSERT INTO student_projects (student_id, project_id) VALUES (( select id from students WHERE email = '${email}'), ${projectId})`;
         await new DBQuery(mysql).call(sql);
         res.status(200).send({ ok: true });
     } catch (error) {
         res.status(500).send({ server_message: 'Error putting a subscription relation the student_projects table in the DB', error });
+    }
+});
+
+app.post('/api/users/unsubscribe-from-project', async (req, res) => {
+    try {
+        const { email, projectId } = req.body;
+        const sql = `DELETE from student_projects where student_id = (select id from students WHERE email = '${email}') AND project_id = ${projectId}`;
+        const dbResp = await new DBQuery(mysql).call(sql);
+        if (!dbResp) res.status(502).send({ message: 'Something went wrong with deletion from the DB, please contact your administarator' });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error deleting a subscription from the student_projects table in the DB', error });
+    }
+});
+
+
+app.get('/api/users/student/get-project-analytics', async (req, res) => {
+    try {
+        const { email, projectId } = req.query;
+        const sql = `
+            SELECT s.id AS student_id, p.name AS project_name, m.title AS module_title, sc.task_point, sc.test_point
+            FROM students s
+            JOIN student_scores sc ON s.id = sc.student_id
+            LEFT JOIN tasks t ON sc.task_id = t.id
+            LEFT JOIN tests ts ON sc.test_id = ts.id
+            JOIN project_modules m ON t.module_id = m.id OR ts.module_id = m.id
+            JOIN projects p ON m.project_id = p.id
+            WHERE p.id = ${projectId} AND s.id = (select id from students WHERE email = '${email}');
+        `;
+        const dbResp = await new DBQuery(mysql).call(sql);
+        const analytics = dbResp.map(el => ({
+            moduleTitle: el.module_title,
+            testPoint: el.test_point,
+            taskPoint: el.task_point,
+        }));
+        res.status(200).send(analytics);
+    } catch (error) {
+       console.log(error, 'Internal server error');
     }
 });
 

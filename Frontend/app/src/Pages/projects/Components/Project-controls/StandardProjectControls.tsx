@@ -5,7 +5,9 @@ import { StandartLabel } from '@ui/Atoms/Labels';
 import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { setIsOpenEditProjectPage, setProjectIdOnEdit, setStage } from '~/src/features/store/projects';
-import { IProject } from '~/src/a-lib';
+import { EUserRoles, IProject } from '~/src/a-lib';
+import APIRequest from '@api-package/index';
+import { TRequestMethod } from '@api-package/types';
 
 interface IProps {
     project: IProject;
@@ -13,19 +15,41 @@ interface IProps {
 
 const Controls = ({ project }: IProps): JSX.Element => {
     const dispatch = useDispatch();
-    const role = useSelector(state => state.profile.auth.role);
+    const { role, email } = useSelector(state => state.profile.auth);
     const [isOpenTecherDeleteProjectPopup, setIsOpenTecherDeleteProjectPopup] = useState(false);
     const controlState = config[role];
     const openEditProjectPage = () => {
         dispatch(setStage(2));
         dispatch(setIsOpenEditProjectPage(true));
         dispatch(setProjectIdOnEdit(project.id));
-    }
+    };
+    const subscribeToProject = async () => {
+        const res = await new APIRequest({
+            uri: '/api/users/subscribe-to-project',
+            method: TRequestMethod.PUT,
+            body: JSON.stringify({ email, projectId: project.id }),
+        }).doRequest();
+        if (res.isSuccess && res.statusCode === 200) {
+            return;
+        }
+    };
+    const roleAction = () => {
+        switch (role) {
+            case EUserRoles.student:
+                subscribeToProject().then();
+                return
+            case EUserRoles.teacher:
+                openEditProjectPage();
+                return;
+            default:
+                break;
+        }
+    };
     return <>
         {controlState.option1.type === 'button' &&
             <StandartButton
                 $whiteBordered $width={'180px'}
-                onClick={openEditProjectPage}
+                onClick={roleAction}
             >
                 {controlState.option1.buttonText}
             </StandartButton>

@@ -8,10 +8,12 @@ import { StandartLabel } from '@ui/Atoms/Labels';
 import { complexityMapNumbers } from '~/src/a-lib';
 import { StandartButton } from '@ui/Atoms/Buttons';
 import { setIsOpenSubscribedProjects, setProjectDetailsPage, setStage } from '~/src/features/store/projects';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
+import APIRequest from '@api-package/index';
+import { TRequestMethod } from '@api-package/types';
 
 interface IProps {
     project?: IProject,
@@ -19,10 +21,9 @@ interface IProps {
 
 const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
     const dispatch = useDispatch();
+    const { email } = useSelector(state => state.profile.auth);
     const [isOpenUnsubsribePopup, openUnsubscribePopup] = useState(false);
-    if (!project) {
-        return null;
-    }
+    if (!project) return null;
     const onOpenDetailedPage = useCallback(() => {
         dispatch(setStage(2));
         dispatch(setProjectDetailsPage({ isOpen: true, project }))
@@ -35,11 +36,21 @@ const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
                 dispatch(setProjectDetailsPage({ isOpen: false }));
             },
         }]));
-    }, [])
+    }, []);
+    const unsubscribeFromTheProject = async () => {
+        const res = await new APIRequest({
+            uri: '/api/users/unsubscribe-from-project',
+            method: TRequestMethod.POST,
+            body: JSON.stringify({ email, projectId: project.id }),
+        }).doRequest();
+        if (!res.isSuccess || res.statusCode !== 200) {
+            alert('Ошибка удаления подписки, пожалуйста, обратитесь к администратору');
+        }
+    };
     return <>
-        <WidgetWith2Items $rounded height='100px'>
-            <Left style={{ flexDirection: 'column', display: 'flex' }} className="left">
-                <ImageBlock $abs style={{ marginTop: '10px' }} className="profile-block">
+        <WidgetWith2Items $rounded height='200px'>
+            <Left style={{ flexDirection: 'column', display: 'flex', height: '100%' }} className="left">
+                <ImageBlock $abs style={{ marginTop: '10px', position: 'absolute', top: 0 }} className="profile-block">
                     <ProjectImage src={ProjectLogo} />
                 </ImageBlock>
                 <ST.ProjectsData>
@@ -72,7 +83,10 @@ const SubscribedProjects = ({ project }: IProps): JSX.Element | null => {
                 isOpen={isOpenUnsubsribePopup}
                 updateIsOpen={openUnsubscribePopup}
                 text='Вы действительно хотите отписатья от проекта ?'
-                firstBtn='Отписаться' />}
+                firstBtn='Отписаться'
+                firstBtnOnClick={unsubscribeFromTheProject}
+            />
+        }
     </>;
 };
 

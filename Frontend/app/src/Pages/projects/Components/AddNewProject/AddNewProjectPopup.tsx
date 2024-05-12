@@ -49,8 +49,6 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
     const submitForm = async (collectedFormFields: any) => {
         const res = await new APIRequest(request(collectedFormFields)).doRequest();
         if (res.isSuccess && res.statusCode === 200) {
-            const { accessToken } = res.payload.body;
-            document.cookie = `access_token=${accessToken}; path=/; max-age=${60 * 60 * 5}` // for 2 hours
             return;
         }
         alert('Auth error');
