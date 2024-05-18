@@ -334,7 +334,7 @@ app.post('/api/projects/edit', async (req, res) => {
 
 app.get('/api/users/get-all', async (req, res) => {
     try {
-        const users = await new DBQuery(mysql).call('SELECT * FROM users');
+        const users = await new DBQuery(mysql).call('SELECT * FROM users WHERE is_blocked = 0');
         res.status(200).send(users);
     } catch (error) {
         res.status(500).send({ server_message: 'Error editing the project in the DB', error });
@@ -364,6 +364,27 @@ app.post('/api/users/unsubscribe-from-project', async (req, res) => {
     }
 });
 
+app.post('/api/users/admin/block-user', async (req, res) => {
+    try {
+        const { adminLogin, userToBlock } = req.body;
+        const doesAdminHasRights = await new DBQuery(mysql).singleExists({
+            clmn: 'login',
+            table: 'admins',
+            condition: `login = '${adminLogin}'`
+        });
+        if (!Object.values(doesAdminHasRights[0][0] === 1))
+            res.status(500).send({ message: `Admin ${adminLogin} has no rights to block the user` });
+        const dbResp = await new DBQuery(mysql).update(
+            'users',
+            { is_blocked: 1 },
+            `login = '${userToBlock}'`
+        );
+        if (!dbResp) res.status(500).send({ message: 'Something went wrong during user blocking, please contact the technical administrator' });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error deleting a subscription from the student_projects table in the DB', error });
+    }
+});
 
 app.get('/api/users/student/get-project-analytics', async (req, res) => {
     try {

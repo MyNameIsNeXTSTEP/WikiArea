@@ -34,7 +34,7 @@ export class DBQuery {
         }
     }
     // @todo: Refactor
-    public async singleExists ({ clmn, table, condition }: IExistsSingleQuery) {
+    public async singleExists ({ clmn, table, condition = undefined }: IExistsSingleQuery) {
         if (!clmn || !table) console.log(new Error('No column or the table name was provided, check the query instance')); // need throw ?
         const query = `SELECT EXISTS(SELECT ${clmn} FROM ${table}
             ${condition
@@ -51,12 +51,16 @@ export class DBQuery {
             return await this.singleExists(query)
         })
     }
-    public insert<T>(table: string, insertObj: T) {
+    public async insert<T>(table: string, insertObj: T) {
         const query = `INSERT INTO ${table} SET ` + this.dbConn.escape(insertObj);
-        this.call(query);
+        await this.call(query);
     }
-    public replace<T>(table: string, insertObj: T) {
+    public async replace<T>(table: string, insertObj: T) {
         const query = `REPLACE INTO ${table} SET ` + this.dbConn.escape(insertObj);
-        this.call(query);
+        await this.call(query);
+    }
+    public async update<T>(table: string, insertObj: T, condition = undefined) {
+        const baseQuery = `UPDATE ${table} SET ${this.dbConn.escape(insertObj)}`
+        return await this.call(`${baseQuery} ${condition ? 'WHERE ' + condition : ';'}`);
     }
 };

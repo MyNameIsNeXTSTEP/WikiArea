@@ -4,11 +4,11 @@ import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store'; // Import the store and persistor
 
-function App() {
+const App = (): JSX.Element => {
     return <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
             {/* @todo: double menu bug */}
-            <AppRoutes/>
+            <AppRoutes persistor={persistor}/>
         </PersistGate>
     </Provider> 
 }

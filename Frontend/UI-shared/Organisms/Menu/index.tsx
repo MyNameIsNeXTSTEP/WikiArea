@@ -23,6 +23,7 @@ type TMenuButton = {
 
 interface IProps {
   className?: string,
+  onExit: () => void,
 }
 
 const Menu = ({ ...props }: IProps): JSX.Element => {
@@ -35,20 +36,16 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
   }));
   const [isOpen, openMenu] = useState(false);
 
-  const onExit = () => {
-    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.localStorage.clear();
-  };
   const menuDoubleItem = {
     titile: role !== 'admins' ? 'Проекты' : 'Пользователи',
-    route: role !== 'admins' ? '/projects' : '/other-users'
+    route: role !== 'admins' ? '/projects' : '/user/admins/manage-users'
   }
   const menuItems: IMenuItem[] = [
     { title: "Профиль", route: `/user/${role}` },
     { title: menuDoubleItem.titile, route: menuDoubleItem.route },
     { title: "Аналитика", route: "/analytics" },
     { title: "Чат", route: "/chat" },
-    { title: "Выход", route: "/", action: onExit },
+    { title: "Выход", route: "/", action: props.onExit },
   ];
  
   return (

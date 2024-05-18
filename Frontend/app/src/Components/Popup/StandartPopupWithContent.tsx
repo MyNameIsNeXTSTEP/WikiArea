@@ -17,6 +17,7 @@ export interface IPopupProps {
     width?: string,
     height?: string,
     children?: ReactNode | ReactNode[] | JSX.Element | JSX.Element[],
+    btnWidth?: string,
 }
 
 interface IRawPopupProps {
@@ -53,7 +54,7 @@ export const StandartPopupWithContent = ({
             paddingLeft: 20,
             gap: 20
         }}>
-            { firstBtn && <StandartButton $white onClick={firstBtnOnClick}>{firstBtn}</StandartButton> }
+            { firstBtn && <StandartButton $width={rest.btnWidth} $white onClick={firstBtnOnClick}>{firstBtn}</StandartButton> }
             { secondBtn && <StandartButton $white onClick={secondBtnOnClick}>{secondBtn}</StandartButton> }
             <StandartButton $white onClick={() => updateIsOpen(!isOpen)}>Отмена</StandartButton>
         </ButtonRow>

@@ -55,8 +55,8 @@ const AddNewUserPopup = ({ onClose }: IProps ): JSX.Element => {
             <Cancel size={20} color={'white'} onClick={onClose}/>
             <Title>Добавление проекта</Title>
             <form id='post-form' onSubmit={formSumbit}>
-                <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Придумайте логин" />
-                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Введите пароль" onClick={}/>
+                {/* <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Придумайте логин" />
+                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Введите пароль" onClick={() => alert(1)}/>
                 <StandartInput name={'projectDeadlines'} ref={projectDeadlines} placeholder="Повторите пароль"/>
                 <StandartInput
                     name={'projectComplexity'}
@@ -64,7 +64,7 @@ const AddNewUserPopup = ({ onClose }: IProps ): JSX.Element => {
                     value={selectedComplexity}
                     placeholder="Выберите роль"
                     onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}
-                />
+                /> */}
                 <ButtonRow>
                     <StandartButton
                         $whiteBordered

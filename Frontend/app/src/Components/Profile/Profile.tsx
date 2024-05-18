@@ -9,7 +9,6 @@ import { Title } from "@ui/Tokens";
 import { useEffect, useState } from "react";
 import { StandartPopupWithContent } from "../Popup/StandartPopupWithContent";
 import { useDispatch, useSelector } from "react-redux";
-// import Menu from '@ui/Organisms/Menu/index.js';
 import { getCookie } from "~/src/helpers";
 import { restoreProfileMenu } from "~/src/features/store/menu";
 
