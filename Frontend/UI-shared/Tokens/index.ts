@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export enum EUserRoles {
+  teacher = 'teachers',
+  student = 'students',
+  admin = 'admins'
+};
+
 export const purpleMainColor = 'rgb(193,158,224)';
 
 export const Title = styled.h2<{ $white?: boolean }>`

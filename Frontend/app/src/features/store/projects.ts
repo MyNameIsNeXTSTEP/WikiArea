@@ -18,12 +18,14 @@ const initialState = {
     showModerated: false,
     deleted: [] as IProject[],
     isOpenEditProjectPage: false,
+    isOpenProjectsModerationPage: false,
     isOpenSubscribedProjects: false,
     projectDetailsPage: { isOpen: false } as IProjectDetails,
     projectIdOnEdit: -1,
     stage: 0,
     subscribedProjectsIds: [],
-    isAddTestsOpen: false
+    isAddTestsOpen: false,
+    refresh: false,
 };
 
 const projectsSlice = createSlice({
@@ -45,6 +47,9 @@ const projectsSlice = createSlice({
         setIsOpenEditProjectPage: (state, action) => {
             state.isOpenEditProjectPage = action.payload;
         },
+        setIsOpenProjectsModerationPage: (state, action) => {
+            state.isOpenProjectsModerationPage = action.payload;
+        },
         setIsOpenSubscribedProjects: (state, action) => {
             state.isOpenSubscribedProjects = action.payload;
         },
@@ -59,7 +64,10 @@ const projectsSlice = createSlice({
         },
         setChangeAddTestsOpen: (state, action) => {
             state.isAddTestsOpen = action.payload;
-        }
+        },
+        setRefreshProjects: (state, action) => {
+            state.refresh = action.payload;
+        },
     },
 });
 
@@ -68,6 +76,8 @@ export const {
     setShowModerated,
     setDeletedProjects,
     setIsOpenEditProjectPage,
+    setIsOpenProjectsModerationPage,
+    setRefreshProjects,
     setIsOpenSubscribedProjects,
     setProjectDetailsPage,
     setProjectIdOnEdit,

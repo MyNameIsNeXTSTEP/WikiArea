@@ -23,6 +23,10 @@ const Controls = ({ project }: IProps): JSX.Element => {
         dispatch(setIsOpenEditProjectPage(true));
         dispatch(setProjectIdOnEdit(project.id));
     };
+    const openDetailedAdminsProjectsPage = () => {
+        alert(1)
+        // dispatch(setProjectIdOnEdit(project.id));
+    }
     const subscribeToProject = async () => {
         const res = await new APIRequest({
             uri: '/api/users/subscribe-to-project',
@@ -40,6 +44,9 @@ const Controls = ({ project }: IProps): JSX.Element => {
                 return
             case EUserRoles.teacher:
                 openEditProjectPage();
+                return;
+            case EUserRoles.admin:
+                openDetailedAdminsProjectsPage();
                 return;
             default:
                 break;
@@ -66,7 +73,6 @@ const Controls = ({ project }: IProps): JSX.Element => {
                 {controlState.option2.buttonText}
             </StandartButton>
         }
-        {/* teacher */}
         <StandartPopupWithContent 
             isOpen={isOpenTecherDeleteProjectPopup}
             updateIsOpen={setIsOpenTecherDeleteProjectPopup}

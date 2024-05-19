@@ -5,6 +5,8 @@ import Back from './Back.svg'
 import Eye from './Eye.svg'
 import File from './File.svg'
 import DownArrows from './Double-down-arrows.svg';
+import ApproveCheckMark from './Approve-check-mark.svg';
+import CrossCheckMark from './Cross-check-mark.svg';
 
 export {
     ProfileLogo,
@@ -14,4 +16,6 @@ export {
     Eye,
     File,
     DownArrows,
+    ApproveCheckMark,
+    CrossCheckMark,
 };

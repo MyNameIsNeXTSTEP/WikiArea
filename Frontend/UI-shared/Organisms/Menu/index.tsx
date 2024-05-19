@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ProfileLogo, Back } from "@ui/assets/svg";
 import { StandartButton } from "@ui/Atoms/Buttons";
+import { EUserRoles } from "@ui/Tokens";
 
 interface IMenuItem {
   title: string;
@@ -36,17 +37,22 @@ const Menu = ({ ...props }: IProps): JSX.Element => {
   }));
   const [isOpen, openMenu] = useState(false);
 
-  const menuDoubleItem = {
-    titile: role !== 'admins' ? 'Проекты' : 'Пользователи',
-    route: role !== 'admins' ? '/projects' : '/user/admins/manage-users'
-  }
-  const menuItems: IMenuItem[] = [
-    { title: "Профиль", route: `/user/${role}` },
-    { title: menuDoubleItem.titile, route: menuDoubleItem.route },
-    { title: "Аналитика", route: "/analytics" },
-    { title: "Чат", route: "/chat" },
-    { title: "Выход", route: "/", action: props.onExit },
-  ];
+  const menuItems: IMenuItem[] = (() => {
+    const items = [
+      { title: "Профиль", route: `/user/${role}` },
+      { title: 'Проекты', route: '/projects' },
+      { title: "Аналитика", route: "/analytics" },
+      { title: "Чат", route: "/chat" },
+      { title: "Выход", route: "/", action: props.onExit },
+    ];
+    if (role === EUserRoles.admin)
+      return [
+        ...items.slice(0, 1),
+        { title: 'Пользователи', route: '/user/admins/manage-users'},
+        ...items.slice(1, 5)
+      ]
+    return items;
+  })();
  
   return (
     <ST.Nav {...props}>

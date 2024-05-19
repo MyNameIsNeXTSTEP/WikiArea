@@ -7,7 +7,7 @@ import SubscribedProjects from '../SubscribedProjects';
 import ProjectsControls from "../Components/Project-controls/ProjectsControls";
 import { setIsOpenSubscribedProjects, setProjectDetailsPage, setStage } from "~/src/features/store/projects";
 import ProjectDetails from "../Components/Project-deatails/ProjetcDetails";
-import ProjectModule from "./ProjectModule";
+import ProjectModule from "../ProjectModule";
 import ModuleTests from "../Components/Module-tests";
 
 const StudentsProjects = (): JSX.Element => {

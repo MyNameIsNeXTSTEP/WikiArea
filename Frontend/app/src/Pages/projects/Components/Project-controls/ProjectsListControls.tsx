@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { StandartButton } from "@ui/Atoms/Buttons";
 import AddNewProjectPopup from "../AddNewProject/AddNewProjectPopup";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsOpenEditProjectPage, setShowModerated } from "~/src/features/store/projects";
+import { setIsOpenEditProjectPage, setIsOpenProjectsModerationPage, setShowModerated, setStage } from "~/src/features/store/projects";
 import { RawPopupWithElements } from "~/src/Components/Popup/StandartPopupWithContent";
 
 interface IProps {
@@ -35,6 +35,8 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
     };
 
     const moderateProjectByAdmin = () => {
+        dispatch(setStage(1));
+        dispatch(setIsOpenProjectsModerationPage(true));
     };
 
     const showDeletedProjects = () => {
@@ -66,7 +68,7 @@ const ProjectsListControls = ({ role, controlRoleActions, updatePopupConfig, pop
                 }
             </>
         case 'admins':
-            return <StandartButton $width='180px' onClick={moderateProjectByAdmin}>Модерация проектов</StandartButton>
+            return <StandartButton $width='250px' onClick={moderateProjectByAdmin}>Модерация проектов</StandartButton>
         default:
             return <></>
     }

@@ -6,7 +6,7 @@ import StandardProject from './StandardProject';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/src/features/store/menu";
 import { setShowModerated } from "~/src/features/store/projects";
 import { IProject } from '~/src/a-lib/index';
-import ProjectOnModeration from "./ProjectsOnModeration";
+import ProjectOnModeration from "./AdminsProjects/ProjectsOnModeration";
 import SubscribedProjects from './SubscribedProjects';
 import EditProjectPage from "./Components/Edit-project";
 

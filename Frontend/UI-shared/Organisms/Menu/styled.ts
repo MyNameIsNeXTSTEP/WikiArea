@@ -21,7 +21,7 @@ export const ProfileMenu = styled.div`
     right: 1rem;
     top: 5rem;
     width: 150px;
-    height: 240px;
+    height: 275px;
     border: 3px solid ${purpleMainColor};
     z-index: 1000;
 `;

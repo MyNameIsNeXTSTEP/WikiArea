@@ -7,7 +7,7 @@ import { Cancel } from "./styled";
 
 export interface IPopupProps {
     isOpen?: boolean,
-    text: string,
+    text?: string,
     firstBtn: string,
     secondBtn?: string
     firstBtnOnClick?: () => void,
@@ -33,7 +33,8 @@ interface IRawPopupProps {
 
 export const StandartPopupWithContent = ({
     updateIsOpen,
-    isOpen, text,
+    isOpen,
+    text,
     firstBtn,
     secondBtn,
     firstBtnOnClick,
@@ -44,7 +45,7 @@ export const StandartPopupWithContent = ({
     ...rest
 }: IPopupProps): JSX.Element | null => {
     return isOpen ? <DefaultPopup width={width ?? "450px"} height={ height ?? "200px"}>
-        <H1 $white>{text}</H1>
+        { text && <H1 $white>{text}</H1> }
         {image}
         {rest.children}
         <ButtonRow style={{

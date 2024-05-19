@@ -3,7 +3,7 @@ import { EUserRoles } from '~/src/a-lib'
 import { useDispatch, useSelector } from 'react-redux';
 import { TRequestMethod } from '@api-package/types';
 import APIRequest from '@api-package/index';
-import { setDeletedProjects, setProjectsAll, setSubscribedProjectsIds } from '~/src/features/store/projects';
+import { setDeletedProjects, setProjectsAll, setRefreshProjects, setSubscribedProjectsIds } from '~/src/features/store/projects';
 import { setPageStagesData } from '~/src/features/store/pages';
 import AdminsProjects from './AdminsProjects';
 import StudentsProjects from './StudentProjects';
@@ -13,6 +13,7 @@ import { setProjectModulesAll } from '~/src/features/store/projectModule';
 const ProjectsPage = (): JSX.Element => {
     const dispatch = useDispatch();
     const { role, email } = useSelector(state => state.profile.auth);
+    const refreshProjects = useSelector(state => state.projects.refresh);
 
     useEffect(() => {
         dispatch(setPageStagesData({ page: '/projects', stage: 0 }))
@@ -41,7 +42,8 @@ const ProjectsPage = (): JSX.Element => {
             .doRequest()
             .then(res => dispatch(setDeletedProjects(res.payload)));
         })();
-    }, [])
+        dispatch(setRefreshProjects(false));
+    }, [refreshProjects])
 
     return <>
         { role === EUserRoles.student && <StudentsProjects/> }

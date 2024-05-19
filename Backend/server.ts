@@ -307,10 +307,17 @@ app.get('/api/projects/get-deleted', async (req, res) => {
 
 app.post('/api/projects/delete', async (req, res) => {
     try {
-        const projectId = req.body.id;
+        const { id: projectId, deletionReason } = req.body;
         const deletedProject = await new DBQuery(mysql).call(`SELECT * FROM projects WHERE id=${projectId}`);
+        await new DBQuery(mysql).call(`DELETE FROM student_projects WHERE project_id=${projectId}`);
         await new DBQuery(mysql).call(`DELETE FROM projects WHERE id=${projectId}`);
-        new DBQuery(mysql).insert('deleted_projects', deletedProject[0]);
+        await new DBQuery(mysql).insert('deleted_projects', deletedProject[0]);
+        if (deletionReason)
+            await new DBQuery(mysql).update(
+                'deleted_projects',
+                { deletion_reason: deletionReason },
+                `id = ${projectId}`,
+            );
         const deletedProjectExists = await new DBQuery(mysql).singleExists({
             clmn: 'name',
             table: 'projects',
@@ -338,6 +345,22 @@ app.post('/api/projects/edit', async (req, res) => {
                 created_at: new Date(),
                 is_moderated: 0, // set to 0 because admin should review an edited project
             });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error editing the project in the DB', error });
+    }
+});
+
+app.post('/api/projects/moderate', async (req, res) => {
+    try {
+        const { projectId, isModerated } = req.body;
+        new DBQuery(mysql).update(
+            'projects',
+            {
+                is_moderated: isModerated
+            },
+            `id = ${projectId}`
+        );
         res.status(200).send({ ok: true });
     } catch (error) {
         res.status(500).send({ server_message: 'Error editing the project in the DB', error });
