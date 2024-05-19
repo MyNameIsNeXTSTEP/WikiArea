@@ -4,7 +4,7 @@ import { StandartButton } from '@ui/Atoms/Buttons';
 import { StandartLabel } from '@ui/Atoms/Labels';
 import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
-import { setIsOpenEditProjectPage, setProjectIdOnEdit, setStage } from '~/src/features/store/projects';
+import { setIsOpenEditProjectPage, setProjectDetailsPage, setProjectIdOnEdit, setStage } from '~/src/features/store/projects';
 import { EUserRoles, IProject } from '~/src/a-lib';
 import APIRequest from '@api-package/index';
 import { TRequestMethod } from '@api-package/types';
@@ -24,8 +24,10 @@ const Controls = ({ project }: IProps): JSX.Element => {
         dispatch(setProjectIdOnEdit(project.id));
     };
     const openDetailedAdminsProjectsPage = () => {
-        alert(1)
-        // dispatch(setProjectIdOnEdit(project.id));
+        dispatch(setProjectDetailsPage({
+            isOpen: true,
+            project,
+        }));
     }
     const subscribeToProject = async () => {
         const res = await new APIRequest({

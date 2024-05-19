@@ -55,14 +55,7 @@ const ProjectModule = ({ projectModule, openModuleTests }: IProps): JSX.Element 
         openFileUploadPopup(true);
         document.getElementById('upload-file')?.click();
     };
-    const MenuAfterRedirect = (): JSX.Element | null => {
-        if (document.getElementsByClassName('main-menu').length === 0) {
-            return <Menu className="main-menu"/>
-        }
-        return null;
-    }
     return <>
-        <MenuAfterRedirect/>
         <WidgetWith2Items $rounded height='80px'>
             <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>
             <Right>
