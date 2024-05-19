@@ -2,7 +2,7 @@ import { Left, Right } from "@ui/Atoms/Containers";
 import { StandartInput } from "@ui/Atoms/Inputs";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { Title } from "@ui/Tokens";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpenSubscribedProjects, setStage } from "~/src/features/store/projects";
 import ProjectsListControls from "./ProjectsListControls";
@@ -29,6 +29,7 @@ const ProjectsControls = ({ projectsToShow, updateProjectsToShow }: IProps): JSX
         text: '',
         firstBtn: ''
     });
+    const originalListOfProjects = useMemo(() => [...projectsToShow], []);
     
     const searchRef = useRef<HTMLInputElement>(null);
     const filterRef = useRef<HTMLInputElement>(null);
@@ -43,18 +44,22 @@ const ProjectsControls = ({ projectsToShow, updateProjectsToShow }: IProps): JSX
 
     const doSearch = (e) => {
         const value = e.target?.value;
+        if (!value || value.length === 0) {
+            updateProjectsToShow(originalListOfProjects);
+            return;
+        }
         const searchedData = projectsToShow.filter((el: IProject) => {
             const keys = Object.keys(el);
             for (const key of keys) {
                 // @ts-ignore
-                if (el[key].toLowerCase().match(value.toLowerCase())) {
+                if (String(el[key]).toLowerCase().match(value.toLowerCase())) {
                     return true;
                 }
                 continue;
             };
             return false;
         });
-        updateProjectsToShow(searchedData)
+        updateProjectsToShow(searchedData);
     };
 
     const openSubscribedProjects = () => {

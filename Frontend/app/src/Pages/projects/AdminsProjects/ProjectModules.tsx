@@ -17,10 +17,9 @@ import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/sr
 
 interface IProps {
     projectModule: IModule,
-    openModuleTests: Dispatch<SetStateAction<Boolean>>,
 }
 
-const ProjectModules = ({ projectModule, openModuleTests }: IProps): JSX.Element => {
+const ProjectModules = ({ projectModule }: IProps): JSX.Element => {
     const dispatch = useDispatch();
     const [isDropDownOpen, openDropDown] = useState(false);
     const downloadMaterial = async () => {

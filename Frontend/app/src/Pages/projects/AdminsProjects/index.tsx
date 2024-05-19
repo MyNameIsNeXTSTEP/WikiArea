@@ -35,7 +35,9 @@ const AdminsProjects = (): JSX.Element => {
     }, []);
 
     return <>
-        { stage === 0 && !projectDetailsPage.isOpen && <ProjectsControls projectsToShow={projectsToShow} updateProjectsToShow={updateProjectsToShow}/> }
+        { stage === 0 && !projectDetailsPage.isOpen &&
+            <ProjectsControls projectsToShow={projectsToShow} updateProjectsToShow={updateProjectsToShow}/>
+        }
         {!projectDetailsPage.isOpen && !isOpenProjectsModerationPage && projectsToShow.map(
             (el: IProject) => <StandardProject project={el}/>
         )}
