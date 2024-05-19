@@ -14,7 +14,19 @@ const complexityMap = {
     'лёгкий': 1,
     'средний': 2,
     'сложный': 3
-}
+};
+
+const userRoleIds = {
+    admin: 1,
+    teeacher: 2,
+    student: 3,
+};
+
+enum EUserRoles {
+    admin = 'admins',
+    teeacher = 'teachers',
+    student = 'students',
+};
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5002');
@@ -380,6 +392,49 @@ app.post('/api/users/admin/block-user', async (req, res) => {
             `login = '${userToBlock}'`
         );
         if (!dbResp) res.status(500).send({ message: 'Something went wrong during user blocking, please contact the technical administrator' });
+        res.status(200).send({ ok: true });
+    } catch (error) {
+        res.status(500).send({ server_message: 'Error deleting a subscription from the student_projects table in the DB', error });
+    }
+});
+
+app.post('/api/users/add-new-user', async (req, res) => {
+    try {
+        const {
+            email,
+            login,
+            password,
+            role
+        } = req.body;
+        const encryptedPswd = createHash('sha256').update(password).digest('hex');
+        const userExists = await new DBQuery(mysql).singleExists({
+            clmn: 'login',
+            table: EUserRoles[role],
+            condition: `login = '${login}'`
+        });
+        if (Object.values(userExists[0])[0] === 1) {
+            res.status(400).send({ message: 'This user already exists' });
+        };
+        const dbRespRoleTable = await new DBQuery(mysql).insert(
+            EUserRoles[role],
+            { login, email, password: encryptedPswd, created_at: new Date()}
+        );
+        const originaUserlId = await new DBQuery(mysql).call(`SELECT id from ${role}s WHERE login = '${login}'`);
+        const dbRespUsersTable = await new DBQuery(mysql).insert(
+            'users',
+            {
+                login,
+                email,
+                password: encryptedPswd,
+                created_at: new Date(),
+                original_id: originaUserlId[0].id,
+                role: EUserRoles[role],
+                role_id: userRoleIds[role],
+            }
+        );
+        if (!dbRespRoleTable || !dbRespUsersTable) res.status(500).send({
+            message: 'Something went wrong during adding a new user, please contact the technical administrator'
+        });
         res.status(200).send({ ok: true });
     } catch (error) {
         res.status(500).send({ server_message: 'Error deleting a subscription from the student_projects table in the DB', error });

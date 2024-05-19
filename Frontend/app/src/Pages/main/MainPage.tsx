@@ -26,7 +26,6 @@ const MainPage = (): JSX.Element => {
                 email: user.email,
                 login: user.login,
             }));
-            console.log(set, 'set');
             dispatch(setUsersData(set))
         }
     };

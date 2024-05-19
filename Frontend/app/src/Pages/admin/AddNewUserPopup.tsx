@@ -7,6 +7,8 @@ import { Cancel, Title } from "~/src/Components/Popup/styled";
 import { useRef, useState } from "react";
 import { StandartButton } from "@ui/Atoms/Buttons";
 import { useSelector } from "react-redux";
+import { useFormSubmitHandler } from "~/src/a-lib";
+import RolesSelector from "~/src/Components/Authorization/RegisterPopup/RolesSelector";
 
 interface IProps {
     onClose: () => void,
@@ -14,57 +16,34 @@ interface IProps {
 
 const AddNewUserPopup = ({ onClose }: IProps ): JSX.Element => {
     const [isShowRoleSelector, showRoleSelector] = useState(false);
-    const login = useSelector(state => state.profile.auth.login) // teacher
-    const projectTitle = useRef<HTMLInputElement>(null);
-    const projectTopic = useRef<HTMLInputElement>(null);
-    const projectDeadlines = useRef<HTMLInputElement>(null);
-    const projectComplexity = useRef<HTMLInputElement>(null);
-    const projectDescription = useRef<HTMLInputElement>(null);
-
-    const formSumbit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget as HTMLFormElement)
-        let collectedFormFields = {};
-        formData.forEach((value, property: string) => {
-            console.log(property, value);
-            //@ts-ignore
-            collectedFormFields[property] = value;
-        });
-        collectedFormFields['author'] = login,
-        submitForm(collectedFormFields);
-    };
-
-    const request = (formRequest) => {
-        return {
-            uri: '/api/projects/add-new-project',
+    const [selectedRole, setSelectedRole] = useState('');
+    const submitHandler = useFormSubmitHandler();
+    const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        const data = submitHandler(e);
+        const res = await new APIRequest({
+            uri: '/api/users/add-new-user',
             method: TRequestMethod.POST,
-            body: JSON.stringify(formRequest)
-        }
-    };
-
-    const submitForm = async (collectedFormFields: any) => {
-        const res = await new APIRequest(request(collectedFormFields)).doRequest();
-        if (res.isSuccess && res.statusCode === 200) {
-            return;
-        }
-        alert('Auth error');
+            body: JSON.stringify(data),
+        }).doRequest();
+        if (!res.isSuccess) alert('Error, please contact your technical administrator');
     };
 
     return <>
         <DefaultPopup width={'450px'} height={'auto'}>
             <Cancel size={20} color={'white'} onClick={onClose}/>
             <Title>Добавление проекта</Title>
-            <form id='post-form' onSubmit={formSumbit}>
-                {/* <StandartInput name={'projectTitle'} ref={projectTitle} placeholder="Придумайте логин" />
-                <StandartInput name={'projectTopic'} ref={projectTopic} value={selectedTopic} placeholder="Введите пароль" onClick={() => alert(1)}/>
-                <StandartInput name={'projectDeadlines'} ref={projectDeadlines} placeholder="Повторите пароль"/>
+            <form id='post-form' onSubmit={formSubmit}>
+                <StandartInput name={'login'} placeholder="Придумайте логин" />
+                <StandartInput name={'email'} placeholder="Введите почту"/>
+                <StandartInput name={'password'} placeholder="Введите пароль" onClick={() => alert(1)}/>
+                <StandartInput name={'repeatedPassword'} placeholder="Повторите пароль"/>
                 <StandartInput
-                    name={'projectComplexity'}
-                    ref={projectComplexity}
-                    value={selectedComplexity}
+                    name={'role'}
+                    value={selectedRole}
                     placeholder="Выберите роль"
-                    onClick={() => {setIsShowComplexitySelector(!isShowComplexitySelector)}}
-                /> */}
+                    onClick={() => showRoleSelector(!isShowRoleSelector)}
+                />
+                <RolesSelector updateRole={selectedRole => setSelectedRole(selectedRole)} isOpen={isShowRoleSelector}/>
                 <ButtonRow>
                     <StandartButton
                         $whiteBordered

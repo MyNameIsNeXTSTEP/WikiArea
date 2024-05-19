@@ -53,7 +53,7 @@ export class DBQuery {
     }
     public async insert<T>(table: string, insertObj: T) {
         const query = `INSERT INTO ${table} SET ` + this.dbConn.escape(insertObj);
-        await this.call(query);
+        return await this.call(query);
     }
     public async replace<T>(table: string, insertObj: T) {
         const query = `REPLACE INTO ${table} SET ` + this.dbConn.escape(insertObj);

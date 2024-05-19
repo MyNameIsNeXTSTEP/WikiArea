@@ -88,7 +88,6 @@ const ManageUsers = (): JSX.Element => {
                 </Right>
             </WidgetWith2Items>
         })}
-        { isOpenAddNewUserPopup && <AddNewUserPopup onClose={() => setIsOpenAddNewUserPopup(false)}/>}
         <StandartPopupWithContent
           isOpen={isOpenBlockUserPopup}
           updateIsOpen={setIsOpenBlockUserPopup}
@@ -98,6 +97,7 @@ const ManageUsers = (): JSX.Element => {
           height="250px"
           btnWidth="150px"
         />
+        { isOpenAddNewUserPopup && <AddNewUserPopup onClose={() => setIsOpenAddNewUserPopup(false)}/>}
     </>
 };
 
