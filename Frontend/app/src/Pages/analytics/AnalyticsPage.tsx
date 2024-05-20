@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux"
 import { EUserRoles } from "~/src/a-lib";
-import StudentsAnalytics from "./StudentsAnalytics";
-import TeachersAnalytics from "./TeachersAnalytics";
-import AdminsAnalytics from "./AdminsAnalytics";
+import StudentsAnalytics from "./student/StudentsAnalytics";
+import TeachersAnalytics from "./teacher/TeachersAnalytics";
+import AdminsAnalytics from "./admin/AdminsAnalytics";
 import { getCookie } from "~/src/helpers";
 import { useNavigate } from 'react-router-dom';
 

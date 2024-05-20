@@ -6,7 +6,7 @@ import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { H1, purpleMainColor } from "@ui/Tokens";
 import { useSelector } from "react-redux";
-import ProjectsSelector, { TProjectToSelect } from "./ProjectsSelector";
+import ProjectsSelector, { TProjectToSelect } from "../ProjectsSelector";
 import { IProject } from "~/src/a-lib";
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";

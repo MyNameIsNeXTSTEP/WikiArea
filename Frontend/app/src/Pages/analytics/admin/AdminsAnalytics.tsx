@@ -6,17 +6,17 @@ import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { EUserRoles, H1, purpleMainColor } from "@ui/Tokens";
 import { useDispatch, useSelector } from "react-redux";
-import { TProjectToSelect } from "./ProjectsSelector";
+import { TProjectToSelect } from "../ProjectsSelector";
 import { IProject } from "~/src/a-lib";
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
 import groupBy from 'lodash/groupBy';
-import UserSelector from "./UserSelector";
+import UserSelector from "../UserSelector";
 import { IProfileAuthData } from "~/src/features/store/profile";
 import { setProjectsAll, setSubscribedProjectsIds } from "~/src/features/store/projects";
 import { setProjectModulesAll } from "~/src/features/store/projectModule";
-import StudentsAnalytics from "./StudentsAnalytics";
-import TeachersAnalytics from "./TeachersAnalytics";
+import StudentsAnalytics from "../student/StudentsAnalytics";
+import TeachersAnalytics from "../teacher/TeachersAnalytics";
 
 type TProjectAnalytics = {
     moduleTitle: string,

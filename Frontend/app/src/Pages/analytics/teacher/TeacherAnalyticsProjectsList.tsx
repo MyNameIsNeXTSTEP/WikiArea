@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { StandartLabel } from "@ui/Atoms/Labels";
-import ProjectDetails from "../projects/Components/Project-deatails/ProjetcDetails";
+import ProjectDetails from "../../projects/Components/Project-deatails/ProjetcDetails";
 import { IProject } from "~/src/a-lib";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
 import { ButtonRow, Left, Right } from "@ui/Atoms/Containers";
@@ -12,7 +12,7 @@ import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from "~/sr
 
 interface IProps {
     successfulProjectToShow: IProject,
-    popullarProjectToShow: IProject,
+    popularProjectToShow: IProject,
 };
 
 const StyledLabel = styled(StandartLabel)`
@@ -29,7 +29,7 @@ const StyledWrapper = styled.div`
     flex-direction: column;
 `;
 
-const Projects = ({ successfulProjectToShow, popullarProjectToShow }: IProps): JSX.Element => {
+const Projects = ({ successfulProjectToShow, popularProjectToShow }: IProps): JSX.Element => {
     const dispatch = useDispatch();
 
     const onOpenPopularityAnalytics = () => {
@@ -95,7 +95,7 @@ const Projects = ({ successfulProjectToShow, popullarProjectToShow }: IProps): J
             <StyledLabel>
                 Самый популярный проект:
             </StyledLabel>
-            <ProjectDetails project={popullarProjectToShow}/>
+            <ProjectDetails project={popularProjectToShow}/>
         </StyledWrapper>
     </>
 };
