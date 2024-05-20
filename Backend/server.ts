@@ -285,7 +285,13 @@ app.post('/api/projects/add-new-project', async (req, res) => {
 app.get('/api/projects/get-all', async (req, res) => {
     try {
         const { email } = req.query;
-        const projects = await new DBQuery(mysql).call('SELECT * FROM projects');
+        const projects = await new DBQuery(mysql).call(`
+            SELECT p.id, p.name, p.description, p.created_at,
+            t.login as author, p.topic, p.deadline, p.complexity, p.is_moderated, p.is_moderation_in_progress 
+            FROM projects p
+            JOIN teachers t
+            ON p.author = t.id
+        `);
         const modules = await new DBQuery(mysql).call('SELECT * FROM project_modules');
         const subscribedProjectIds = await new DBQuery(mysql).call(
             `select s.project_id from student_projects s where s.student_id = (select id from students st where st.email = '${email}')`

@@ -29,7 +29,7 @@ CREATE TABLE `access_tokens` (
   `expiration_date` datetime DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `access_tokens` (
 
 LOCK TABLES `access_tokens` WRITE;
 /*!40000 ALTER TABLE `access_tokens` DISABLE KEYS */;
-INSERT INTO `access_tokens` VALUES ('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:09:22',62),('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:10:20',63),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 01:57:49',64),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 02:44:28',65),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log2','log3','2024-04-05 02:47:37',66),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 02:52:33',67),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 16:53:57',68),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log3','log3','2024-04-05 22:16:52',69),('55b98320882ed11cb2847d3ff1f70e1c18ee79f5ae0b5a9a2cbdbbeff2db3e38','log4','log4','2024-04-10 23:07:30',70),('9849fb510b96926fc3671b327041c1ec89da2f4cde2a99f6dae5b5add5382299','log9','log9','2024-04-10 23:35:14',71),('707ba0f804a2a8206eb95eb26f98ee1229b782ca2c0163b1fae111c70fa0ca85','pp2','pp2','2024-04-10 23:38:40',72),('d6b95f11373d4121efa628e82dd3670a63ca4f85b578b3b2fdb6d101c73f40ce','pp3','pp3','2024-04-10 23:42:55',73),('95a4aa42f9d48d5aa917649d44c87b8a9fd726beb8921ea6a6ad26291ade7add','log0','log0','2024-04-25 13:45:52',74),('e83d0f2797226acc0b52198a0cf8387855a9428c7e5b91a913d7c501cec6d6a5','log99','log99','2024-04-25 16:17:45',75),('0044e41b0a26eb0f566081778e309b3afbaa09f661912b3c6ca20d72af19e813','log000','email@mail.ru','2024-05-03 04:31:58',76),('43b3d7b670aed8d20267188cce0c77d546442c83bcc7b1ee324df553ef3f0930','student-1','e@e.com','2024-05-03 05:06:53',77),('1d52c5eb8efa94297705854e9911b5014bf7541da78a7d3f0307f07bb63d32b6','po2','po2','2024-05-04 10:31:49',78);
+INSERT INTO `access_tokens` VALUES ('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:09:22',62),('e9b1f9813ac99532958a078b199e259d2fbf1f98dd8e7e6033cafa854ea7afd8','log123','test@bk.ru','2024-04-01 04:10:20',63),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 01:57:49',64),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 02:44:28',65),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log2','log3','2024-04-05 02:47:37',66),('18892b7f9ed261deb5736c3597355fb080985877cfacb51ff4c0d4ec4d4f13eb','log1','log1','2024-04-05 02:52:33',67),('2e72a897d75d942d2bd0f7b46832f58dbfc079dbeba9273dc1f4e7dcc20b576c','log2','log2','2024-04-05 16:53:57',68),('f9f99212c4471ed94b4a341efe468ac9bfdff9745db272ba03673318d0b45589','log3','log3','2024-04-05 22:16:52',69),('55b98320882ed11cb2847d3ff1f70e1c18ee79f5ae0b5a9a2cbdbbeff2db3e38','log4','log4','2024-04-10 23:07:30',70),('9849fb510b96926fc3671b327041c1ec89da2f4cde2a99f6dae5b5add5382299','log9','log9','2024-04-10 23:35:14',71),('707ba0f804a2a8206eb95eb26f98ee1229b782ca2c0163b1fae111c70fa0ca85','pp2','pp2','2024-04-10 23:38:40',72),('d6b95f11373d4121efa628e82dd3670a63ca4f85b578b3b2fdb6d101c73f40ce','pp3','pp3','2024-04-10 23:42:55',73),('95a4aa42f9d48d5aa917649d44c87b8a9fd726beb8921ea6a6ad26291ade7add','log0','log0','2024-04-25 13:45:52',74),('e83d0f2797226acc0b52198a0cf8387855a9428c7e5b91a913d7c501cec6d6a5','log99','log99','2024-04-25 16:17:45',75),('0044e41b0a26eb0f566081778e309b3afbaa09f661912b3c6ca20d72af19e813','log000','email@mail.ru','2024-05-03 04:31:58',76),('43b3d7b670aed8d20267188cce0c77d546442c83bcc7b1ee324df553ef3f0930','student-1','e@e.com','2024-05-03 05:06:53',77),('1d52c5eb8efa94297705854e9911b5014bf7541da78a7d3f0307f07bb63d32b6','po2','po2','2024-05-04 10:31:49',78),('f04c9a7c4617811fc140f120182dc3b3ae7998912b2a11731997ce27b030dd9a','user0','user0','2024-05-04 16:46:52',79),('f1359625cf7231edc9424e1d0416d45b8ccdefe398d90b24d73e22196c83b30f','user1','user1','2024-05-04 16:50:51',80),('ffd0ffb34b8d163f030edf54df24b1cbb2453fd72c8bc9280e72839237cc68f3','admin01','admin@mail.ru','2024-05-04 17:09:55',81);
 /*!40000 ALTER TABLE `access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +57,7 @@ CREATE TABLE `admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `admins` (
 
 LOCK TABLES `admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT INTO `admins` VALUES (NULL,'log1','log1','2024-04-05',1,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log4','log4','2024-04-10',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log99','log99','2024-04-25',3,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb');
+INSERT INTO `admins` VALUES (NULL,'log1','log1','2024-04-05',1,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log4','log4','2024-04-10',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log99','log99','2024-04-25',3,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'admin@mail.ru','admin01','2024-05-04',4,'691d69168b9c017457163237e65841b06ed6e613638d151c6a2a5bf2eea27350');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,6 +88,8 @@ CREATE TABLE `deleted_projects` (
   `complexity` int(11) DEFAULT NULL,
   `is_moderated` int(11) DEFAULT NULL,
   `deleted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deletion_reason` text,
+  `is_moderation_in_progress` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -98,7 +100,7 @@ CREATE TABLE `deleted_projects` (
 
 LOCK TABLES `deleted_projects` WRITE;
 /*!40000 ALTER TABLE `deleted_projects` DISABLE KEYS */;
-INSERT INTO `deleted_projects` VALUES (3,'Семинары по веб','Семинары по веб разработке в действии','2024-04-06','log2','Web-разработка','2001-01-05',2,1,'2024-04-06 12:19:17');
+INSERT INTO `deleted_projects` VALUES (3,'Семинары по веб','Семинары по веб разработке в действии','2024-04-06','log2','Web-разработка','2001-01-05',2,1,'2024-04-06 12:19:17',NULL,NULL);
 /*!40000 ALTER TABLE `deleted_projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,8 +118,13 @@ CREATE TABLE `messages` (
   `text` text,
   `user_login` varchar(100) DEFAULT NULL,
   `message_id` varchar(12) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_role_name` (`role`),
+  KEY `fk_user_id` (`user_id`),
+  CONSTRAINT `fk_role_name` FOREIGN KEY (`role`) REFERENCES `roles` (`role_name`),
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +133,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (1,'student','2024-04-10 18:43:39','hi','user123','c6562e1466ad'),(2,'student','2024-04-10 18:43:42','test','user123','a2d095b7d562'),(3,'student','2024-04-10 18:43:45','oppo','user123','b35f7bcaa30e');
+INSERT INTO `messages` VALUES (1,'student','2024-04-10 18:43:39','hi','user123','c6562e1466ad',NULL),(2,'student','2024-04-10 18:43:42','test','user123','a2d095b7d562',NULL),(3,'student','2024-04-10 18:43:45','oppo','user123','b35f7bcaa30e',NULL),(4,'student','2024-05-04 12:04:45','Здравствуйе!','user123','32003299dc42',NULL),(5,'student','2024-05-04 12:10:33','привет!','user123','7270788eb02a',NULL);
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +181,7 @@ CREATE TABLE `project_modules` (
   PRIMARY KEY (`id`),
   KEY `fk_project` (`project_id`),
   CONSTRAINT `fk_project` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +190,7 @@ CREATE TABLE `project_modules` (
 
 LOCK TABLES `project_modules` WRITE;
 /*!40000 ALTER TABLE `project_modules` DISABLE KEYS */;
-INSERT INTO `project_modules` VALUES (1,'Первый тестовый модуль',NULL,1,NULL,NULL),(2,'Второй тестовый модуль',NULL,3,NULL,NULL);
+INSERT INTO `project_modules` VALUES (1,'Первый тестовый модуль',NULL,1,NULL,NULL),(2,'Второй тестовый модуль',NULL,3,NULL,NULL),(3,'Тестовый модуль №1',NULL,NULL,NULL,NULL),(4,'Второй тестовый модуль проекта 1',NULL,1,NULL,NULL);
 /*!40000 ALTER TABLE `project_modules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,12 +206,15 @@ CREATE TABLE `projects` (
   `name` varchar(50) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL,
   `created_at` date DEFAULT NULL,
-  `author` varchar(100) DEFAULT NULL,
+  `author` int(11) DEFAULT NULL,
   `topic` varchar(300) DEFAULT NULL,
   `deadline` varchar(100) DEFAULT NULL,
   `complexity` int(11) DEFAULT NULL,
   `is_moderated` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `is_moderation_in_progress` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_author` (`author`),
+  CONSTRAINT `fk_author` FOREIGN KEY (`author`) REFERENCES `teachers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -214,7 +224,7 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` VALUES (1,'','','2024-04-09',NULL,NULL,'2001-02-25',3,0),(3,'','','2024-04-25',NULL,NULL,'',NULL,0),(4,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0),(5,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0);
+INSERT INTO `projects` VALUES (1,'Название проекта 1','','2024-04-09',5,NULL,'2001-02-25',3,1,1),(3,'','','2024-04-25',NULL,NULL,'',NULL,0,NULL),(5,NULL,NULL,'2024-04-09',NULL,NULL,NULL,NULL,0,NULL);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,8 +237,9 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(40) NOT NULL,
-  PRIMARY KEY (`id`)
+  `role_name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_role_name` (`role_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -238,7 +249,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'admin'),(2,'teacher'),(3,'student');
+INSERT INTO `roles` VALUES (1,'admin'),(3,'student'),(2,'teacher');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,8 +276,40 @@ CREATE TABLE `student_projects` (
 
 LOCK TABLES `student_projects` WRITE;
 /*!40000 ALTER TABLE `student_projects` DISABLE KEYS */;
-INSERT INTO `student_projects` VALUES (5,1),(6,1),(6,3),(6,4),(6,5);
+INSERT INTO `student_projects` VALUES (5,1),(6,1),(6,3);
 /*!40000 ALTER TABLE `student_projects` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `student_scores`
+--
+
+DROP TABLE IF EXISTS `student_scores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `student_scores` (
+  `student_id` int(11) DEFAULT NULL,
+  `task_point` int(11) DEFAULT NULL,
+  `test_point` int(11) DEFAULT NULL,
+  `task_id` int(11) DEFAULT NULL,
+  `test_id` int(11) DEFAULT NULL,
+  KEY `fk_student_scores` (`student_id`),
+  KEY `fk_task_scores` (`task_id`),
+  KEY `fk_test_scores` (`test_id`),
+  CONSTRAINT `fk_student_scores` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
+  CONSTRAINT `fk_task_scores` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
+  CONSTRAINT `fk_test_scores` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `student_scores`
+--
+
+LOCK TABLES `student_scores` WRITE;
+/*!40000 ALTER TABLE `student_scores` DISABLE KEYS */;
+INSERT INTO `student_scores` VALUES (5,70,10,1,0),(6,100,100,2,0),(2,NULL,30,NULL,1),(6,NULL,30,NULL,2);
+/*!40000 ALTER TABLE `student_scores` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -283,8 +326,9 @@ CREATE TABLE `students` (
   `created_at` date NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(100) DEFAULT NULL,
+  `is_blocked` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +337,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (NULL,'log3','log3','2024-04-05',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'log9','log9','2024-04-10',3,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'pp2','pp2','2024-04-10',4,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'pp3','pp3','2024-04-10',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb'),(NULL,'e@e.com','student-1','2024-05-03',6,'a4a61fefba22fd006bba9bf9540225499d3090bdbc969b29b1cf18a050534509');
+INSERT INTO `students` VALUES (NULL,'log3','log3','2024-04-05',2,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'log9','log9','2024-04-10',3,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'pp2','pp2','2024-04-10',4,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'pp3','pp3','2024-04-10',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'e@e.com','student-1','2024-05-03',6,'a4a61fefba22fd006bba9bf9540225499d3090bdbc969b29b1cf18a050534509',0),(NULL,'user0','user0','2024-05-04',7,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'user1','user1','2024-05-04',8,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'newuser@email.ru','new-user-20','2024-05-19',9,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',0),(NULL,'123','new-user-2','2024-05-19',14,'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',0);
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -312,6 +356,7 @@ CREATE TABLE `tasks` (
   `tests_link` int(11) DEFAULT NULL,
   `file_name` varchar(300) DEFAULT NULL,
   `module_id` int(11) DEFAULT NULL,
+  `pass_points` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_tasks` (`module_id`),
   CONSTRAINT `fk_tasks` FOREIGN KEY (`module_id`) REFERENCES `project_modules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
@@ -324,7 +369,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (1,2,'Задание-1','Нужно что-то сделать',123,NULL,1),(2,3,'Задание-2','Описание',122,NULL,2);
+INSERT INTO `tasks` VALUES (1,2,'Задание-1','Нужно что-то сделать',123,NULL,1,0),(2,3,'Задание-2','Описание',122,NULL,2,0);
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,6 +390,7 @@ CREATE TABLE `teachers` (
   `first_name` varchar(100) DEFAULT NULL,
   `second_name` varchar(100) DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
+  `is_blocked` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -355,7 +401,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (NULL,'log2','log2','2024-04-05 14:53:57',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL),(NULL,'log0','log0','2024-04-25 11:45:52',6,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','test','test','1980-08-08'),(NULL,'email@mail.ru','log000','2024-05-03 02:31:58',7,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL),(NULL,'po2','po2','2024-05-04 08:31:49',8,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL);
+INSERT INTO `teachers` VALUES (NULL,'log2','log2','2024-04-05 14:53:57',5,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL,0),(NULL,'log0','log0','2024-04-25 11:45:52',6,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','test','test','1980-08-08',0),(NULL,'email@mail.ru','log000','2024-05-03 02:31:58',7,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL,0),(NULL,'po2','po2','2024-05-04 08:31:49',8,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb',NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,6 +422,7 @@ CREATE TABLE `tests` (
   `answer_id` int(11) DEFAULT NULL,
   `id` int(11) NOT NULL,
   `module_id` int(11) DEFAULT NULL,
+  `pass_points` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_tests` (`module_id`),
   CONSTRAINT `fk_tests` FOREIGN KEY (`module_id`) REFERENCES `project_modules` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
@@ -388,7 +435,7 @@ CREATE TABLE `tests` (
 
 LOCK TABLES `tests` WRITE;
 /*!40000 ALTER TABLE `tests` DISABLE KEYS */;
-INSERT INTO `tests` VALUES ('Тест-1',1,'Вопрос-1',2,'ответ-1','описание теста',1,0,1);
+INSERT INTO `tests` VALUES ('Тест-1',1,'Вопрос-1',2,'ответ-1','описание теста',1,0,1,0),('тестовое задание для проекта 4 модуль 3',1,'вопрос',1,'ответ','описание',0,1,3,0),('тестовое задание для проекта 1 модуль 2',1,'вопрос',1,'ответ','описание',0,2,4,0);
 /*!40000 ALTER TABLE `tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,12 +454,16 @@ CREATE TABLE `users` (
   `login` varchar(100) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `password` varchar(64) DEFAULT NULL,
-  `role` enum('admins','teachers','students') DEFAULT NULL,
+  `role` varchar(20) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
+  `user_type` enum('student','teacher','admin') DEFAULT NULL,
+  `is_blocked` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `fk_user_role` (`role_id`),
+  KEY `idx_role_name` (`id`),
+  KEY `idx_users_id` (`id`),
+  KEY `idx_role_id` (`role_id`),
   CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,7 +472,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,NULL,NULL,'log3','log3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(5,NULL,NULL,'log4','log4',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',NULL),(6,NULL,NULL,'log9','log9',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(7,NULL,NULL,'pp2','pp2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(8,NULL,NULL,'pp3','pp3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL),(9,NULL,NULL,'log0','log0',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL),(10,3,NULL,'log99','log99',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',1),(11,NULL,NULL,'email@mail.ru','log000',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL),(12,NULL,NULL,'e@e.com','student-1',NULL,'a4a61fefba22fd006bba9bf9540225499d3090bdbc969b29b1cf18a050534509','students',NULL),(13,NULL,NULL,'po2','po2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL);
+INSERT INTO `users` VALUES (4,NULL,NULL,'log3','log3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL,NULL,0),(5,NULL,NULL,'log4','log4',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',NULL,NULL,0),(6,NULL,NULL,'log9','log9',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL,NULL,0),(7,NULL,NULL,'pp2','pp2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL,NULL,0),(8,NULL,NULL,'pp3','pp3',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL,NULL,0),(9,NULL,NULL,'log0','log0',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL,NULL,0),(10,3,NULL,'log99','log99',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','admins',1,NULL,0),(11,NULL,NULL,'email@mail.ru','log000',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL,NULL,0),(12,NULL,NULL,'e@e.com','student-1',NULL,'a4a61fefba22fd006bba9bf9540225499d3090bdbc969b29b1cf18a050534509','students',NULL,NULL,0),(13,NULL,NULL,'po2','po2',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','teachers',NULL,NULL,0),(14,NULL,NULL,'user0','user0',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL,NULL,0),(15,NULL,NULL,'user1','user1',NULL,'7a0236bdda1e612ba6b74e8a330f5319f9a7027772cad3f4d2953c8d6c2c04fb','students',NULL,NULL,0),(16,NULL,NULL,'admin@mail.ru','admin01',NULL,'691d69168b9c017457163237e65841b06ed6e613638d151c6a2a5bf2eea27350','admins',NULL,NULL,0),(17,14,NULL,'123','new-user-2','2024-05-19 15:56:02','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','students',3,NULL,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,4 +489,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-04 10:09:04
+-- Dump completed on 2024-05-19 19:42:50

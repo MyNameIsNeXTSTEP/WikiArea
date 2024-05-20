@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { purpleMainColor } from "../../Tokens";
 
 export const Wrapper = styled.div<{
@@ -8,6 +8,7 @@ export const Wrapper = styled.div<{
   height?: string,
   $smallMargins?: boolean,
   $fullWidth?: boolean,
+  $bordered?: boolean,
 }>`
   display: flex;
   justify-content: space-between;
@@ -16,6 +17,7 @@ export const Wrapper = styled.div<{
   margin: 10px;
   background-color: ${(p) => ((p.$transparent && 'transparent') || (p.$white ? "white" : purpleMainColor))};
   border-radius: ${(p) => p.$rounded && "20px"};
+  border: ${p => p.$bordered ? css`3px solid ${purpleMainColor}` : 'none'};
   position: relative;
   width: ${p => p.$fullWidth ? '100%' : '80%'};
   margin-left: ${p => p.$smallMargins ? '20px' : 'auto'};

@@ -30,10 +30,10 @@ const AddNewProjectPopup = ({ onClose }: IProps ): JSX.Element => {
         const formData = new FormData(e.currentTarget as HTMLFormElement)
         let collectedFormFields = {};
         formData.forEach((value, property: string) => {
-            console.log(property, value);
             //@ts-ignore
             collectedFormFields[property] = value;
         });
+        //@ts-ignore
         collectedFormFields['author'] = login,
         submitForm(collectedFormFields);
     };
