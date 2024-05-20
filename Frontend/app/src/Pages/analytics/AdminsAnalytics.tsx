@@ -16,6 +16,7 @@ import { IProfileAuthData } from "~/src/features/store/profile";
 import { setProjectsAll, setSubscribedProjectsIds } from "~/src/features/store/projects";
 import { setProjectModulesAll } from "~/src/features/store/projectModule";
 import StudentsAnalytics from "./StudentsAnalytics";
+import TeachersAnalytics from "./TeachersAnalytics";
 
 type TProjectAnalytics = {
     moduleTitle: string,
@@ -155,6 +156,7 @@ export const AdminsAnalytics = (): JSX.Element => {
             </Right>
         </WidgetWith2Items>
         { user.email && user.role === EUserRoles.student && <StudentsAnalytics studentEmail={user.email}/> }
+        { user.email && user.role === EUserRoles.teacher && <TeachersAnalytics teacherEmail={user.email}/> }
         {/* <BoundedContainer>
             <SimpleWidget width="100%" height="650px" $bordered style={{ alignItems: "flex-start", padding: '20px' }}>
                 {

@@ -5,6 +5,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { DBQuery } from './src/db';
 import { createHash } from 'crypto';
+import groupBy from 'lodash/groupBy';
 
 const PORT = process.env.PORT || 5001;
 const app = express();
@@ -491,7 +492,47 @@ app.get('/api/users/student/get-project-analytics', async (req, res) => {
         }));
         res.status(200).send(analytics);
     } catch (error) {
-       console.log(error, 'Internal server error');
+        res.status(500).send({ message: `Internal server error: ${error}` });
+    }
+});
+
+app.get('/api/users/teacher/get-analytics', async (req, res) => {
+    try {
+        const subscriptionAnalytics = await new DBQuery(mysql).call(`
+            SELECT p.name, p.id, COUNT(sp.student_id) AS subscriptions
+            FROM projects p
+            JOIN student_projects sp
+            ON sp.project_id = p.id
+            GROUP BY p.id;
+       `);
+        const overallModuleAnalytics = await new DBQuery(mysql).call(`
+            SELECT 
+            m.id AS module_id, 
+            p.name AS project_name, 
+            p.id as project_id,
+            m.title AS module_title, 
+            SUM(sc.task_point) + SUM(sc.test_point) AS total_points
+            FROM 
+                students s
+            JOIN 
+                student_scores sc ON s.id = sc.student_id
+            LEFT JOIN 
+                tasks t ON sc.task_id = t.id
+            LEFT JOIN 
+                tests ts ON sc.test_id = ts.id
+            JOIN 
+                project_modules m ON t.module_id = m.id OR ts.module_id = m.id
+            JOIN 
+                projects p ON m.project_id = p.id
+            GROUP BY 
+                m.id, p.name, m.title;
+       `);
+        res.status(200).send({
+            subscriptionAnalytics,
+            overallModuleAnalytics,
+        });
+    } catch (error) {
+        res.status(500).send({ message: `Internal server error: ${error}` });
     }
 });
 

@@ -14,7 +14,7 @@ const ProjectDetails = ({ project }: IProps): JSX.Element | null => {
     if (!project) {
         return null;
     }
-    return <WidgetWith2Items $rounded height='100px'>
+    return <WidgetWith2Items $rounded height='180px'>
             <Left className="left">
                 <ImageBlock $abs className="profile-block">
                     <ProjectImage src={ProjectLogo} />

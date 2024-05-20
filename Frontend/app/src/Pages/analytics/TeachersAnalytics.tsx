@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import maxBy from 'lodash/maxBy';
+import find from 'lodash/find';
 import { StandartButton } from "@ui/Atoms/Buttons";
 import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
 import { StandartLabel } from "@ui/Atoms/Labels";
@@ -10,14 +12,38 @@ import ProjectsSelector, { TProjectToSelect } from "./ProjectsSelector";
 import { IProject } from "~/src/a-lib";
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
+import Projects from "./TeacherAnalyticsProjectsList";
+
+interface IProps {
+    teacherEmail?: string,
+};
 
 type TProjectAnalytics = {
     moduleTitle: string,
     taskPoint: number | null,
     testPoint: number | null,
+};
+
+type TOverallModuleAnalytics = {
+    module_id: number,
+    project_name: string,
+    project_id: number,
+    module_title: string,
+    total_points: string | number,
+};
+
+type TSubscriptionAnalytics = {
+    id: number,
+    name: string,
+    subscriptions: number
 }
 
-export const TeachersAnalytics = (): JSX.Element => {
+type TResponseData = {
+    overallModuleAnalytics: TOverallModuleAnalytics[],
+    subscriptionAnalytics: TSubscriptionAnalytics[],
+};
+
+export const TeachersAnalytics = ({ teacherEmail }: IProps): JSX.Element => {
     const {
         projects: {
             all: projects,
@@ -29,9 +55,10 @@ export const TeachersAnalytics = (): JSX.Element => {
         email: state.profile.auth.email,
     }));
     const [isOpenProjectsSelector, setIsOpenProjectsSelector] = useState(false);
-    const [projectToDraw, setProjectToDraw] = useState({} as TProjectToSelect);
+    const [popullarProjectToShow, setPopullarProjectToShow] = useState({} as IProject);
+    const [successfulProjectToShow, setSuccessfulProjectToShow] = useState({} as IProject);
     const [projectAnalytics, setProjectAnalytics] = useState([] as TProjectAnalytics[]);
-    const subscribedProjects = useMemo(() => projects.filter((el: IProject) => subscribedProjectsIds.includes(el.id)), []);
+
     const dataPoints = projectAnalytics.map(el => {
         let divider = 2;
         if (!el.taskPoint || !el.testPoint) divider = 1;
@@ -41,28 +68,39 @@ export const TeachersAnalytics = (): JSX.Element => {
         }
     });
     const projectPassSuccess = dataPoints.reduce((acc, curr) => acc + curr.y, 0) / dataPoints.length;
-    const projectDetails = useMemo(() => {
-        const currentProject = subscribedProjects.find(el => el.id === projectToDraw.id);
-        if (!currentProject) return {};
-        const { name, description, author } = currentProject;
-        return { name, description, author };
-    }, [projectToDraw]);
+    // const projectDetails = useMemo(() => {
+    //     const currentProject = subscribedProjects.find(el => el.id === projectToDraw.id);
+    //     if (!currentProject) return {};
+    //     const { name, description, author } = currentProject;
+    //     return { name, description, author };
+    // }, [projectToDraw]);
     
-    const getAnalyticsInfo = async () => {
+    const getAnalyticsInfo = useCallback(async () => {
         const res = await new APIRequest({
-            uri: '/api/users/student/get-project-analytics',
+            uri: '/api/users/teacher/get-analytics',
             method: TRequestMethod.GET,
-            queryParams: { email, projectId: projectToDraw.id },
-        }).doRequest();
+        }).doRequest<TResponseData>();
+
         if (res.isSuccess && res.statusCode === 200) {
-            setProjectAnalytics(res.payload);
+            const { overallModuleAnalytics, subscriptionAnalytics } = res.payload;
+            const projectWithMaxModulePoints = maxBy<TOverallModuleAnalytics>(overallModuleAnalytics, obj => obj.total_points);
+            const projectWithMaxSubscriptions = maxBy<TSubscriptionAnalytics>(subscriptionAnalytics, obj => obj.subscriptions);
+            if (projectWithMaxModulePoints) {
+                const projectToshow = find(projects, { id: projectWithMaxModulePoints.project_id});
+                console.log(projectToshow);
+                setSuccessfulProjectToShow(projectToshow);
+            };
+            if (projectWithMaxSubscriptions) {
+                const projectToshow = find(projects, { id: projectWithMaxSubscriptions.id});
+                setPopullarProjectToShow(projectToshow);
+            }
         };
-    };
+    }, []);
     
     useEffect(() => {
-        getAnalyticsInfo();
-    }, [projectToDraw]);
-    
+        getAnalyticsInfo().then();
+    }, []);
+ 
     useEffect(() => {
         const ctx = document.getElementById('analytics-chart').getContext('2d');
         const myChart = new Chart(ctx, {
@@ -94,6 +132,13 @@ export const TeachersAnalytics = (): JSX.Element => {
     }, [dataPoints]);
 
     return <>
+        {/* Show only for the teacher role */}
+        { !teacherEmail && (popullarProjectToShow || successfulProjectToShow) &&
+            <Projects
+                popullarProjectToShow={popullarProjectToShow}
+                successfulProjectToShow={successfulProjectToShow}
+            />
+        }
         <WidgetWith2Items $transparent>
             <Left>
                 <H1>Аналитика</H1>
@@ -105,14 +150,14 @@ export const TeachersAnalytics = (): JSX.Element => {
                         onClick={() => setIsOpenProjectsSelector(!isOpenProjectsSelector)}
                         style={{ width: '200px', cursor: 'pointer' }}
                     >
-                        { projectToDraw.name || 'Выбрать проект' }
+                        {/* { projectToDraw.name || 'Выбрать проект' } */}
                     </StandartLabel>
-                    { isOpenProjectsSelector &&
+                    {/* { isOpenProjectsSelector &&
                         <ProjectsSelector
                             projects={subscribedProjects}
                             setProject={setProjectToDraw}
                         />
-                    }
+                    } */}
                     <StandartButton>Скачать</StandartButton>
                 </ButtonRow>
             </Right>
@@ -124,10 +169,10 @@ export const TeachersAnalytics = (): JSX.Element => {
                     <SimpleWidget width="80%" height="80%">
                         <canvas id="analytics-chart" style={{ border: 'none' }}></canvas>
                     </SimpleWidget>
-                <StandartLabel>
+                {/* <StandartLabel>
                     Информация о проекте:<br/>
                     {projectDetails.name}, {projectDetails.description}, {projectDetails.author}
-                </StandartLabel>
+                </StandartLabel> */}
             </SimpleWidget>
         </BoundedContainer>
     </>;

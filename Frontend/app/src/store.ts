@@ -6,7 +6,7 @@ import profileReducer from "./features/store/profile";
 import projectsReducer from "./features/store/projects";
 import menuReducer from "./features/store/menu";
 import modulesReducer from "./features/store/projectModule";
-import pagesReducer from "./features/store/pages";
+import pagesReducer from "./features/store/analytics";
 import usersReducer from "./features/store/users";
 
 const persistConfig = {

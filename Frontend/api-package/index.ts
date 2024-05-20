@@ -14,7 +14,7 @@ class APIRequest {
                 `${baseURL}${uri}?${params}`,
                 requestConfig,
             );
-            const payload = await response.json();
+            const payload: ResponseData = await response.json();
             const statusCode = response.status;
             return {
                 isSuccess: true,
