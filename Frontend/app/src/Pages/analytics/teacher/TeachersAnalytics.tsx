@@ -18,7 +18,8 @@ import SuccessChart from "./SuccessChat";
 import { setPopularAnalytics, setStage, setSuccessfulAnalytics } from "~/src/features/store/analytics";
 
 interface IProps {
-    teacherEmail?: string,
+    teacherLogin?: string,
+    selectedProject?: IProject,
 };
 
 type TOverallModuleAnalytics = {
@@ -26,7 +27,7 @@ type TOverallModuleAnalytics = {
     project_name: string,
     project_id: number,
     module_title: string,
-    total_points: string | number,
+    avg_total_points: string | number,
 };
 
 type TSubscriptionAnalytics = {
@@ -40,13 +41,12 @@ type TResponseData = {
     subscriptionAnalytics: TSubscriptionAnalytics[],
 };
 
-export const TeachersAnalytics = ({ teacherEmail }: IProps): JSX.Element => {
+export const TeachersAnalytics = ({ teacherLogin, selectedProject }: IProps): JSX.Element => {
     const {
         projects: {
             all: projects,
-            subscribedProjectsIds,
         },
-        email,
+        login,
         analyticsPage: {
             stage,
             isShowPopularityAnalytics,
@@ -54,7 +54,7 @@ export const TeachersAnalytics = ({ teacherEmail }: IProps): JSX.Element => {
         }
     } = useSelector(state => ({
         projects: state.projects,
-        email: state.profile.auth.email,
+        login: state.profile.auth.login,
         analyticsPage: state.pages.analytics,
     }));
     const dispatch = useDispatch();
@@ -62,24 +62,28 @@ export const TeachersAnalytics = ({ teacherEmail }: IProps): JSX.Element => {
     const [successfulProjectToShow, setSuccessfulProjectToShow] = useState({} as IProject);
 
     const getAnalyticsInfo = useCallback(async () => {
-        const res = await new APIRequest({
+        const request = {
             uri: '/api/users/teacher/get-analytics',
             method: TRequestMethod.GET,
-        }).doRequest<TResponseData>();
+            queryParams: { teacherLogin: teacherLogin ?? login }
+        };
+        if (selectedProject) request.queryParams.projectId = selectedProject.id;
+        const res = await new APIRequest(request).doRequest<TResponseData>();
 
         if (res.isSuccess && res.statusCode === 200) {
             const { overallModuleAnalytics, subscriptionAnalytics } = res.payload;
             dispatch(setPopularAnalytics(subscriptionAnalytics));
             dispatch(setSuccessfulAnalytics(overallModuleAnalytics));
-            const projectWithMaxModulePoints = maxBy<TOverallModuleAnalytics>(overallModuleAnalytics, obj => obj.total_points);
-            const projectWithMaxSubscriptions = maxBy<TSubscriptionAnalytics>(subscriptionAnalytics, obj => obj.subscriptions);
+            const projectWithMaxModulePoints = maxBy<TOverallModuleAnalytics>(overallModuleAnalytics, obj => Number(obj.avg_total_points));
+            const projectWithMaxSubscriptions = maxBy<TSubscriptionAnalytics>(subscriptionAnalytics, obj => Number(obj.subscriptions));
+            console.log(res.payload);
             if (projectWithMaxModulePoints) {
                 const projectToshow = find(projects, { id: projectWithMaxModulePoints.project_id});
-                setSuccessfulProjectToShow(projectToshow);
+                setSuccessfulProjectToShow(selectedProject || projectToshow);
             };
             if (projectWithMaxSubscriptions) {
                 const projectToshow = find(projects, { id: projectWithMaxSubscriptions.id});
-                setPopularProjectToShow(projectToshow);
+                setPopularProjectToShow(selectedProject || projectToshow);
             }
         };
     }, []);
@@ -91,7 +95,7 @@ export const TeachersAnalytics = ({ teacherEmail }: IProps): JSX.Element => {
  
     return <>
         {/* Show only for the teacher role */}
-        { !teacherEmail && stage === 0 && (popularProjectToShow || successfulProjectToShow) &&
+        { stage === 0 && (popularProjectToShow || successfulProjectToShow) &&
             <Projects
                 popularProjectToShow={popularProjectToShow}
                 successfulProjectToShow={successfulProjectToShow}

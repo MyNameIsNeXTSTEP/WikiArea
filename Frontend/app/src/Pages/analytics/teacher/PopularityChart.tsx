@@ -3,24 +3,11 @@ import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
 import { StandartLabel } from "@ui/Atoms/Labels";
 import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
-import { H1, purpleMainColor } from "@ui/Tokens";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
-interface IProps {
-    teacherEmail?: string,
-};
-
-type TProjectAnalytics = {
-    moduleTitle: string,
-    taskPoint: number | null,
-    testPoint: number | null,
-};
 
 const PopularityChart = (): JSX.Element => {
     const popular = useSelector(state => state.pages.analytics.popular);
-    const [projectAnalytics, setProjectAnalytics] = useState([] as TProjectAnalytics[]);
-    console.log(popular);
 
     const data = {
         labels: popular.map(el => el.name),
@@ -45,7 +32,7 @@ const PopularityChart = (): JSX.Element => {
             }
         });
         return () => myChart.destroy();
-    }, []);
+    }, [popular]);
 
     return <>
         <WidgetWith2Items $transparent>

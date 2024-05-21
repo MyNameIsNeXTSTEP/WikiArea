@@ -498,6 +498,7 @@ app.get('/api/users/student/get-project-analytics', async (req, res) => {
 
 app.get('/api/users/teacher/get-analytics', async (req, res) => {
     try {
+        const { projectId, teacherLogin } = req.query;
         const subscriptionAnalytics = await new DBQuery(mysql).call(`
             SELECT p.name, p.id, COUNT(sp.student_id) AS subscriptions
             FROM projects p
@@ -505,27 +506,76 @@ app.get('/api/users/teacher/get-analytics', async (req, res) => {
             ON sp.project_id = p.id
             GROUP BY p.id;
        `);
+       const mostSuccessfulProject = await new DBQuery(mysql).call(`
+            SELECT 
+            ma.project_id,
+            ma.project_name,
+            AVG(ma.avg_total_points) AS overall_avg_project_score
+            FROM (
+                SELECT 
+                    m.id AS module_id, 
+                    p.id AS project_id,
+                    p.name AS project_name, 
+                    m.title AS module_title,
+                    AVG((sc.task_point + sc.test_point) / 2) AS avg_total_points
+                FROM 
+                    students s
+                JOIN 
+                    student_scores sc ON s.id = sc.student_id
+                LEFT JOIN 
+                    tasks t ON sc.task_id = t.id
+                LEFT JOIN 
+                    tests ts ON sc.test_id = ts.id
+                JOIN 
+                    project_modules m ON t.module_id = m.id OR ts.module_id = m.id
+                JOIN 
+                    projects p ON m.project_id = p.id
+                GROUP BY 
+                    m.id, p.id, p.name, m.title
+            ) ma
+            GROUP BY 
+                ma.project_id, ma.project_name
+            ORDER BY 
+                overall_avg_project_score DESC
+            LIMIT 1;
+       `);
         const overallModuleAnalytics = await new DBQuery(mysql).call(`
             SELECT 
-            m.id AS module_id, 
-            p.name AS project_name, 
-            p.id as project_id,
-            m.title AS module_title, 
-            SUM(sc.task_point) + SUM(sc.test_point) AS total_points
+                student_avg.module_id, 
+                student_avg.project_name, 
+                student_avg.module_title,
+                student_avg.project_id,
+                student_avg.author,
+                student_avg.project_desc,
+                AVG(student_avg.avg_points) AS avg_total_points
             FROM 
-                students s
-            JOIN 
-                student_scores sc ON s.id = sc.student_id
-            LEFT JOIN 
-                tasks t ON sc.task_id = t.id
-            LEFT JOIN 
-                tests ts ON sc.test_id = ts.id
-            JOIN 
-                project_modules m ON t.module_id = m.id OR ts.module_id = m.id
-            JOIN 
-                projects p ON m.project_id = p.id
+            (
+                SELECT 
+                    s.id AS student_id, 
+                    m.id AS module_id,
+                    p.name AS project_name, 
+                    p.id AS project_id,
+                    p.description AS project_desc,
+                    a.login AS author,
+                    m.title AS module_title,
+                    (sc.task_point + sc.test_point) / 2 AS avg_points
+                FROM 
+                    students s
+                JOIN 
+                    student_scores sc ON s.id = sc.student_id
+                LEFT JOIN 
+                    tasks t ON sc.task_id = t.id
+                LEFT JOIN 
+                    tests ts ON sc.test_id = ts.id
+                JOIN 
+                    project_modules m ON t.module_id = m.id OR ts.module_id = m.id
+                JOIN 
+                    projects p ON m.project_id = p.id
+                JOIN teachers a ON p.author = a.id
+            ) student_avg
+            WHERE student_avg.project_id = ${projectId || mostSuccessfulProject[0].project_id} AND student_avg.author = '${teacherLogin}'
             GROUP BY 
-                m.id, p.name, m.title;
+                student_avg.module_id, student_avg.project_name, student_avg.module_title;
        `);
         res.status(200).send({
             subscriptionAnalytics,
