@@ -39,8 +39,15 @@ const WidgetsBlock = (): JSX.Element => {
     };
     const onChangePersonalData = (e: FormEvent<HTMLFormElement>) => {
         const data = submitHandler(e);
-        submitChangePersonalData(data);
+        console.log(data);
+        // submitChangePersonalData(data);
     };
+
+    const onChangePasswordData = () => {
+        const data = submitHandler(e);
+        console.log(data);
+        // submitChangePasswordData(data);
+    }
 
     // @todo: Should we use it after for displaying ?
     useEffect(() => {
@@ -62,31 +69,33 @@ const WidgetsBlock = (): JSX.Element => {
 
     return <>
         <ST.ProfilControlWidgets $transparent>
-        <SimpleWidget width={"40vw"} height={"30vh"} $bordered>
-            <form id='post-form' onSubmit={onChangePersonalData}>
+        <form id='post-form-personal-data' onSubmit={onChangePersonalData}>
+            <SimpleWidget width={"38vw"} height={"30vh"} $bordered>
                 <Title>Учётные данные</Title>
-                <ST.Input $bordered name="first_name" placeholder="Имя…"/>
-                <ST.Input $bordered name='second_name' placeholder="Фамилия…"/>
-                <ST.Input $bordered name='birth_date' placeholder="Дата рождения…"/>
+                <ST.Input $bordered name="first_name" placeholder="Имя…" value={currentPersonalData.first_name}/>
+                <ST.Input $bordered name='second_name' placeholder="Фамилия…" value={currentPersonalData.second_name}/>
+                <ST.Input $bordered name='birth_date' placeholder="Дата рождения…" value={currentPersonalData.birth_date}/>
                 <StandartButton className="save-button">Сохранить</StandartButton>
-            </form>
-        </SimpleWidget>
-        <SimpleWidget width={"40vw"} height={"30vh"} $bordered>
-            <Title>Пароль</Title>
-            <ST.InputWithIcon >
-                <RawInput placeholder="Текущий пароль"/>
-                <ST.EyeIcon src={Eye}/>
-            </ST.InputWithIcon>
-            <ST.InputWithIcon >
-                <RawInput placeholder="Новый пароль"/>
-                <ST.EyeIcon src={Eye}/>
-            </ST.InputWithIcon>
-            <ST.InputWithIcon >
-                <RawInput placeholder="Повторите пароль"/>
-                <ST.EyeIcon src={Eye}/>
-            </ST.InputWithIcon>
-            <StandartButton className="save-button">Сохранить</StandartButton>
-        </SimpleWidget>
+            </SimpleWidget>
+        </form>
+        <form id='post-form-password' onSubmit={onChangePasswordData}>
+            <SimpleWidget width={"38vw"} height={"30vh"} $bordered>
+                <Title>Пароль</Title>
+                <ST.InputWithIcon >
+                    <RawInput placeholder="Текущий пароль" name="current_password"/>
+                    <ST.EyeIcon src={Eye}/>
+                </ST.InputWithIcon>
+                <ST.InputWithIcon >
+                    <RawInput placeholder="Новый пароль" name="new_password"/>
+                    <ST.EyeIcon src={Eye}/>
+                </ST.InputWithIcon>
+                <ST.InputWithIcon >
+                    <RawInput placeholder="Повторите пароль" name="repeated-new-password"/>
+                    <ST.EyeIcon src={Eye}/>
+                </ST.InputWithIcon>
+                <StandartButton className="save-button">Сохранить</StandartButton>
+            </SimpleWidget>
+        </form>
         </ST.ProfilControlWidgets>
     </>
 };
