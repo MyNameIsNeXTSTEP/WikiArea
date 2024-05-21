@@ -31,7 +31,7 @@ const AddNewUserPopup = ({ onClose }: IProps ): JSX.Element => {
     return <>
         <DefaultPopup width={'450px'} height={'auto'}>
             <Cancel size={20} color={'white'} onClick={onClose}/>
-            <Title>Добавление проекта</Title>
+            <Title>Добавление пользователя</Title>
             <form id='post-form' onSubmit={formSubmit}>
                 <StandartInput name={'login'} placeholder="Придумайте логин" />
                 <StandartInput name={'email'} placeholder="Введите почту"/>
