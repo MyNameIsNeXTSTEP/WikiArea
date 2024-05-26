@@ -4,7 +4,7 @@ import { StandartButton } from '@ui/Atoms/Buttons';
 import { StandartLabel } from '@ui/Atoms/Labels';
 import { useState } from 'react';
 import { StandartPopupWithContent } from '~/src/Components/Popup/StandartPopupWithContent';
-import { setIsOpenEditProjectPage, setProjectDetailsPage, setProjectIdOnEdit, setStage } from '~/src/features/store/projects';
+import { setIsOpenEditProjectPage, setProjectDetailsPage, setProjectIdOnEdit, setRefreshProjects, setStage } from '~/src/features/store/projects';
 import { EUserRoles, IProject } from '~/src/a-lib';
 import APIRequest from '@api-package/index';
 import { TRequestMethod } from '@api-package/types';
@@ -54,6 +54,16 @@ const Controls = ({ project }: IProps): JSX.Element => {
                 break;
         }
     };
+    const onDeleteProject = async () => {
+        await new APIRequest({
+            uri: '/api/projects/delete',
+            method: TRequestMethod.POST,
+            body: JSON.stringify({
+                id: project.id,
+            })
+        }).doRequest();
+        dispatch(setRefreshProjects(true));
+    };
     return <>
         {controlState.option1.type === 'button' &&
             <StandartButton
@@ -80,6 +90,7 @@ const Controls = ({ project }: IProps): JSX.Element => {
             updateIsOpen={setIsOpenTecherDeleteProjectPopup}
             text='Вы действительно хотите удалить выбраный проект'
             firstBtn='Удалить'
+            firstBtnOnClick={onDeleteProject}
         />
     </>
 };

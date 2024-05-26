@@ -267,8 +267,9 @@ app.post('/api/projects/add-new-project', async (req, res) => {
     } = req.body;
     try {
         const dateNow = new Date();
-        new DBQuery(mysql).insert('projects', {
-            author,
+        const authorId = await new DBQuery(mysql).call(`SELECT id from teachers WHERE login = '${author}'`);
+        await new DBQuery(mysql).insert('projects', {
+            author: authorId[0].id,
             name: projectTitle,
             description: projectDescription,
             topic: projectTopic,
