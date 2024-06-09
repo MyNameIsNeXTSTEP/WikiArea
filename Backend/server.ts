@@ -236,11 +236,16 @@ app.post('/api/upload-module-file', async (req, res) => {
 });
 
 app.post('/api/messages', (req, res) => {
-    const { role, text, user_login } = req.body;
-    // const date = new Date().toISOString();
+    const { role, text, user_login, companionLogin } = req.body;
     const message_id = crypto.randomBytes(6).toString('hex');
+    const userRoleRef = role.slice(0, role.length - 1); // @todo: again, need to fix role table names
     try {
-        new DBQuery(mysql).insert('messages', { user_login, text, role, message_id });  
+        new DBQuery(mysql).insert('messages', {
+            user_login,
+            text, role: userRoleRef,
+            message_id,
+            companion_user_login: companionLogin,
+        });  
     } catch (error) {
         res.status(500).send({ message: 'Error saving the message', error });
     };
@@ -249,7 +254,10 @@ app.post('/api/messages', (req, res) => {
 
 app.get('/api/messages', async (req, res) => {
     try {
-        const messages = await new DBQuery(mysql).call('SELECT * FROM messages')
+        const { companionLogin } = req.query;
+        const messages = await new DBQuery(mysql).call(`
+            SELECT * FROM messages WHERE companion_user_login = '${companionLogin}' OR user_login = '${companionLogin}'
+        `);
         res.status(200).send(JSON.stringify(messages));
     } catch (error) {
         res.status(500).send({ server_message: 'Error reading messages', error });

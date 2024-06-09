@@ -1,14 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
-import { StandartButton } from "@ui/Atoms/Buttons";
-import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
-import { StandartLabel } from "@ui/Atoms/Labels";
-import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
-import WidgetWith2Items from "@ui/Organisms/Widgets/WidgetWith2Items";
-import { H1, purpleMainColor } from "@ui/Tokens";
 import { useDispatch, useSelector } from "react-redux";
-import ProjectsSelector, { TProjectToSelect } from "../ProjectsSelector";
 import { IProject } from "~/src/a-lib";
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
@@ -65,8 +58,11 @@ export const TeachersAnalytics = ({ teacherLogin, selectedProject }: IProps): JS
         const request = {
             uri: '/api/users/teacher/get-analytics',
             method: TRequestMethod.GET,
-            queryParams: { teacherLogin: teacherLogin ?? login }
+            queryParams: {
+                teacherLogin: teacherLogin ?? login,
+            }
         };
+        // @ts-ignore
         if (selectedProject) request.queryParams.projectId = selectedProject.id;
         const res = await new APIRequest(request).doRequest<TResponseData>();
 

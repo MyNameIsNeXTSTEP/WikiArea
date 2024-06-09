@@ -8,6 +8,15 @@ export const Container = styled.div`
     width: 100vw;
 `;
 
+export const Messages = styled.div`
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 90%;
+    width: 100%;
+`;
+
 export const Input = styled.input`
     height: 60px;
     width: 100%;
@@ -47,7 +56,6 @@ export const Message = styled.div<{ $my?: boolean, $rounded?: boolean }>`
 export const UsersList = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex: 1;
     height: 100%;
     border: 2px solid ${purpleMainColor};
@@ -63,6 +71,7 @@ export const User = styled.div<{ $isActive?: boolean }>`
     padding: 5px;
     border: 4px solid ${purpleMainColor};
     background-color: ${p => p.$isActive ? purpleMainColor : 'white'};
+    cursor: pointer;
 `;
 
 export const Datetime = styled.p`

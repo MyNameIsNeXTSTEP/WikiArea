@@ -2,14 +2,26 @@ import * as ST from './styled';
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from 'react-redux';
 
 const ChatPage = (): JSX.Element => {
+    const {
+        auth: { role, login },
+        users: { users },
+    } = useSelector(state => ({
+        auth: state.profile.auth,
+        users: state.users,
+    }));
     const [messages, updateMessages] = useState<Array<Record<string, string>>>([]);
+    const [companionLogin, setIsCompanionLogin] = useState(users[0].login);
     const messageInputRef = useRef<HTMLInputElement>(null);
     const getMessages = async () => {
         const request = {
             uri: '/api/messages',
-            method: TRequestMethod.GET
+            method: TRequestMethod.GET,
+            queryParams: {
+                companionLogin
+            },
         };
         const messages = await new APIRequest(request).doRequest();
         updateMessages(messages.payload)
@@ -21,7 +33,12 @@ const ChatPage = (): JSX.Element => {
             if (messageText === '') {
                 return
             };
-            const messageData = { role: 'student', text: messageText, user_login: 'user123' };
+            const messageData = {
+                role,
+                text: messageText,
+                user_login: login,
+                companionLogin,
+            };
             const request = {
                 uri: '/api/messages',
                 method: TRequestMethod.POST,
@@ -35,6 +52,16 @@ const ChatPage = (): JSX.Element => {
 
     useEffect(() => {
         getMessages();
+    }, [companionLogin]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            const element = document.getElementById('messages-list');
+            if (element) {
+                console.log(element)
+                element.scroll({ top: element.scrollHeight, behavior: 'smooth'});
+            }
+        }, 100);
     }, []);
 
     const getFormattedDate = (d) => {
@@ -47,29 +74,44 @@ const ChatPage = (): JSX.Element => {
         let minutes = date.getMinutes().toString().padStart(2, '0');
         return `${day}.${month}.${year} ${hours}:${minutes}`;
     };
-    const originUser = 'Вы';
+    console.log(messages);
 
     return <>
-        {/* <h2>Chat</h2>
-        <input type="text" id="messageInput" placeholder="Write a message..." ref={messageInputRef}/>
-        <button onClick={sendMessage}>Send</button> */}
         <ST.Container id='chat-container'>
             <ST.UsersList id='chat-user-list'>
-                <ST.User id='chat-user'></ST.User>
+                { users.map(u => {
+                    if (u.login === login) return // don't show current user
+                    return <ST.User 
+                        key={u.login}
+                        $isActive={companionLogin === u.login}
+                        onClick={() => setIsCompanionLogin(u.login)}
+                        className='chat-user'
+                    >
+                        {u.login}
+                    </ST.User>
+                })}
             </ST.UsersList>
             <ST.ChatMessagesArea id='chat-message-area'>
-                { messages.length && messages.map(msg => {
-                    return <ST.Message $my $rounded id='chat-message'>
-                        <ST.LeftTop>
-                            <p>{originUser}:</p>
-                            <p>{msg.text}</p>
-                        </ST.LeftTop>
-                        <ST.RightBottom style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <ST.Datetime>{getFormattedDate(msg.date)}</ST.Datetime>
-                        </ST.RightBottom>
-                    </ST.Message>})
-                }
-                <ST.Input id='chat-input' onKeyDown={e => sendMessage(e)} placeholder='Введите сообщение' ref={messageInputRef}></ST.Input>
+                <ST.Messages id='messages-list'>
+                    { messages.length && messages.map(msg => {
+                        return <ST.Message $my={msg.user_login === login} $rounded id='chat-message'>
+                            <ST.LeftTop>
+                                <p>{msg.user_login === login ? 'Вы' : msg.user_login}:</p>
+                                <p>{msg.text}</p>
+                            </ST.LeftTop>
+                            <ST.RightBottom style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                                <ST.Datetime>{getFormattedDate(msg.date)}</ST.Datetime>
+                            </ST.RightBottom>
+                        </ST.Message>})
+                    }
+                </ST.Messages>
+                <ST.Input
+                    id='chat-input'
+                    onKeyDown={e => sendMessage(e)}
+                    placeholder='Введите сообщение'
+                    ref={messageInputRef}
+                >
+                </ST.Input>
             </ST.ChatMessagesArea>
         </ST.Container>
     </>
