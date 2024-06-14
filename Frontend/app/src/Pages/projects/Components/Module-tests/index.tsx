@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeBackBtnVisability, updateButtons, updateMainMenuFlag } from '~/src/features/store/menu';
 import * as ST from './styled';
 import ProgressBar from '@ui/Atoms/ProgressBar';
@@ -8,16 +8,9 @@ import { setStage } from '~/src/features/store/projects';
 import TestsBlock from './TestsBlock';
 import TestFinishResult from './TestFinishResult';
 
-const tests = [
-    { id: 1, text: 'text 1', answers: [1, 2, 3, 4] },
-    { id: 2, text: 'text 2', answers: [1, 2, 3, 4] },
-    { id: 3, text: 'text 3', answers: [1, 2, 3, 4] },
-    { id: 4, text: 'text 4', answers: [1, 2, 3, 4] },
-    { id: 5, text: 'text 5', answers: [1, 2, 3, 4] },
-];
-
 export const ModuleTests = (): JSX.Element => {
     const dispatch = useDispatch();
+    const tests = Object.values(useSelector(state => state.modules.tests));
     const [testsRes, setTestsRes] = useState({} as Record<number, number>);
     const [isTestFinished, setIsTestFinished] = useState(false);
     const [isOpenFinishPopup, openFinishPopup] = useState(false);

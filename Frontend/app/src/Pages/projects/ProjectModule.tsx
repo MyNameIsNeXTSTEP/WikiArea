@@ -1,7 +1,7 @@
 import APIRequest from "@api-package/index";
 import { TRequestMethod } from "@api-package/types";
 import Menu from "@ui/Organisms/Menu";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setProjectDetailsPage } from "~/src/features/store/projects";
 import { Arrow, File } from '@ui/assets/svg';
@@ -13,6 +13,7 @@ import { BoundedContainer, ButtonRow, Left, Right } from "@ui/Atoms/Containers";
 import { H1, Title } from "@ui/Tokens";
 import { DropdownArrow, FileIcon, ImageBlock } from "@ui/Atoms/icons";
 import { IModule, TFileForReq } from "~/src/a-lib";
+import { setModuleTests } from "~/src/features/store/projectModule";
 
 interface IProps {
     projectModule: IModule,
@@ -24,9 +25,26 @@ const ProjectModule = ({ projectModule, openModuleTests }: IProps): JSX.Element 
     const [isDropDownOpen, openDropDown] = useState(false);
     const [isOpenFileUploadPopup, openFileUploadPopup] = useState(false);
     const [uploadedFile, setUploadedFile] = useState({} as TFileForReq);
+    const getModuleTests = async (moduleId?: number) => {
+        const resp = await new APIRequest({
+            uri: '/api/modules/tests',
+            method: TRequestMethod.GET,
+            queryParams: {
+                moduleId,
+            },
+        }).doRequest();
+        if (!resp.isSuccess) {
+            alert('Error on trying to get module tests');
+            return;
+        };
+        return resp.payload.tests;
+    };
     const onOpenTests = () => {
         openModuleTests(true);
         dispatch(setProjectDetailsPage({ isOpen: false }));
+        getModuleTests(projectModule.id).then(res =>
+            dispatch(setModuleTests(res))
+        );
     };
     const processUploadedFile = (files: FileList | null) => { // @todo: fix the bug when form isn't submotable on the first click (async usaState issue)
         if (!files) throw new Error('No image was found in the request form');
@@ -55,6 +73,7 @@ const ProjectModule = ({ projectModule, openModuleTests }: IProps): JSX.Element 
         openFileUploadPopup(true);
         document.getElementById('upload-file')?.click();
     };
+
     return <>
         <WidgetWith2Items $rounded height='80px'>
             <Left><H1 $white>{projectModule && projectModule.name || 'Text'}</H1></Left>

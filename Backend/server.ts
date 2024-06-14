@@ -595,6 +595,21 @@ app.get('/api/users/teacher/get-analytics', async (req, res) => {
     }
 });
 
+app.get('/api/modules/tests', async (req, res) => {
+    try {
+        const { moduleId } = req.query;
+        const dbResp = await new DBQuery(mysql).call(`
+            SELECT * FROM tests WHERE module_id = ${moduleId}
+        `);
+        const groupedByQuestion = groupBy(dbResp, (el) => el.question_id);
+        res.status(200).send({
+            tests: groupedByQuestion,
+        });
+    } catch (error) {
+        res.status(500).send({ message: `Internal server error: ${error}` });
+    }
+});
+
 app.get('/api', (req, res) => {
     res.json({ message: 'Backend API is up and accessable' });
 });

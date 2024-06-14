@@ -2,51 +2,58 @@ import { ButtonRow } from '@ui/Atoms/Containers';
 import * as ST from './styled';
 import { SimpleWidget } from "@ui/Organisms/Widgets/SimpleWidget";
 import { H1 } from "@ui/Tokens";
-import { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { changeBackBtnVisability, updateButtons } from "~/src/features/store/menu";
 
 interface IProps {
     testsRes: Record<number, number>,
 }
 
-const tests = [
-    { id: 1, text: 'text 1', answers: [1, 2, 3, 4], rightAnswer: 1 },
-    { id: 2, text: 'text 2', answers: [1, 2, 3, 4], rightAnswer: 2 },
-    { id: 3, text: 'text 3', answers: [1, 2, 3, 4], rightAnswer: 2},
-    { id: 4, text: 'text 4', answers: [1, 2, 3, 4], rightAnswer: 3 },
-    { id: 5, text: 'text 5', answers: [1, 2, 3, 4], rightAnswer: 0 },
-];
-
 const TestFinishResult = ({ testsRes }: IProps): JSX.Element => {
     const dispatch = useDispatch();
+    const tests = Object.values(useSelector(state => state.modules.tests));
+
     useEffect(() => {
         dispatch(changeBackBtnVisability(false));
         dispatch(updateButtons([{
-            onClick: () => alert(true),
+            onClick: () => window.location.reload(),
         }]));
     }, []);
+    
+
     return <>
         <SimpleWidget $purple width='400px' height='200px' style={{ margin: 'auto' }}>
             <H1 $white style={{ textDecoration: 'underline' }}>
                 Итог выполнения теста
             </H1>
-            <p>0/100 баллов</p>
-            <p>y%</p>
+            <p>80/100 баллов</p>
+            <p>80%</p>
         </SimpleWidget>
-        {tests.map(test =>
-            <ST.TestsWidgets $transparent className='tests-row-finished'>
+        {tests.map((testCase: any) => {
+            console.log(testCase);
+            return <ST.TestsWidgets $transparent className='tests-row-finished'>
                 <ST.TestSimpleWidget width={"100%"} height={"30vh"} $bordered $purple className='test-widget'>
-                    <ST.TestText>{test.text}</ST.TestText>
-                    {test.answers.map((answer, answerId) => {
-                        console.log(testsRes[test.id] === test.rightAnswer);
+                    <ST.TestText>{testCase[0].question}</ST.TestText>
+                    {testCase.map((question: Record<string, any>) => {
+                        const currentAnswer = testsRes[question.question_id];
+                        const rightAnswer = question.correct_answer_inner_id;
+                        console.log(question.correct_answer_inner_id);
                         return <ButtonRow>
-                            <ST.RadioSelector type='radio' name={test.text} checked readOnly $finished right={testsRes[test.id] === test.rightAnswer}/>
-                            <ST.TestText>{answer}</ST.TestText>
+                            <ST.RadioSelector
+                                type='radio'
+                                name={question.question}
+                                checked
+                                readOnly
+                                $finished
+                                right={currentAnswer === rightAnswer}
+                            />
+                            <ST.TestText>{question.answer}</ST.TestText>
                         </ButtonRow>
                     })}
                 </ST.TestSimpleWidget>
             </ST.TestsWidgets>
+            }
         )}
     </>
 };

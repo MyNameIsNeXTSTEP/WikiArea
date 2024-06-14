@@ -6,6 +6,7 @@ interface IInitialState {
     deleted: IProjectModule[],
     isOpenAddModuleBlock: boolean,
     tests: any[],
+    current: number | null,
 }
 
 const initialState: IInitialState = {
@@ -13,6 +14,7 @@ const initialState: IInitialState = {
     deleted: [],
     isOpenAddModuleBlock: false,
     tests: [],
+    current: null,
 };
 
 const ModulesSlice = createSlice({
@@ -32,7 +34,10 @@ const ModulesSlice = createSlice({
             state.isOpenAddModuleBlock = action.payload;
         },
         setModuleTests: (state, action) => {
-            state.tests.push(action.payload);
+            state.tests = action.payload;
+        },
+        setCurrentOpenModule: (state, action) => {
+            state.current = action.payload;
         },
         setDeleteModule: (state, action) => {
             state.all = state.all.filter(el => el.projectId !== action.payload)
@@ -47,6 +52,7 @@ export const {
     setModuleTests,
     setDeleteModule,
     pushProjectModulesAll,
+    setCurrentOpenModule,
 } = ModulesSlice.actions;
 
 export default ModulesSlice.reducer;

@@ -25,9 +25,8 @@ const StudentsProjects = (): JSX.Element => {
         projects: state.projects,
         projectModules: state.modules.all,
     }));
-    const [projectsToShow, updateProjectsToShow] = useState<IProject[]>(
-        projectsAll.filter((el: IProject) => !subscribedProjectsIds.includes(el.id))
-    );
+    console.log(projectsAll);
+    const [projectsToShow, updateProjectsToShow] = useState<IProject[]>(projectsAll);
     const [isModuleTestsOpen, openModuleTests] = useState(false);
 
     useEffect(() => {
